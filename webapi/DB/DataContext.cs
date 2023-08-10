@@ -60,24 +60,19 @@ namespace webapi.DB
             if (connection == null)
                 return;
 
-            //await _initUsers();
+            await _initUsers();
 
-            //async Task _initUsers()
-            //{
-            //    var sql = """
-            //    IF OBJECT_ID('Users', 'U') IS NULL
-            //    CREATE TABLE Users (
-            //        Id INT NOT NULL PRIMARY KEY IDENTITY,
-            //        Title NVARCHAR(MAX),
-            //        FirstName NVARCHAR(MAX),
-            //        LastName NVARCHAR(MAX),
-            //        Email NVARCHAR(MAX),
-            //        Role INT,
-            //        PasswordHash NVARCHAR(MAX)
-            //    );
-            //""";
-            //    await connection.ExecuteAsync(sql);
-            //}
+            async Task _initUsers()
+            {
+                var sql = @"CREATE TABLE Users (
+                                Id BINARY(16) NOT NULL PRIMARY KEY,
+                                Nickname VARCHAR(255),
+                                Email VARCHAR(255) NOT NULL,
+                                PasswordHash VARCHAR(255) NOT NULL,
+                                Image LONGBLOB
+                            );";
+                await connection.ExecuteAsync(sql);
+            }
         }
     }
 }
