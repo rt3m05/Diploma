@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Text.Json.Serialization;
+﻿using webapi.Requests.User;
 
 namespace webapi.Models
 {
@@ -10,5 +9,16 @@ namespace webapi.Models
         public string? Email { get; set; }
         public string? PasswordHash { get; set; }
         public byte[]? Image { get; set; }
+
+        public User() { }
+
+        public User(CreateRequest req)
+        {
+            Id = Guid.NewGuid();
+            Nickname = req.Nickname;
+            Email = req.Email;
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
+            Image = req.Image;
+        }
     }
 }

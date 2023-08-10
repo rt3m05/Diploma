@@ -1,4 +1,6 @@
 using webapi.DB;
+using webapi.DB.Repositories;
+using webapi.DB.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,9 @@ builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("DbSetti
 
 //Add DB context
 builder.Services.AddSingleton<DataContext>();
+//Add tables services
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

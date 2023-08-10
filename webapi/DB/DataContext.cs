@@ -64,8 +64,8 @@ namespace webapi.DB
 
             async Task _initUsers()
             {
-                var sql = @"CREATE TABLE Users (
-                                Id BINARY(16) NOT NULL PRIMARY KEY,
+                var sql = @"CREATE TABLE IF NOT EXISTS Users (
+                                Id CHAR(36) NOT NULL PRIMARY KEY,
                                 Nickname VARCHAR(255),
                                 Email VARCHAR(255) NOT NULL,
                                 PasswordHash VARCHAR(255) NOT NULL,
