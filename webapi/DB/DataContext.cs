@@ -10,9 +10,9 @@ namespace webapi.DB
     public class DataContext
     {
         private DbSettings _dbSettings;
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<DataContext> _logger;
 
-        public DataContext(IOptions<DbSettings> dbSettings, ILogger<WeatherForecastController> logger)
+        public DataContext(IOptions<DbSettings> dbSettings, ILogger<DataContext> logger)
         {
             _dbSettings = dbSettings.Value;
             _logger = logger;

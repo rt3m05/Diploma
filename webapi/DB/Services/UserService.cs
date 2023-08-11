@@ -9,7 +9,7 @@ namespace webapi.DB.Services
     {
         Task<IEnumerable<User>> GetAll();
         Task<User> GetById(Guid id);
-        Task Create(CreateRequest model);
+        Task<Guid>  Create(CreateRequest model);
         Task Update(Guid id, UpdateRequest model);
         Task Delete(Guid id);
     }
@@ -38,7 +38,7 @@ namespace webapi.DB.Services
             return user;
         }
 
-        public async Task Create(CreateRequest model)
+        public async Task<Guid> Create(CreateRequest model)
         {
             if (await _userRepository.GetByEmail(model.Email!) != null)
                 throw new EmailExistsException("User with the email '" + model.Email + "' already exists");
@@ -46,6 +46,8 @@ namespace webapi.DB.Services
             User user = new(model);
 
             await _userRepository.Create(user);
+
+            return user.Id;
         }
 
         public async Task Update(Guid id, UpdateRequest model)
@@ -61,6 +63,10 @@ namespace webapi.DB.Services
 
             if (!string.IsNullOrEmpty(model.Password))
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+            user.Nickname = model.Nickname;
+            user.Email = model.Email;
+            user.Image = model.Image;
 
             await _userRepository.Update(user);
         }
