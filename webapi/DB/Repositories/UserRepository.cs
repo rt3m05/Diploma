@@ -11,6 +11,7 @@ namespace webapi.DB.Repositories
         Task Create(User user);
         Task Update(User user);
         Task Delete(Guid id);
+        Task Delete(string email);
     }
 
     public class UserRepository : IUserRepository
@@ -81,6 +82,16 @@ namespace webapi.DB.Repositories
                         WHERE Id = @id
                       ";
             await connection.ExecuteAsync(sql, new { id });
+        }
+
+        public async Task Delete(string email)
+        {
+            using var connection = _context.CreateConnection();
+            var sql = @"
+                        DELETE FROM Users 
+                        WHERE Email = @email
+                      ";
+            await connection.ExecuteAsync(sql, new { email });
         }
     }
 }

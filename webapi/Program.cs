@@ -1,4 +1,4 @@
-using webapi.DB;
+﻿using webapi.DB;
 using webapi.DB.Repositories;
 using webapi.DB.Services;
 
@@ -19,6 +19,8 @@ builder.Services.AddSingleton<DataContext>();
 //Add tables services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 var app = builder.Build();
 

@@ -12,7 +12,7 @@ namespace webapi.Models
 
         public User() { }
 
-        public User(CreateRequest req)
+        public User(UserCreateRequest req)
         {
             Id = Guid.NewGuid();
             Nickname = req.Nickname;

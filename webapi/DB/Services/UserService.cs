@@ -9,9 +9,11 @@ namespace webapi.DB.Services
     {
         Task<IEnumerable<User>> GetAll();
         Task<User> GetById(Guid id);
-        Task<Guid>  Create(CreateRequest model);
-        Task Update(Guid id, UpdateRequest model);
+        Task<User> GetByEmail(string email);
+        Task<Guid> Create(UserCreateRequest model);
+        Task Update(Guid id, UserUpdateRequest model);
         Task Delete(Guid id);
+        Task Delete(string email);
     }
 
     public class UserService : IUserService
@@ -38,7 +40,17 @@ namespace webapi.DB.Services
             return user;
         }
 
-        public async Task<Guid> Create(CreateRequest model)
+        public async Task<User> GetByEmail(string email)
+        {
+            var user = await _userRepository.GetByEmail(email);
+
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            return user;
+        }
+
+        public async Task<Guid> Create(UserCreateRequest model)
         {
             if (await _userRepository.GetByEmail(model.Email!) != null)
                 throw new EmailExistsException("User with the email '" + model.Email + "' already exists");
@@ -50,7 +62,7 @@ namespace webapi.DB.Services
             return user.Id;
         }
 
-        public async Task Update(Guid id, UpdateRequest model)
+        public async Task Update(Guid id, UserUpdateRequest model)
         {
             var user = await _userRepository.GetById(id);
 
@@ -74,6 +86,15 @@ namespace webapi.DB.Services
         public async Task Delete(Guid id)
         {
             await _userRepository.Delete(id);
+        }
+
+        //TODO: Add delete all info(projects, tabs ...)
+        public async Task Delete(string email)
+        {
+            if (await _userRepository.GetByEmail(email) != null)
+                await _userRepository.Delete(email);
+            else
+                throw new KeyNotFoundException("User not found");
         }
     }
 }

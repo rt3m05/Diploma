@@ -3,7 +3,7 @@ using System.Data;
 
 namespace webapi.Requests.User
 {
-    public class CreateRequest
+    public class UserCreateRequest
     {
         [Required]
         public string? Nickname { get; set; }

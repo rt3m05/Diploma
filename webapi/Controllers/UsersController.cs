@@ -1,42 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using webapi.DB;
 using webapi.DB.Services;
 using webapi.Exceptions;
-using webapi.Models;
 using webapi.Requests.User;
 
 namespace webapi.Controllers
 {
-    [Route("api/users")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
         private readonly ILogger<UsersController> _logger;
+        private readonly IWebHostEnvironment _env;
 
-        public UsersController(IUserService userService, ILogger<UsersController> logger)
+        public UsersController(IUserService userService, ILogger<UsersController> logger, IWebHostEnvironment env)
         {
             _userService = userService;
             _logger = logger;
+            _env = env;
         }
 
-        // GET: api/users
-        [HttpGet]
-        public async Task<IEnumerable<User>> Get()
+        // GET: api/users/all
+        [HttpGet("all")]
+        public async Task<IActionResult> Get()
         {
-            return await _userService.GetAll();
-        }
-
-        // GET api/users/5
-        [HttpGet("{id}")]
-        public string Get(Guid id)
-        {
-            return "value";
+            if (_env.IsDevelopment())
+                try
+                {
+                    return Ok(await _userService.GetAll());
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    return StatusCode(500);
+                }
+            else
+                return StatusCode(404);
         }
 
         // POST api/users
         [HttpPost]
-        public async Task<IActionResult> Create(CreateRequest model)
+        public async Task<IActionResult> Create(UserCreateRequest model)
         {
             Guid id = Guid.Empty;
 
@@ -47,7 +51,7 @@ namespace webapi.Controllers
             catch (EmailExistsException ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             } 
             catch (Exception ex)
             {
@@ -67,7 +71,7 @@ namespace webapi.Controllers
 
         // PUT api/users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, UpdateRequest model)
+        public async Task<IActionResult> Update(Guid id, UserUpdateRequest model)
         {
             try
             {
@@ -76,12 +80,12 @@ namespace webapi.Controllers
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex.Message + " Id: " + id.ToString());
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             } 
             catch (EmailExistsException ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -93,10 +97,27 @@ namespace webapi.Controllers
             return Ok(new { message = "User updated" });
         }
 
-        // DELETE api/users/5
-        [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        // DELETE api/users
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string email)
         {
+            try
+            {
+                await _userService.Delete(email);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message + " Email: " + email);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+
+            _logger.LogInformation("User deleted. Email: " + email);
+            return Ok(new { message = "User deleted" });
         }
     }
 }
