@@ -21,6 +21,12 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITabRepository, TabRepository>();
+builder.Services.AddScoped<ITabService, TabService>();
+builder.Services.AddScoped<ITileRepository, TileRepository>();
+builder.Services.AddScoped<ITileService, TileService>();
+builder.Services.AddScoped<ITileItemRepository, TileItemRepository>();
+builder.Services.AddScoped<ITileItemService, TileItemService>();
 
 var app = builder.Build();
 

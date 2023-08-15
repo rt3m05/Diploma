@@ -9,7 +9,7 @@ namespace webapi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
         private readonly ILogger<UsersController> _logger;
         private readonly IWebHostEnvironment _env;
 
@@ -70,16 +70,16 @@ namespace webapi.Controllers
         }
 
         // PUT api/users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, UserUpdateRequest model)
+        [HttpPut]
+        public async Task<IActionResult> Update(string email, UserUpdateRequest model)
         {
             try
             {
-                await _userService.Update(id, model);
+                await _userService.Update(email, model);
             } 
             catch (KeyNotFoundException ex)
             {
-                _logger.LogError(ex.Message + " Id: " + id.ToString());
+                _logger.LogError(ex.Message + " Email: " + email);
                 return BadRequest(new { message = ex.Message });
             } 
             catch (EmailExistsException ex)
@@ -93,7 +93,7 @@ namespace webapi.Controllers
                 return StatusCode(500);
             }
 
-            _logger.LogInformation("User updated. Id: " + id.ToString());
+            _logger.LogInformation("User updated. Email: " + email);
             return Ok(new { message = "User updated" });
         }
 

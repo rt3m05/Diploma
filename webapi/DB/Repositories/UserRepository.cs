@@ -16,7 +16,7 @@ namespace webapi.DB.Repositories
 
     public class UserRepository : IUserRepository
     {
-        private DataContext _context;
+        private readonly DataContext _context;
 
         public UserRepository(DataContext context)
         {

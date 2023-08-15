@@ -1,34 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using webapi.DB.Services;
-using webapi.DTO.Projects;
+using webapi.DTO.Tabs;
 using webapi.Exceptions;
-using webapi.Requests.Project;
+using webapi.Requests.Tab;
 
 namespace webapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectsController : ControllerBase
+    public class TabsController : ControllerBase
     {
-        private readonly IProjectService _projectService;
-        private readonly ILogger<ProjectsController> _logger;
+        private readonly ITabService _tabService;
+        private readonly ILogger<TabsController> _logger;
         private readonly IWebHostEnvironment _env;
 
-        public ProjectsController(IProjectService projectService, ILogger<ProjectsController> logger, IWebHostEnvironment env)
+        public TabsController(ITabService tabService, ILogger<TabsController> logger, IWebHostEnvironment env)
         {
-            _projectService = projectService;
+            _tabService = tabService;
             _logger = logger;
             _env = env;
         }
 
-        // GET: api/Projects/all
+        // GET: api/Tabs/all
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
             if (_env.IsDevelopment())
                 try
                 {
-                    return Ok(await _projectService.GetAll());
+                    return Ok(await _tabService.GetAll());
                 }
                 catch (Exception ex)
                 {
@@ -39,20 +39,20 @@ namespace webapi.Controllers
                 return StatusCode(404);
         }
 
-        // GET: api/Projects
+        // GET: api/Tabs
         [HttpGet]
-        public async Task<IActionResult> GetAllByUser(string userEmail)
+        public async Task<IActionResult> GetAllByProject(Guid projectId)
         {
             try
             {
-                var projects = await _projectService.GetAllByUser(userEmail);
+                var tabs = await _tabService.GetAllByProject(projectId);
 
-                _logger.LogInformation("Get projects by user successfull. User Email: " + userEmail);
-                return Ok(projects.Select(p => new ProjectAllInfo(p)));
+                _logger.LogInformation("Get tabs by project successfull. Project Id: " + projectId.ToString());
+                return Ok(tabs.Select(t => new TabAllInfo(t)));
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogError(ex.Message + " User Email: " + userEmail);
+                _logger.LogError(ex.Message + " Project Id: " + projectId);
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
@@ -62,15 +62,15 @@ namespace webapi.Controllers
             }
         }
 
-        // GET api/Projects/5
+        // GET api/Tabs/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             try
             {
-                var project = await _projectService.GetById(id);
+                var tab = await _tabService.GetById(id);
 
-                return Ok(new ProjectAllInfo(project));
+                return Ok(tab);
             }
             catch (KeyNotFoundException ex)
             {
@@ -84,15 +84,15 @@ namespace webapi.Controllers
             }
         }
 
-        // POST api/Projects
+        // POST api/Tabs
         [HttpPost]
-        public async Task<IActionResult> Create(ProjectCreateRequest model)
+        public async Task<IActionResult> Create(TabCreateRequest model)
         {
             Guid id = Guid.Empty;
 
             try
             {
-                id = await _projectService.Create(model);
+                id = await _tabService.Create(model);
             }
             catch (KeyNotFoundException ex)
             {
@@ -107,21 +107,21 @@ namespace webapi.Controllers
 
             if (id == Guid.Empty)
             {
-                _logger.LogError("After create project Id was empty.");
+                _logger.LogError("After create tab Id was empty.");
                 return StatusCode(500);
             }
 
-            _logger.LogInformation("Project created. Id: " + id.ToString());
-            return Ok(new { message = "Project created" });
+            _logger.LogInformation("Tab created. Id: " + id.ToString());
+            return Ok(new { message = "Tab created" });
         }
 
-        // PUT api/Projects/5
+        // PUT api/Tabs/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, ProjectUpdateRequest model)
+        public async Task<IActionResult> Update(Guid id, TabUpdateRequest model)
         {
             try
             {
-                await _projectService.Update(id, model);
+                await _tabService.Update(id, model);
             }
             catch (KeyNotFoundException ex)
             {
@@ -139,17 +139,17 @@ namespace webapi.Controllers
                 return StatusCode(500);
             }
 
-            _logger.LogInformation("Project updated. Id: " + id.ToString());
-            return Ok(new { message = "Project updated" });
+            _logger.LogInformation("Tab updated. Id: " + id.ToString());
+            return Ok(new { message = "Tab updated" });
         }
 
-        // DELETE api/Projects/5
+        // DELETE api/Tabs/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                await _projectService.Delete(id);
+                await _tabService.Delete(id);
             }
             catch (KeyNotFoundException ex)
             {
@@ -162,8 +162,8 @@ namespace webapi.Controllers
                 return StatusCode(500);
             }
 
-            _logger.LogInformation("Project deleted. Id: " + id.ToString());
-            return Ok(new { message = "Project deleted" });
+            _logger.LogInformation("Tab deleted. Id: " + id.ToString());
+            return Ok(new { message = "Tab deleted" });
         }
     }
 }

@@ -11,14 +11,14 @@ namespace webapi.DB.Services
         Task<User> GetById(Guid id);
         Task<User> GetByEmail(string email);
         Task<Guid> Create(UserCreateRequest model);
-        Task Update(Guid id, UserUpdateRequest model);
+        Task Update(string email, UserUpdateRequest model);
         Task Delete(Guid id);
         Task Delete(string email);
     }
 
     public class UserService : IUserService
     {
-        private IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
         public UserService(IUserRepository userRepository)
         {
@@ -62,9 +62,9 @@ namespace webapi.DB.Services
             return user.Id;
         }
 
-        public async Task Update(Guid id, UserUpdateRequest model)
+        public async Task Update(string email, UserUpdateRequest model)
         {
-            var user = await _userRepository.GetById(id);
+            var user = await _userRepository.GetByEmail(email);
 
             if (user == null)
                 throw new KeyNotFoundException("User not found");
@@ -77,7 +77,8 @@ namespace webapi.DB.Services
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
             user.Nickname = model.Nickname;
-            user.Email = model.Email;
+            if(!string.IsNullOrEmpty(model.Email))
+                user.Email = model.Email;
             user.Image = model.Image;
 
             await _userRepository.Update(user);

@@ -1,8 +1,11 @@
-﻿namespace webapi.Requests.Project
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace webapi.Requests.Project
 {
     public class ProjectUpdateRequest
     {
-        public Guid UserId { get; set; }
+        [EmailAddress]
+        public string? UserEmail { get; set; }
         public string? Name { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using webapi.DB.Repositories;
+using webapi.Exceptions;
 using webapi.Models;
 using webapi.Requests.Project;
 
@@ -16,8 +17,8 @@ namespace webapi.DB.Services
 
     public class ProjectService : IProjectService
     {
-        private IProjectRepository _projectRepository;
-        private IUserService _userService;
+        private readonly IProjectRepository _projectRepository;
+        private readonly IUserService _userService;
 
         public ProjectService(IProjectRepository projectRepository, IUserService userService)
         {
@@ -39,12 +40,12 @@ namespace webapi.DB.Services
 
         public async Task<Project> GetById(Guid id)
         {
-            var user = await _projectRepository.GetById(id);
+            var project = await _projectRepository.GetById(id);
 
-            if (user == null)
+            if (project == null)
                 throw new KeyNotFoundException("Project not found");
 
-            return user;
+            return project;
         }
 
         public async Task<Guid> Create(ProjectCreateRequest model)
@@ -66,20 +67,35 @@ namespace webapi.DB.Services
 
         public async Task Update(Guid id, ProjectUpdateRequest model)
         {
-            var project = await _projectRepository.GetById(id);
+            if(model.UserEmail == null && model.Name == null)
+                throw new EmptyModelException("Model was empty");
 
+            var project = await _projectRepository.GetById(id);
             if (project == null)
                 throw new KeyNotFoundException("Project not found");
 
-            project.Name = model.Name;
-            project.UserId = model.UserId;
+            if (model.UserEmail != null)
+            {
+                var user = await _userService.GetByEmail(model.UserEmail);
+                if (user == null)
+                    throw new KeyNotFoundException("User not found");
+
+                project.UserId = user.Id;
+            }
+
+            if(model.Name != null)
+                project.Name = model.Name; 
 
             await _projectRepository.Update(project);
         }
 
+        //TODO: Add delete all info(tabs, tiles ...)
         public async Task Delete(Guid id)
         {
-            await _projectRepository.Delete(id);
+            if(await _projectRepository.GetById(id) != null)
+                await _projectRepository.Delete(id);
+            else
+                throw new KeyNotFoundException("Project not found");
         }
     }
 }

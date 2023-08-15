@@ -15,7 +15,7 @@ namespace webapi.DB.Repositories
 
     public class ProjectRepository : IProjectRepository
     {
-        private DataContext _context;
+        private readonly DataContext _context;
 
         public ProjectRepository(DataContext context)
         {
