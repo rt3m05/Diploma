@@ -1,4 +1,7 @@
-﻿using webapi.DB;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using webapi.Auth;
+using webapi.DB;
 using webapi.DB.Repositories;
 using webapi.DB.Services;
 
@@ -10,6 +13,29 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Configure Auth settings
+builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
+
+//Add authentication with JWT
+var authSettings = builder.Configuration.GetSection("AuthSettings").Get<AuthSettings>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidIssuer = authSettings!.ISSUER,
+                       ValidateAudience = true,
+                       ValidAudience = authSettings.AUDIENCE,
+                       ValidateLifetime = true,
+                       IssuerSigningKey = authSettings.GetSymmetricSecurityKey(),
+                       ValidateIssuerSigningKey = true,
+                   };
+               });
+
+//Add Auth service
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Configure DB settings
 builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("DbSettings"));
@@ -46,6 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
