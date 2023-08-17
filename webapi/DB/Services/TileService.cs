@@ -10,7 +10,7 @@ namespace webapi.DB.Services
         Task<IEnumerable<Tile>> GetAll();
         Task<IEnumerable<Tile>> GetAllByTab(Guid tabId);
         Task<Tile> GetById(Guid id);
-        Task<Guid> Create(TileCreateRequest model);
+        Task<Guid> Create(TileCreateRequest model, Guid userId);
         Task Update(Guid id, TileUpdateRequest model);
         Task Delete(Guid id);
     }
@@ -48,7 +48,7 @@ namespace webapi.DB.Services
             return tile;
         }
 
-        public async Task<Guid> Create(TileCreateRequest model)
+        public async Task<Guid> Create(TileCreateRequest model, Guid userId)
         {
             var tab = await _tabService.GetById(model.TabId);
 
@@ -56,6 +56,7 @@ namespace webapi.DB.Services
             {
                 Id = Guid.NewGuid(),
                 TabId = tab.Id,
+                UserId = userId,
                 Name = model.Name,
                 X = model.X,
                 Y = model.Y,
@@ -77,15 +78,6 @@ namespace webapi.DB.Services
             var tile = await _tileRepository.GetById(id);
             if (tile == null)
                 throw new KeyNotFoundException("Tile not found");
-
-            if (model.TabId != null && model.TabId != Guid.Empty && model.TabId.HasValue)
-            {
-                var tab = await _tabService.GetById(model.TabId.Value);
-                if (tab == null)
-                    throw new KeyNotFoundException("Tab not found");
-
-                tile.TabId = tab.Id;
-            }
 
             if (model.Name != null)
                 tile.Name = model.Name;

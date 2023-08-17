@@ -10,7 +10,7 @@ namespace webapi.DB.Services
         Task<IEnumerable<TileItem>> GetAll();
         Task<IEnumerable<TileItem>> GetAllByTile(Guid tileId);
         Task<TileItem> GetById(Guid id);
-        Task<Guid> Create(TileItemCreateRequest model);
+        Task<Guid> Create(TileItemCreateRequest model, Guid userId);
         Task Update(Guid id, TileItemUpdateRequest model);
         Task Delete(Guid id);
     }
@@ -48,7 +48,7 @@ namespace webapi.DB.Services
             return tileItem;
         }
 
-        public async Task<Guid> Create(TileItemCreateRequest model)
+        public async Task<Guid> Create(TileItemCreateRequest model, Guid userId)
         {
             var tile = await _tileService.GetById(model.TileId);
 
@@ -56,6 +56,7 @@ namespace webapi.DB.Services
             {
                 Id = Guid.NewGuid(),
                 TileId = tile.Id,
+                UserId = userId,
                 Content = model.Content,
                 Type = model.Type,
                 TimeStamp = DateTime.Now
@@ -68,21 +69,12 @@ namespace webapi.DB.Services
 
         public async Task Update(Guid id, TileItemUpdateRequest model)
         {
-            if (model.TileId == null && model.Content == null && model.Type == null)
+            if (model.Content == null && model.Type == null)
                 throw new EmptyModelException("Model was empty");
 
             var tileItem = await _tileItemRepository.GetById(id);
             if (tileItem == null)
                 throw new KeyNotFoundException("Tile Item not found");
-
-            if (model.TileId != null && model.TileId != Guid.Empty && model.TileId.HasValue)
-            {
-                var tile = await _tileService.GetById(model.TileId.Value);
-                if (tile == null)
-                    throw new KeyNotFoundException("Tile not found");
-
-                tileItem.TileId = tile.Id;
-            }
 
             if (model.Content != null)
                 tileItem.Content = model.Content;
