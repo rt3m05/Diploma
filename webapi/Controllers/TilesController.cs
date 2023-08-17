@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using webapi.DB.Services;
 using webapi.DTO.Tiles;
 using webapi.Exceptions;
@@ -8,21 +10,27 @@ namespace webapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TilesController : ControllerBase
     {
         private readonly ITileService _tileService;
+        private readonly ITabService _tabService;
+        private readonly IUserService _userService;
         private readonly ILogger<TilesController> _logger;
         private readonly IWebHostEnvironment _env;
 
-        public TilesController(ITileService tileService, ILogger<TilesController> logger, IWebHostEnvironment env)
+        public TilesController(ITileService tileService, ITabService tabService, IUserService userService, ILogger<TilesController> logger, IWebHostEnvironment env)
         {
             _tileService = tileService;
+            _tabService = tabService;
+            _userService = userService;
             _logger = logger;
             _env = env;
         }
 
         // GET: api/Tiles/all
         [HttpGet("all")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             if (_env.IsDevelopment())
@@ -47,7 +55,6 @@ namespace webapi.Controllers
             {
                 var tiles = await _tileService.GetAllByTab(tabId);
 
-                _logger.LogInformation("Get tiles by tab successfull. Tab Id: " + tabId.ToString());
                 return Ok(tiles.Select(t => new TileAllInfo(t)));
             }
             catch (KeyNotFoundException ex)
@@ -70,7 +77,7 @@ namespace webapi.Controllers
             {
                 var tile = await _tileService.GetById(id);
 
-                return Ok(tile);
+                return Ok(new TileAllInfo(tile));
             }
             catch (KeyNotFoundException ex)
             {
@@ -92,7 +99,20 @@ namespace webapi.Controllers
 
             try
             {
-                id = await _tileService.Create(model);
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var user = await _userService.GetByEmail(email);
+                var tab = await _tabService.GetById(model.TabId);
+
+                if(tab.UserId == user.Id)
+                    id = await _tileService.Create(model, user.Id);
+                else
+                    return BadRequest(new { message = "This is not your tab." });
+
+                if (id == Guid.Empty)
+                    throw new Exception("After create tile Id was empty.");
             }
             catch (KeyNotFoundException ex)
             {
@@ -102,12 +122,6 @@ namespace webapi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
-
-            if (id == Guid.Empty)
-            {
-                _logger.LogError("After create tile Id was empty.");
                 return StatusCode(500);
             }
 
@@ -121,7 +135,18 @@ namespace webapi.Controllers
         {
             try
             {
-                await _tileService.Update(id, model);
+                var tile = await _tileService.GetById(id);
+
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var user = await _userService.GetByEmail(email);
+
+                if (tile.UserId == user.Id)
+                    await _tileService.Update(id, model);
+                else
+                    return BadRequest(new { message = "This is not your tile." });
             }
             catch (KeyNotFoundException ex)
             {
@@ -149,7 +174,18 @@ namespace webapi.Controllers
         {
             try
             {
-                await _tileService.Delete(id);
+                var tile = await _tileService.GetById(id);
+
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var user = await _userService.GetByEmail(email);
+
+                if (tile.UserId == user.Id)
+                    await _tileService.Delete(id);
+                else
+                    return BadRequest(new { message = "This is not your tile." });
             }
             catch (KeyNotFoundException ex)
             {

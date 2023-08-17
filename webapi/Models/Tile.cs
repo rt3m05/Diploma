@@ -4,6 +4,7 @@
     {
         public Guid Id { get; set; }
         public Guid TabId { get; set; }
+        public Guid UserId { get; set; }
         public string? Name { get; set; }
         public ushort X { get; set; }
         public ushort Y { get; set; }

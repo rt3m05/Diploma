@@ -73,13 +73,20 @@ namespace webapi.DB.Services
             if (emailChanged && await _userRepository.GetByEmail(model.Email!) != null)
                 throw new EmailExistsException("User with the email '" + model.Email + "' already exists");
 
+            if (string.IsNullOrEmpty(model.Password) && string.IsNullOrEmpty(model.Email) && string.IsNullOrEmpty(model.Nickname) && model.Image == null)
+                throw new EmptyModelException("Model was empty");
+
             if (!string.IsNullOrEmpty(model.Password))
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-            user.Nickname = model.Nickname;
+            if(!string.IsNullOrEmpty(model.Nickname))
+                user.Nickname = model.Nickname;
+
             if(!string.IsNullOrEmpty(model.Email))
                 user.Email = model.Email;
-            user.Image = model.Image;
+
+            if(model.Image != null && model.Image.Length > 0)
+                user.Image = model.Image;
 
             await _userRepository.Update(user);
         }

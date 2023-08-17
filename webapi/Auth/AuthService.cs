@@ -52,7 +52,7 @@ namespace webapi.Auth
         public ClaimsIdentity GetClaims(User user)
         {
             if (user == null)
-                throw new NullVariableException("AUTH ERROR: user was null.");
+                throw new NullVariableException("User was null.");
 
             var claims = new List<Claim>
             {

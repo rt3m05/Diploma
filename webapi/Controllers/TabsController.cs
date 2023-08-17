@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using webapi.DB.Services;
 using webapi.DTO.Tabs;
 using webapi.Exceptions;
@@ -8,21 +10,27 @@ namespace webapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TabsController : ControllerBase
     {
         private readonly ITabService _tabService;
+        private readonly IProjectService _projectService;
+        private readonly IUserService _userService;
         private readonly ILogger<TabsController> _logger;
         private readonly IWebHostEnvironment _env;
 
-        public TabsController(ITabService tabService, ILogger<TabsController> logger, IWebHostEnvironment env)
+        public TabsController(ITabService tabService, IProjectService projectService, IUserService userService, ILogger<TabsController> logger, IWebHostEnvironment env)
         {
             _tabService = tabService;
+            _projectService = projectService;
+            _userService = userService;
             _logger = logger;
             _env = env;
         }
 
         // GET: api/Tabs/all
         [HttpGet("all")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             if (_env.IsDevelopment())
@@ -47,7 +55,6 @@ namespace webapi.Controllers
             {
                 var tabs = await _tabService.GetAllByProject(projectId);
 
-                _logger.LogInformation("Get tabs by project successfull. Project Id: " + projectId.ToString());
                 return Ok(tabs.Select(t => new TabAllInfo(t)));
             }
             catch (KeyNotFoundException ex)
@@ -70,7 +77,7 @@ namespace webapi.Controllers
             {
                 var tab = await _tabService.GetById(id);
 
-                return Ok(tab);
+                return Ok(new TabAllInfo(tab));
             }
             catch (KeyNotFoundException ex)
             {
@@ -92,7 +99,20 @@ namespace webapi.Controllers
 
             try
             {
-                id = await _tabService.Create(model);
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var user = await _userService.GetByEmail(email);
+                var project = await _projectService.GetById(model.ProjectId);
+
+                if (project.UserId == user.Id)
+                    id = await _tabService.Create(model, user.Id);
+                else
+                    return BadRequest(new { message = "This is not your project." });
+
+                if (id == Guid.Empty)
+                    throw new Exception("After create tab Id was empty.");
             }
             catch (KeyNotFoundException ex)
             {
@@ -102,12 +122,6 @@ namespace webapi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
-
-            if (id == Guid.Empty)
-            {
-                _logger.LogError("After create tab Id was empty.");
                 return StatusCode(500);
             }
 
@@ -121,7 +135,18 @@ namespace webapi.Controllers
         {
             try
             {
-                await _tabService.Update(id, model);
+                var tab = await _tabService.GetById(id);
+
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var user = await _userService.GetByEmail(email);
+
+                if (tab.UserId == user.Id)
+                    await _tabService.Update(id, model);
+                else
+                    return BadRequest(new { message = "This is not your tab." });
             }
             catch (KeyNotFoundException ex)
             {
@@ -149,7 +174,18 @@ namespace webapi.Controllers
         {
             try
             {
-                await _tabService.Delete(id);
+                var tab = await _tabService.GetById(id);
+
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var user = await _userService.GetByEmail(email);
+
+                if (tab.UserId == user.Id)
+                    await _tabService.Delete(id);
+                else
+                    return BadRequest(new { message = "This is not your tab." });
             }
             catch (KeyNotFoundException ex)
             {

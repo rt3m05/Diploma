@@ -10,7 +10,7 @@ namespace webapi.DB.Services
         Task<IEnumerable<Project>> GetAll();
         Task<IEnumerable<Project>> GetAllByUser(string email);
         Task<Project> GetById(Guid id);
-        Task<Guid> Create(ProjectCreateRequest model);
+        Task<Guid> Create(ProjectCreateRequest model, string userEmail);
         Task Update(Guid id, ProjectUpdateRequest model);
         Task Delete(Guid id);
     }
@@ -48,9 +48,9 @@ namespace webapi.DB.Services
             return project;
         }
 
-        public async Task<Guid> Create(ProjectCreateRequest model)
+        public async Task<Guid> Create(ProjectCreateRequest model, string userEmail)
         {
-            var user = await _userService.GetByEmail(model.UserEmail!);
+            var user = await _userService.GetByEmail(userEmail);
 
             Project project = new()
             {
@@ -67,21 +67,12 @@ namespace webapi.DB.Services
 
         public async Task Update(Guid id, ProjectUpdateRequest model)
         {
-            if(model.UserEmail == null && model.Name == null)
+            if(model.Name == null)
                 throw new EmptyModelException("Model was empty");
 
             var project = await _projectRepository.GetById(id);
             if (project == null)
                 throw new KeyNotFoundException("Project not found");
-
-            if (model.UserEmail != null)
-            {
-                var user = await _userService.GetByEmail(model.UserEmail);
-                if (user == null)
-                    throw new KeyNotFoundException("User not found");
-
-                project.UserId = user.Id;
-            }
 
             if(model.Name != null)
                 project.Name = model.Name; 

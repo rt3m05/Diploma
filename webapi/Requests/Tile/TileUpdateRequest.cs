@@ -2,7 +2,6 @@
 {
     public class TileUpdateRequest
     {
-        public Guid? TabId { get; set; }
         public string? Name { get; set; }
         public ushort? X { get; set; }
         public ushort? Y { get; set; }
@@ -11,7 +10,7 @@
 
         public bool isEmpty()
         {
-            return TabId == null && Name == null && X == null && Y == null && H == null && W == null;
+            return Name == null && X == null && Y == null && H == null && W == null;
         }
     }
 }

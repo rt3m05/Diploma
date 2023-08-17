@@ -53,8 +53,8 @@ namespace webapi.DB.Repositories
         {
             using var connection = _context.CreateConnection();
             var sql = @"
-                        INSERT INTO Tabs (Id, ProjectId, Name, TimeStamp)
-                        VALUES (@Id, @ProjectId, @Name, @TimeStamp)
+                        INSERT INTO Tabs (Id, ProjectId, UserId, Name, TimeStamp)
+                        VALUES (@Id, @ProjectId, @UserId, @Name, @TimeStamp)
                       ";
             await connection.ExecuteAsync(sql, tab);
         }
@@ -65,6 +65,7 @@ namespace webapi.DB.Repositories
             var sql = @"
                         UPDATE Tabs 
                         SET ProjectId = @ProjectId,
+                            UserId = @UserId,
                             Name = @Name,
                             TimeStamp = @TimeStamp
                         WHERE Id = @Id

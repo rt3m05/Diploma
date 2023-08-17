@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using webapi.DB.Services;
 using webapi.DTO.Projects;
 using webapi.Exceptions;
@@ -8,21 +10,25 @@ namespace webapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProjectsController : ControllerBase
     {
         private readonly IProjectService _projectService;
+        private readonly IUserService _userService;
         private readonly ILogger<ProjectsController> _logger;
         private readonly IWebHostEnvironment _env;
 
-        public ProjectsController(IProjectService projectService, ILogger<ProjectsController> logger, IWebHostEnvironment env)
+        public ProjectsController(IProjectService projectService, IUserService userService, ILogger<ProjectsController> logger, IWebHostEnvironment env)
         {
             _projectService = projectService;
+            _userService = userService;
             _logger = logger;
             _env = env;
         }
 
         // GET: api/Projects/all
         [HttpGet("all")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             if (_env.IsDevelopment())
@@ -41,18 +47,22 @@ namespace webapi.Controllers
 
         // GET: api/Projects
         [HttpGet]
-        public async Task<IActionResult> GetAllByUser(string userEmail)
+        public async Task<IActionResult> GetAllByUser()
         {
+            string? email = null;
             try
             {
-                var projects = await _projectService.GetAllByUser(userEmail);
+                email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
 
-                _logger.LogInformation("Get projects by user successfull. User Email: " + userEmail);
-                return Ok(projects.Select(p => new ProjectAllInfo(p)));
+                var projects = await _projectService.GetAllByUser(email);
+
+                return Ok(projects.Select(p => new ProjectAllInfo(p, true)));
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogError(ex.Message + " User Email: " + userEmail);
+                _logger.LogError(ex.Message + " User Email: " + email);
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
@@ -68,13 +78,20 @@ namespace webapi.Controllers
         {
             try
             {
-                var project = await _projectService.GetById(id);
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
 
-                return Ok(new ProjectAllInfo(project));
+                var project = await _projectService.GetById(id);
+                var user = await _userService.GetByEmail(email);
+
+                var projectInfo = new ProjectAllInfo(project, project.UserId == user.Id);
+
+                return Ok(projectInfo);
             }
             catch (KeyNotFoundException ex)
-            {
-                _logger.LogError(ex.Message + " Id: " + id);
+            { 
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
@@ -92,7 +109,14 @@ namespace webapi.Controllers
 
             try
             {
-                id = await _projectService.Create(model);
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                id = await _projectService.Create(model, email);
+
+                if (id == Guid.Empty)
+                    throw new Exception("After create project Id was empty.");
             }
             catch (KeyNotFoundException ex)
             {
@@ -102,12 +126,6 @@ namespace webapi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
-
-            if (id == Guid.Empty)
-            {
-                _logger.LogError("After create project Id was empty.");
                 return StatusCode(500);
             }
 
@@ -121,7 +139,17 @@ namespace webapi.Controllers
         {
             try
             {
-                await _projectService.Update(id, model);
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var project = await _projectService.GetById(id);
+                var user = await _userService.GetByEmail(email);
+
+                if(project.UserId == user.Id)
+                    await _projectService.Update(id, model);
+                else
+                    return BadRequest(new { message = "This is not your project." });
             }
             catch (KeyNotFoundException ex)
             {
@@ -149,7 +177,17 @@ namespace webapi.Controllers
         {
             try
             {
-                await _projectService.Delete(id);
+                var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var project = await _projectService.GetById(id);
+                var user = await _userService.GetByEmail(email);
+
+                if (project.UserId == user.Id)
+                    await _projectService.Delete(id);
+                else
+                    return BadRequest(new { message = "This is not your project." });
             }
             catch (KeyNotFoundException ex)
             {

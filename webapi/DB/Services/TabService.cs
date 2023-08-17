@@ -10,7 +10,7 @@ namespace webapi.DB.Services
         Task<IEnumerable<Tab>> GetAll();
         Task<IEnumerable<Tab>> GetAllByProject(Guid projectId);
         Task<Tab> GetById(Guid id);
-        Task<Guid> Create(TabCreateRequest model);
+        Task<Guid> Create(TabCreateRequest model, Guid userId);
         Task Update(Guid id, TabUpdateRequest model);
         Task Delete(Guid id);
     }
@@ -48,7 +48,7 @@ namespace webapi.DB.Services
             return tab;
         }
 
-        public async Task<Guid> Create(TabCreateRequest model)
+        public async Task<Guid> Create(TabCreateRequest model, Guid userId)
         {
             var project = await _projectService.GetById(model.ProjectId);
 
@@ -56,6 +56,7 @@ namespace webapi.DB.Services
             {
                 Id = Guid.NewGuid(),
                 ProjectId = project.Id,
+                UserId = userId,
                 Name = model.Name,
                 TimeStamp = DateTime.Now
             };
@@ -67,24 +68,14 @@ namespace webapi.DB.Services
 
         public async Task Update(Guid id, TabUpdateRequest model)
         {
-            if (model.ProjectId == null && model.Name == null)
+            if (model.Name == null)
                 throw new EmptyModelException("Model was empty");
 
             var tab = await _tabRepository.GetById(id);
             if (tab == null)
                 throw new KeyNotFoundException("Tab not found");
 
-            if (model.ProjectId != null && model.ProjectId != Guid.Empty && model.ProjectId.HasValue)
-            {
-                var project = await _projectService.GetById(model.ProjectId.Value);
-                if (project == null)
-                    throw new KeyNotFoundException("Project not found");
-
-                tab.ProjectId = project.Id;
-            }
-
-            if (model.Name != null)
-                tab.Name = model.Name;
+            tab.Name = model.Name;
 
             await _tabRepository.Update(tab);
         }

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using webapi.Auth;
@@ -52,8 +50,6 @@ namespace webapi.Controllers
             try
             {
                 var token = await _authService.GetToken(model);
-
-                //HttpContext.User ??
                 
                 _logger.LogInformation("User authenticated. Email: " + model.Email);
                 return Ok(token);
@@ -75,61 +71,61 @@ namespace webapi.Controllers
             }
         }
 
-        // GET: api/users/logout
-        //[HttpGet("logout")]
-        //public IActionResult Logout()
-        //{
-        //    try
-        //    {
-        //        SignOut(JwtBearerDefaults.AuthenticationScheme);
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex.Message);
-        //        return StatusCode(500);
-        //    }
-        //}
-
-        // POST api/users
-        [HttpPost]
-        public async Task<IActionResult> Create(UserCreateRequest model)
+        // POST api/users/register
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UserCreateRequest model)
         {
             Guid id = Guid.Empty;
+            string? token = null;
 
             try
             {
                 id = await _userService.Create(model);
+                token = await _authService.GetToken(new UserLoginRequest() { Email = model.Email, Password = model.Password });
+
+                if (id == Guid.Empty)
+                    throw new Exception("After create user Id was empty.");
+
+                if (string.IsNullOrEmpty(token))
+                    throw new Exception("Token was empty.");
             } 
             catch (EmailExistsException ex)
             {
                 _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
-            } 
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message + " (After create try to Auth) Email: " + model.Email);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidPasswordException ex)
+            {
+                _logger.LogError(ex.Message + " (After create try to Auth)");
+                return BadRequest(new { message = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 return StatusCode(500);
             }
 
-            if(id == Guid.Empty)
-            {
-                _logger.LogError("After create user Id was empty.");
-                return StatusCode(500);
-            }
-
             _logger.LogInformation("User created. Id: " + id.ToString());
-            return Ok(new { message = "User created" });
+            return Ok(token);
         }
 
         // PUT api/users/5
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> Update(string email, UserUpdateRequest model)
+        public async Task<IActionResult> Update(UserUpdateRequest model)
         {
+            string? email = null;
             try
             {
-                
+                email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
                 await _userService.Update(email, model);
             } 
             catch (KeyNotFoundException ex)
@@ -142,23 +138,36 @@ namespace webapi.Controllers
                 _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
+            catch (EmptyModelException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new { message = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 return StatusCode(500);
             }
 
-            _logger.LogInformation("User updated. Email: " + email);
+            if(model.Email == null)
+                _logger.LogInformation("User updated. Email: " + email);
+            else
+                _logger.LogInformation("User updated. Old Email: " + email + " New Email: " +  model.Email);
             return Ok(new { message = "User updated" });
         }
 
         // DELETE api/users
         [HttpDelete]
         [Authorize]
-        public async Task<IActionResult> Delete(string email)
+        public async Task<IActionResult> Delete()
         {
+            string? email = null;
             try
             {
+                email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
                 await _userService.Delete(email);
             }
             catch (KeyNotFoundException ex)

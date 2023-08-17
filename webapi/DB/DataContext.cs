@@ -114,9 +114,11 @@ namespace webapi.DB
                 var sql = @"CREATE TABLE IF NOT EXISTS Tabs (
                                 Id CHAR(36) NOT NULL PRIMARY KEY,
                                 ProjectId CHAR(36) NOT NULL,
+                                UserId CHAR(36) NOT NULL,
                                 Name VARCHAR(255) NOT NULL,
                                 TimeStamp TIMESTAMP NOT NULL,
-                                FOREIGN KEY (ProjectId) REFERENCES Projects (Id)
+                                FOREIGN KEY (ProjectId) REFERENCES Projects (Id),
+                                FOREIGN KEY (UserId) REFERENCES Users (Id)
                             );";
                 await connection.ExecuteAsync(sql);
             }
@@ -133,13 +135,15 @@ namespace webapi.DB
                 var sql = @"CREATE TABLE IF NOT EXISTS Tiles (
                                 Id CHAR(36) NOT NULL PRIMARY KEY,
                                 TabId CHAR(36) NOT NULL,
+                                UserId CHAR(36) NOT NULL,
                                 Name VARCHAR(255) NOT NULL,
                                 X SMALLINT UNSIGNED NOT NULL,
                                 Y SMALLINT UNSIGNED NOT NULL,
                                 H SMALLINT UNSIGNED NOT NULL,
                                 W SMALLINT UNSIGNED NOT NULL,
                                 TimeStamp TIMESTAMP NOT NULL,
-                                FOREIGN KEY (TabId) REFERENCES Tabs (Id)
+                                FOREIGN KEY (TabId) REFERENCES Tabs (Id),
+                                FOREIGN KEY (UserId) REFERENCES Users (Id)
                             );";
                 await connection.ExecuteAsync(sql);
             }
@@ -156,10 +160,12 @@ namespace webapi.DB
                 var sql = @"CREATE TABLE IF NOT EXISTS TilesItems (
                                 Id CHAR(36) NOT NULL PRIMARY KEY,
                                 TileId CHAR(36) NOT NULL,
+                                UserId CHAR(36) NOT NULL,
                                 Content VARCHAR(255) NOT NULL,
                                 Type VARCHAR(255) NOT NULL,
                                 TimeStamp TIMESTAMP NOT NULL,
-                                FOREIGN KEY (TileId) REFERENCES Tiles (Id)
+                                FOREIGN KEY (TileId) REFERENCES Tiles (Id),
+                                FOREIGN KEY (UserId) REFERENCES Users (Id)
                             );";
                 await connection.ExecuteAsync(sql);
             }

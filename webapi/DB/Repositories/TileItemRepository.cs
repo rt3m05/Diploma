@@ -53,8 +53,8 @@ namespace webapi.DB.Repositories
         {
             using var connection = _context.CreateConnection();
             var sql = @"
-                        INSERT INTO TilesItems (Id, TileId, Content, Type, TimeStamp)
-                        VALUES (@Id, @TileId, @Content, '" + tileItem.Type.ToString() + @"', @TimeStamp)
+                        INSERT INTO TilesItems (Id, TileId, UserId, Content, Type, TimeStamp)
+                        VALUES (@Id, @TileId, @UserId, @Content, '" + tileItem.Type.ToString() + @"', @TimeStamp)
                       ";
             await connection.ExecuteAsync(sql, tileItem);
         }
@@ -65,6 +65,7 @@ namespace webapi.DB.Repositories
             var sql = @"
                         UPDATE TilesItems 
                         SET TileId = @TileId,
+                            UserId = @UserId,
                             Content = @Content,
                             Type = @Type,
                             TimeStamp = @TimeStamp
