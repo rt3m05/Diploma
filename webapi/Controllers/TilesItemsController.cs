@@ -141,7 +141,7 @@ namespace webapi.Controllers
                 if (tile.UserId == user.Id)
                     id = await _tileItemService.Create(model, user.Id);
                 else
-                    return BadRequest(new { message = "This is not your tab." });
+                    return BadRequest(new { message = "This is not your tile." });
 
                 if (id == Guid.Empty)
                     throw new Exception("After create tile item Id was empty.");
