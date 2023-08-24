@@ -11,6 +11,7 @@ namespace webapi.DB.Repositories
         Task Create(Project project);
         Task Update(Project project);
         Task Delete(Guid id);
+        Task DeleteAllByUser(Guid userId);
     }
 
     public class ProjectRepository : IProjectRepository
@@ -80,6 +81,16 @@ namespace webapi.DB.Repositories
                         WHERE Id = @id
                       ";
             await connection.ExecuteAsync(sql, new { id });
+        }
+
+        public async Task DeleteAllByUser(Guid userId)
+        {
+            using var connection = _context.CreateConnection();
+            var sql = @"
+                        DELETE FROM Projects 
+                        WHERE UserId = @userId
+                      ";
+            await connection.ExecuteAsync(sql, new { userId });
         }
     }
 }

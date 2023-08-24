@@ -19,10 +19,12 @@ namespace webapi.DB.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IProjectService _projectService;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IProjectService projectService)
         {
             _userRepository = userRepository;
+            _projectService = projectService;
         }
 
         public async Task<IEnumerable<User>> GetAll()
@@ -93,14 +95,24 @@ namespace webapi.DB.Services
 
         public async Task Delete(Guid id)
         {
-            await _userRepository.Delete(id);
+            var user = await _userRepository.GetById(id);
+            if (user != null)
+            {
+                await _projectService.DeleteAllByUser(user.Id);
+                await _userRepository.Delete(user.Id);
+            }
+            else
+                throw new KeyNotFoundException("User not found");
         }
 
-        //TODO: Add delete all info(projects, tabs ...)
         public async Task Delete(string email)
         {
-            if (await _userRepository.GetByEmail(email) != null)
-                await _userRepository.Delete(email);
+            var user = await _userRepository.GetByEmail(email);
+            if (user != null)
+            {
+                await _projectService.DeleteAllByUser(user.Id);
+                await _userRepository.Delete(user.Email!);
+            }
             else
                 throw new KeyNotFoundException("User not found");
         }

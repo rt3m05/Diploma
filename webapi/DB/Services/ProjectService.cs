@@ -13,17 +13,20 @@ namespace webapi.DB.Services
         Task<Guid> Create(ProjectCreateRequest model, string userEmail);
         Task Update(Guid id, ProjectUpdateRequest model);
         Task Delete(Guid id);
+        Task DeleteAllByUser(Guid userId);
     }
 
     public class ProjectService : IProjectService
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
+        private readonly ITabService _tabService;
 
-        public ProjectService(IProjectRepository projectRepository, IUserService userService)
+        public ProjectService(IProjectRepository projectRepository, IUserRepository userRepository, ITabService tabService)
         {
             _projectRepository = projectRepository;
-            _userService = userService;
+            _userRepository = userRepository;
+            _tabService = tabService;
         }
 
         public async Task<IEnumerable<Project>> GetAll()
@@ -33,7 +36,9 @@ namespace webapi.DB.Services
 
         public async Task<IEnumerable<Project>> GetAllByUser(string email)
         {
-            var user = await _userService.GetByEmail(email);          
+            var user = await _userRepository.GetByEmail(email);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
 
             return await _projectRepository.GetAllByUser(user.Id);
         }
@@ -50,7 +55,9 @@ namespace webapi.DB.Services
 
         public async Task<Guid> Create(ProjectCreateRequest model, string userEmail)
         {
-            var user = await _userService.GetByEmail(userEmail);
+            var user = await _userRepository.GetByEmail(userEmail);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
 
             Project project = new()
             {
@@ -80,13 +87,30 @@ namespace webapi.DB.Services
             await _projectRepository.Update(project);
         }
 
-        //TODO: Add delete all info(tabs, tiles ...)
         public async Task Delete(Guid id)
         {
-            if(await _projectRepository.GetById(id) != null)
+            if (await _projectRepository.GetById(id) != null)
+            {
+                foreach(var tab in await _tabService.GetAllByProject(id))
+                {
+                    await _tabService.Delete(tab.Id);
+                }
+
                 await _projectRepository.Delete(id);
+            }
             else
                 throw new KeyNotFoundException("Project not found");
+        }
+
+        public async Task DeleteAllByUser(Guid userId)
+        {
+            if (await _userRepository.GetById(userId) != null)
+            {
+                await _tabService.DeleteAllByUser(userId);
+                await _projectRepository.DeleteAllByUser(userId);
+            }
+            else
+                throw new KeyNotFoundException("User not found");
         }
     }
 }

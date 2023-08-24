@@ -11,6 +11,7 @@ namespace webapi.DB.Repositories
         Task Create(Tab tab);
         Task Update(Tab tab);
         Task Delete(Guid id);
+        Task DeleteAllByUser(Guid userId);
     }
 
     public class TabRepository : ITabRepository
@@ -81,6 +82,16 @@ namespace webapi.DB.Repositories
                         WHERE Id = @id
                       ";
             await connection.ExecuteAsync(sql, new { id });
+        }
+
+        public async Task DeleteAllByUser(Guid userId)
+        {
+            using var connection = _context.CreateConnection();
+            var sql = @"
+                        DELETE FROM Tabs 
+                        WHERE UserId = @userId
+                      ";
+            await connection.ExecuteAsync(sql, new { userId });
         }
     }
 }

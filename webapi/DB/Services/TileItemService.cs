@@ -13,17 +13,20 @@ namespace webapi.DB.Services
         Task<Guid> Create(TileItemCreateRequest model, Guid userId);
         Task Update(Guid id, TileItemUpdateRequest model);
         Task Delete(Guid id);
+        Task DeleteAllByUser(Guid userId);
     }
 
     public class TileItemService : ITileItemService
     {
         private readonly ITileItemRepository _tileItemRepository;
-        private readonly ITileService _tileService;
+        private readonly ITileRepository _tileRepository;
+        private readonly IUserRepository _userRepository;
 
-        public TileItemService(ITileItemRepository tileItemRepository, ITileService tileService)
+        public TileItemService(ITileItemRepository tileItemRepository, ITileRepository tileRepository, IUserRepository userRepository)
         {
             _tileItemRepository = tileItemRepository;
-            _tileService = tileService;
+            _tileRepository = tileRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<IEnumerable<TileItem>> GetAll()
@@ -33,7 +36,9 @@ namespace webapi.DB.Services
 
         public async Task<IEnumerable<TileItem>> GetAllByTile(Guid tileId)
         {
-            var tile = await _tileService.GetById(tileId);
+            var tile = await _tileRepository.GetById(tileId);
+            if (tile == null)
+                throw new KeyNotFoundException("Tile not found");
 
             return await _tileItemRepository.GetAllByTile(tileId);
         }
@@ -50,7 +55,9 @@ namespace webapi.DB.Services
 
         public async Task<Guid> Create(TileItemCreateRequest model, Guid userId)
         {
-            var tile = await _tileService.GetById(model.TileId);
+            var tile = await _tileRepository.GetById(model.TileId);
+            if (tile == null)
+                throw new KeyNotFoundException("Tile not found");
 
             TileItem tileItem = new()
             {
@@ -91,6 +98,14 @@ namespace webapi.DB.Services
                 await _tileItemRepository.Delete(id);
             else
                 throw new KeyNotFoundException("Tile Item not found");
+        }
+
+        public async Task DeleteAllByUser(Guid userId)
+        {
+            if (await _userRepository.GetById(userId) != null)
+                await _tileItemRepository.DeleteAllByUser(userId);
+            else
+                throw new KeyNotFoundException("User not found");
         }
     }
 }
