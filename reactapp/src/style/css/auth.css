@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+body .auth_wrap {
+  min-height: 100%;
+  height: 923px;
+  background: linear-gradient(#3EB5E9, #3EE9CA, #3EB5E9);
+}
+body .auth_form {
+  position: absolute;
+  width: 20%;
+  background: #B8F5FA;
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+}
+body .auth_back {
+  position: absolute;
+  text-align: center;
+  padding: 0px 5px;
+  top: -3%;
+}
+body .auth_back img {
+  width: 100%;
+}
+body .auth_title {
+  margin: 10% 0%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+body .auth_other {
+  display: flex;
+}
+body .auth_other_google, body .auth_other_apple {
+  padding: 0px;
+  padding-top: 5px;
+  margin: 0px 5px;
+  background: #3ECFDB;
+}
+body .auth_logo_company {
+  margin: 10px;
+  text-align: center;
+}
+body .auth_logo_company img {
+  width: 50px;
+}
+body .auth_error_message {
+  color: red;
+  font-size: 0.7em;
+  margin-left: 15px;
+}
+@media (max-width: 1220px) {
+  body .auth_form {
+    width: 30%;
+  }
+}
+@media (max-width: 950px) {
+  body .auth_form {
+    width: 40%;
+  }
+  body .auth_title {
+    font-size: 20px;
+  }
+  body .auth button,
+  body .auth input {
+    font-size: 14px;
+  }
+  body .auth p,
+  body .auth a {
+    font-size: 10px;
+  }
+}
+body input {
+  display: block;
+  margin: 10px auto;
+  width: 90%;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  background: #CFECF9;
+  color: #208FB3;
+  outline: none;
+  border-radius: 5px;
+}
+body button {
+  display: block;
+  margin: 0px auto;
+  width: 95%;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #3EE9CA;
+}
+body button img {
+  width: 40px;
+}
+body p {
+  text-align: center;
+  font-size: 14px;
+}
+body p a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #000;
+}
+body .apple {
+  padding: 0px;
+  padding-top: 5px;
+  margin: 10px;
+}
+@media (max-width: 950px) {
+  body button,
+  body input {
+    font-size: 14px;
+  }
+  body p,
+  body a {
+    font-size: 12px;
+  }
+}
+
+/*# sourceMappingURL=auth.css.map */

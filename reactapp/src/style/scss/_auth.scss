@@ -1,0 +1,154 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-height: 100%;
+
+    .auth {
+        &_wrap {
+            min-height: 100%;
+            height: 923px;
+            background: linear-gradient(#3EB5E9, #3EE9CA, #3EB5E9);
+        }
+
+        &_form {
+            position: absolute;
+            width: 20%;
+            background: #B8F5FA;
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            transform: translate(-50%, -50%);
+        }
+
+        &_back {
+            position: absolute;
+            text-align: center;
+            padding: 0px 5px;
+            top: -3%;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        &_title {
+            margin: 10% 0%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        &_other {
+            display: flex;
+
+            &_google,
+            &_apple {
+                padding: 0px;
+                padding-top: 5px;
+                margin: 0px 5px;
+                background: #3ECFDB;
+            }
+        }
+
+        &_logo_company {
+            margin: 10px;
+            text-align: center;
+
+            img {
+                width: 50px;
+            }
+        }
+
+        &_error_message {
+            color: red;
+            font-size: 0.7em;
+            margin-left: 15px;
+        }
+
+        @media (max-width:1220px) {
+            &_form {
+                width: 30%;
+            }
+        }
+
+        @media (max-width:950px) {
+            &_form {
+                width: 40%;
+            }
+
+            &_title {
+                font-size: 20px;
+            }
+
+            button,
+            input {
+                font-size: 14px;
+            }
+
+            p,
+            a {
+                font-size: 10px;
+            }
+        }
+    }
+
+    input {
+        display: block;
+        margin: 10px auto;
+        width: 90%;
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        background: #CFECF9;
+        color: #208FB3;
+        outline: none;
+        border-radius: 5px;
+    }
+
+    button {
+        display: block;
+        margin: 0px auto;
+        width: 95%;
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        background-color: #3EE9CA;
+
+        img {
+            width: 40px;
+        }
+    }
+
+    p {
+        text-align: center;
+        font-size: 14px;
+
+        a {
+            font-weight: bold;
+            text-decoration: none;
+            color: #000;
+        }
+    }
+
+    .apple {
+        padding: 0px;
+        padding-top: 5px;
+        margin: 10px;
+    }
+
+    @media (max-width:950px) {
+
+        button,
+        input {
+            font-size: 14px;
+        }
+
+        p,
+        a {
+            font-size: 12px;
+        }
+    }
+}
