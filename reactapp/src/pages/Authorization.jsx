@@ -13,6 +13,7 @@ const Auth = () => {
     const [emailError, setEmailError] = useState("");
     const [passwordErrors, setPasswordErrors] = useState([]);
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+    const [formError, setFormError] = useState("");
 
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
@@ -67,7 +68,7 @@ const Auth = () => {
         return errors;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
 
         if (emailError || passwordErrors.length > 0 || password !== confirmPassword) {
@@ -75,6 +76,31 @@ const Auth = () => {
                 setConfirmPasswordError("Не збігається з полем пароль");
             }
             return;
+        }
+
+        const response = await fetch("https://localhost:7023/api/Users/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email,
+                password,
+                confirmPassword
+            }),
+        });
+
+        if (response.status >= 400 && response.status <= 499) {
+            setFormError("Невірний логін або пароль. Спробуйте ще раз.");
+        } else if (response.status >= 500 && response.status <= 599) {
+            setFormError("Сервер не доступний. Спробуйте пізніше.");
+        } else if (response.status === 200) {
+        const data = await response.json();
+        const token = data.token;
+        const twoHours = 2 * 60 * 60 * 1000; 
+        const expiryDate = new Date(Date.now() + twoHours);
+        document.cookie = `token=${encodeURIComponent(token)}; expires=${expiryDate.toUTCString()}`;
+        window.location.href = "/user/listproject";
         }
     }
 
@@ -92,6 +118,7 @@ const Auth = () => {
                     <p className="auth_text">Вже є акаунт? 
                         <a href="/user/login"> Увійти</a>
                     </p>
+                    {formError && <div className="auth_error_message">{formError}</div>}
                     <MyInput 
                         type="email" 
                         placeholder="Електронна пошта"
@@ -111,7 +138,7 @@ const Auth = () => {
                         <div key={index} className="auth_error_message">{error}</div>
                     ))}
                     <MyInput 
-                        id="confirm_password" 
+                        id="confirmPassword" 
                         type="password" 
                         placeholder="Підтвердіть пароль"
                         value={confirmPassword}

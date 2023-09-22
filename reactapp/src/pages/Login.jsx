@@ -61,7 +61,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost/Users/login", {
+        const response = await fetch("https://localhost:7023/api/Users/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const Login = () => {
         const twoHours = 2 * 60 * 60 * 1000; 
         const expiryDate = new Date(Date.now() + twoHours);
         document.cookie = `token=${encodeURIComponent(token)}; expires=${expiryDate.toUTCString()}`;
-        window.location.href = "/home";
+        window.location.href = "/user/listproject";
         }
     }
 
