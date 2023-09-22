@@ -53,8 +53,8 @@ const Auth = () => {
         const errors = [];
 
         if (password !== '') {
-            if (password.length < 4) {
-                errors.push("Довжина має бути більше 4");
+            if (password.length < 6) {
+                errors.push("Довжина має бути більше 6");
             }
 
             if (!/[A-Z]/.test(password)) {
@@ -78,7 +78,7 @@ const Auth = () => {
             return;
         }
 
-        const response = await fetch("https://localhost:7023/api/Users/login", {
+        const response = await fetch("https://localhost:7023/api/Users/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

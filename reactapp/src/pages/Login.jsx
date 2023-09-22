@@ -43,8 +43,8 @@ const Login = () => {
         const errors = [];
 
         if (password !== '') {
-            if (password.length < 4) {
-                errors.push("Довжина має бути більше 4");
+            if (password.length < 6) {
+                errors.push("Довжина має бути більше 6");
             }
 
             if (!/[A-Z]/.test(password)) {
