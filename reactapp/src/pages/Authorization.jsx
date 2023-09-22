@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
-import Logo_google from "../image/logo_google.png";
-import Logo_apple from "../image/logo_apple.png";
+import AuthOther from "../UI/authOther/AuthOther";
 import Logo_company from "../image/logo_company.png";
 import Auth_back from "../image/auth_back.png";
 import "../style/css/auth.css";
@@ -82,14 +81,20 @@ const Auth = () => {
     return (
         <div className="auth_wrap">
             <div className="auth_form">
-                <div className="auth_back">
+                <div className="auth_form_back">
                     <img src={Auth_back} alt="" />  
+                </div>
+                <div className="auth_logo_company">
+                     <img src={Logo_company} alt="" />
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="auth_title">Створити аккаунт</div>
+                    <p className="auth_text">Вже є акаунт? 
+                        <a href="/user/login"> Увійти</a>
+                    </p>
                     <MyInput 
                         type="email" 
-                        placeholder="Email"
+                        placeholder="Електронна пошта"
                         id="email"
                         value={email} 
                         onChange={handleEmailChange}  
@@ -108,24 +113,14 @@ const Auth = () => {
                     <MyInput 
                         id="confirm_password" 
                         type="password" 
-                        placeholder="Повторити пароль"
+                        placeholder="Підтвердіть пароль"
                         value={confirmPassword}
                         onChange={handleConfirmPasswordChange}
                     />
                     {confirmPasswordError && <div className="auth_error_message">{confirmPasswordError}</div>}
                     <MyButton type="submit">Створити акаунт</MyButton>
                 </form>
-                <p>Або продовжити</p>
-                <div className="auth_other">
-                    <MyButton className="auth_other_google"><img src={Logo_google} alt="" /></MyButton>
-                    <MyButton className="auth_other_apple"><img src={Logo_apple} alt="" /></MyButton>
-                </div>
-                <div className="auth_logo_company">
-                     <img src={Logo_company} alt="" />
-                </div>
-                <p>Вже є акаунт? 
-                    <a href="/user/login"> Вхід</a>
-                </p>
+                 <AuthOther/>
             </div>            
         </div>    
     );

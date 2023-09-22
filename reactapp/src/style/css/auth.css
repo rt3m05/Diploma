@@ -1,58 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap");
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   min-height: 100%;
+  font-family: "Montserrat", sans-serif;
 }
 body .auth_wrap {
+  top: -10px;
   min-height: 100%;
-  height: 923px;
-  background: linear-gradient(#3EB5E9, #3EE9CA, #3EB5E9);
+  height: 1080px;
+  background: linear-gradient(100deg, #3EB5E9, #3EE9CA, #3EB5E9);
 }
 body .auth_form {
   position: absolute;
   width: 20%;
-  background: #B8F5FA;
-  top: 50%;
+  max-width: 420px;
+  top: 20px;
   left: 50%;
+  background-color: #fff;
   border-radius: 10px;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
 }
-body .auth_back {
+body .auth_form_back {
   position: absolute;
-  text-align: center;
-  padding: 0px 5px;
-  top: -3%;
+  top: -20px;
 }
-body .auth_back img {
+body .auth_form_back img {
   width: 100%;
 }
 body .auth_title {
-  margin: 10% 0%;
+  margin-bottom: 15px;
   text-align: center;
-  font-weight: bold;
-  font-size: 22px;
+  font-weight: 600;
+  font-size: 36px;
 }
 body .auth_other {
+  position: absolute;
+  width: 90%;
+  height: 280px;
+  background: #CFECF9;
+  border-radius: 20px;
+  margin-top: -50px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+body .auth_other_title {
   display: flex;
+  align-items: center;
+  margin-top: 40px;
+}
+body .auth_other_title_line {
+  flex-grow: 1;
+  height: 1px;
+  background: #208FB3;
+  margin: 0 15px 0 15px;
+}
+body .auth_other_title_text {
+  font-weight: 300;
+  font-size: 12px;
 }
 body .auth_other_google, body .auth_other_apple {
-  padding: 0px;
-  padding-top: 5px;
-  margin: 0px 5px;
-  background: #3ECFDB;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin: 30px auto;
+}
+body .auth_other_google img, body .auth_other_apple img {
+  width: 40px;
+  height: 40px;
+  margin: 30px;
+}
+body .auth_other_google button, body .auth_other_apple button {
+  width: 60%;
+  font-weight: 500;
+  margin: 5px auto;
+}
+body .auth_other_apple button {
+  border: 0.5px solid #208FB3;
+  background: #CFECF9;
+  color: #000;
+  font-size: 14px;
+}
+body .auth_other_google button {
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+}
+body .auth_other_back {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: -3px;
+}
+body .auth_other_back img {
+  width: 90%;
+}
+body .auth_other p {
+  width: 75%;
+  margin: 10px auto;
+  font-size: 12px;
+  font-weight: 200;
+  text-align: center;
 }
 body .auth_logo_company {
-  margin: 10px;
+  margin: 50px auto;
+  margin-bottom: 45px;
   text-align: center;
 }
 body .auth_logo_company img {
-  width: 50px;
+  width: 150px;
 }
 body .auth_error_message {
   color: red;
   font-size: 0.7em;
-  margin-left: 15px;
+  margin-left: 55px;
+}
+body .auth_text {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 300;
+}
+body .auth_text a {
+  font-weight: 400;
+  text-decoration: none;
+  color: #3EE9CA;
 }
 @media (max-width: 1220px) {
   body .auth_form {
@@ -78,37 +150,36 @@ body .auth_error_message {
 body input {
   display: block;
   margin: 10px auto;
-  width: 90%;
-  padding: 10px;
+  width: 80%;
+  padding: 10px 0px 10px 20px;
   font-size: 18px;
-  border: none;
-  background: #CFECF9;
+  border: 0.5px solid #29B097;
   color: #208FB3;
   outline: none;
-  border-radius: 5px;
+  border-radius: 20px;
+}
+body ::placeholder {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #29B097;
 }
 body button {
   display: block;
-  margin: 0px auto;
-  width: 95%;
+  margin: 45px auto;
+  margin-bottom: 100px;
+  width: 85%;
   padding: 10px;
   font-size: 18px;
+  font-weight: 700;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: #3EE9CA;
+  color: #fff;
 }
 body button img {
   width: 40px;
-}
-body p {
-  text-align: center;
-  font-size: 14px;
-}
-body p a {
-  font-weight: bold;
-  text-decoration: none;
-  color: #000;
 }
 body .apple {
   padding: 0px;

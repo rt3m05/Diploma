@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
-import Logo_google from "../image/logo_google.png";
-import Logo_apple from "../image/logo_apple.png";
+import AuthOther from "../UI/authOther/AuthOther";
 import Logo_company from "../image/logo_company.png";
 import Auth_back from "../image/auth_back.png";
 import "../style/css/auth.css";
@@ -73,9 +72,9 @@ const Login = () => {
             }),
         });
 
-        if (response.status === 401) {
+        if (response.status >= 400 && response.status <= 499) {
             setFormError("Невірний логін або пароль. Спробуйте ще раз.");
-        } else if (response.status === 404) {
+        } else if (response.status >= 500 && response.status <= 599) {
             setFormError("Сервер не доступний. Спробуйте пізніше.");
         } else if (response.status === 200) {
         const data = await response.json();
@@ -90,19 +89,26 @@ const Login = () => {
     return (
         <div className="auth_wrap">
             <div className="auth_form">
-                <div className="auth_back">
-                <img src={Auth_back} alt="" />  
+                <div className="auth_form_back">
+                    <img src={Auth_back} alt="" />
+                </div>
+                <div className="auth_logo_company">
+                     <img src={Logo_company} alt="" />
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="auth_title">Вхід</div>
+                    <div className="auth_title">Ласкаво просимо</div>
+                    <p className="auth_text">Немає облікового запису? 
+                        <a href="/user/auth"> Зареєструватися бескоштовно</a>
+                    </p>
                      {formError && <div className="auth_error_message">{formError}</div>}
                     <MyInput
                         type="email"
-                        placeholder="Email"
+                        placeholder="Електронна пошта"
                         value={email}
                         onChange={handleEmailChange}
                     />
                     {emailError && <div className="auth_error_message">{emailError}</div>}
+                    <p className="auth_text"><a href="#">Забули пароль?</a></p>
                     <MyInput
                         type="password"
                         placeholder="Пароль"
@@ -114,17 +120,7 @@ const Login = () => {
                     ))}
                     <MyButton>Увйти</MyButton>
                 </form>
-                <p>Або продовжити</p>
-                <div className="auth_other">
-                    <MyButton className="auth_other_google"><img src={Logo_google} alt="" /></MyButton>
-                    <MyButton className="auth_other_apple"><img src={Logo_apple} alt="" /></MyButton>
-                </div>
-                <div className="auth_logo_company">
-                     <img src={Logo_company} alt="" />
-                </div>
-                <p>Вже є акаунт? 
-                    <a href="/user/auth"> Створити акаунт</a>
-                </p>
+                <AuthOther/>
             </div>            
         </div>    
     );
