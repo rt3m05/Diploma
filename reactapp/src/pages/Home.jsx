@@ -1,10 +1,22 @@
-import React from "react"; 
-import Header from "../home/navBar/NavBar"
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import HomePage from "../home/homePage";
 
 const Home = () => {
-    return (
-        <Header/>
-    );
-}
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
+      console.log(token);
+    if (token) {
+      navigate("/user/listproject");
+    } 
+  }, [navigate]);
+
+  return <HomePage/>;
+};
 
 export default Home;

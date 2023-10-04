@@ -78,29 +78,44 @@ const Auth = () => {
             return;
         }
 
-        const response = await fetch("https://localhost:7023/api/Users/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-                confirmPassword
-            }),
-        });
+        try{
+            const response = await fetch("https://localhost:7023/api/Users/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    confirmPassword
+                }),
+            });
 
-        if (response.status >= 400 && response.status <= 499) {
-            setFormError("Невірний логін або пароль. Спробуйте ще раз.");
-        } else if (response.status >= 500 && response.status <= 599) {
-            setFormError("Сервер не доступний. Спробуйте пізніше.");
-        } else if (response.status === 200) {
-        const data = await response.json();
-        const token = data.token;
-        const twoHours = 2 * 60 * 60 * 1000; 
-        const expiryDate = new Date(Date.now() + twoHours);
-        document.cookie = `token=${encodeURIComponent(token)}; expires=${expiryDate.toUTCString()}`;
-        window.location.href = "/user/listproject";
+            if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+            
+            const token = await response.text();
+        
+            if (!token) {
+                throw new Error("Отсутствует токен в ответе сервера.");
+            }
+        
+            const twoHours = 2 * 60 * 60 * 1000; 
+            const expiryDate = new Date(Date.now() + twoHours);
+            document.cookie = `token=${encodeURIComponent(token)}; expires=${expiryDate.toUTCString()}`;
+            window.location.href = "/user/listproject";
+
+        } catch (error) {
+            console.error('Ошибка:', error.message);
+
+            if (error.message.includes("400") || error.message.includes("401")) {
+                setFormError("Невірний логін або пароль. Спробуйте ще раз.");
+            } else if (error.message.includes("500") || error.message.includes("501")) {
+                setFormError("Сервер не доступний. Спробуйте пізніше.");
+            } else {
+                setFormError("Непередбачена помилка. Будь ласка, спробуйте пізніше.");
+            }
         }
     }
 

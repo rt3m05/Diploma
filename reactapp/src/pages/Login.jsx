@@ -59,8 +59,9 @@ const Login = () => {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
+    try {
         const response = await fetch("https://localhost:7023/api/Users/login", {
             method: "POST",
             headers: {
@@ -72,19 +73,34 @@ const Login = () => {
             }),
         });
 
-        if (response.status >= 400 && response.status <= 499) {
-            setFormError("Невірний логін або пароль. Спробуйте ще раз.");
-        } else if (response.status >= 500 && response.status <= 599) {
-            setFormError("Сервер не доступний. Спробуйте пізніше.");
-        } else if (response.status === 200) {
-        const data = await response.json();
-        const token = data.token;
+        if (!response.ok) {
+            throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+
+        const token = await response.text();
+
+        if (!token) {
+            throw new Error("Отсутствует токен в ответе сервера.");
+        }
+
         const twoHours = 2 * 60 * 60 * 1000; 
         const expiryDate = new Date(Date.now() + twoHours);
-        document.cookie = `token=${encodeURIComponent(token)}; expires=${expiryDate.toUTCString()}`;
+        document.cookie = `token=${encodeURIComponent(token)}; expires=${expiryDate.toUTCString()}; path=/; domain=.localhost;`;
         window.location.href = "/user/listproject";
+
+    } catch (error) {
+        console.error('Ошибка:', error.message);
+
+        if (error.message.includes("400") || error.message.includes("401")) {
+            setFormError("Невірний логін або пароль. Спробуйте ще раз.");
+        } else if (error.message.includes("500") || error.message.includes("501")) {
+            setFormError("Сервер не доступний. Спробуйте пізніше.");
+        } else {
+            setFormError("Непередбачена помилка. Будь ласка, спробуйте пізніше.");
         }
     }
+}
+
 
     return (
         <div className="auth_wrap">
@@ -98,7 +114,7 @@ const Login = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="auth_title">Ласкаво просимо</div>
                     <p className="auth_text">Немає облікового запису? 
-                        <a href="/user/auth"> Зареєструватися бескоштовно</a>
+                        <a href="/user/auth"> Зареєструватися</a>
                     </p>
                      {formError && <div className="auth_error_message">{formError}</div>}
                     <MyInput
@@ -108,7 +124,7 @@ const Login = () => {
                         onChange={handleEmailChange}
                     />
                     {emailError && <div className="auth_error_message">{emailError}</div>}
-                    <p className="auth_text"><a href="#">Забули пароль?</a></p>
+                    <p className="auth_text"><a href="/#">Забули пароль?</a></p>
                     <MyInput
                         type="password"
                         placeholder="Пароль"
@@ -118,7 +134,7 @@ const Login = () => {
                     {passwordErrors.map((error, index) => (
                         <div key={index} className="auth_error_message">{error}</div>
                     ))}
-                    <MyButton>Увйти</MyButton>
+                    <MyButton>Увійти</MyButton>
                 </form>
                 <AuthOther/>
             </div>            

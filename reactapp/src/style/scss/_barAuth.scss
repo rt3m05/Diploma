@@ -1,0 +1,25 @@
+
+
+.barAuth{
+    width: 30%;
+    font-family: 'Montserrat', sans-serif;
+    a{
+        text-decoration: none;
+        font-weight: 600;
+        border-radius: 20px;
+    }
+
+    &_login{
+        margin-right: -30px;
+        background: #ffffff;
+        color:#3EE9CA;
+        padding: 10px 50px 10px 30px;
+    }
+
+    &_auth{
+        background: #3EE9CA;
+        color:#fff;
+        padding: 10px 30px;
+        margin-right: 200px;
+    }
+}

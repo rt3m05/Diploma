@@ -6,13 +6,14 @@ body {
   min-height: 100%;
   font-family: "Montserrat", sans-serif;
 }
-body .auth_wrap {
+
+.auth_wrap {
   top: -10px;
   min-height: 100%;
   height: 1080px;
   background: linear-gradient(100deg, #3EB5E9, #3EE9CA, #3EB5E9);
 }
-body .auth_form {
+.auth_form {
   position: absolute;
   width: 20%;
   max-width: 420px;
@@ -22,20 +23,20 @@ body .auth_form {
   border-radius: 10px;
   transform: translate(-50%, 0%);
 }
-body .auth_form_back {
+.auth_form_back {
   position: absolute;
   top: -20px;
 }
-body .auth_form_back img {
+.auth_form_back img {
   width: 100%;
 }
-body .auth_title {
+.auth_title {
   margin-bottom: 15px;
   text-align: center;
   font-weight: 600;
   font-size: 36px;
 }
-body .auth_other {
+.auth_other {
   position: absolute;
   width: 90%;
   height: 280px;
@@ -45,109 +46,110 @@ body .auth_other {
   left: 50%;
   transform: translate(-50%, 0%);
 }
-body .auth_other_title {
+.auth_other_title {
   display: flex;
   align-items: center;
   margin-top: 40px;
 }
-body .auth_other_title_line {
+.auth_other_title_line {
   flex-grow: 1;
   height: 1px;
   background: #208FB3;
   margin: 0 15px 0 15px;
 }
-body .auth_other_title_text {
+.auth_other_title_text {
   font-weight: 300;
   font-size: 12px;
 }
-body .auth_other_google, body .auth_other_apple {
+.auth_other_google, .auth_other_apple {
   display: flex;
   align-items: center;
   height: 40px;
   margin: 30px auto;
 }
-body .auth_other_google img, body .auth_other_apple img {
+.auth_other_google img, .auth_other_apple img {
   width: 40px;
   height: 40px;
   margin: 30px;
 }
-body .auth_other_google button, body .auth_other_apple button {
+.auth_other_google button, .auth_other_apple button {
   width: 60%;
   font-weight: 500;
   margin: 5px auto;
 }
-body .auth_other_apple button {
+.auth_other_apple button {
   border: 0.5px solid #208FB3;
   background: #CFECF9;
   color: #000;
   font-size: 14px;
 }
-body .auth_other_google button {
+.auth_other_google button {
   background: #000;
   color: #fff;
   font-size: 14px;
 }
-body .auth_other_back {
+.auth_other_back {
   position: absolute;
   width: 100%;
   text-align: center;
   top: -3px;
 }
-body .auth_other_back img {
+.auth_other_back img {
   width: 90%;
 }
-body .auth_other p {
+.auth_other p {
   width: 75%;
   margin: 10px auto;
   font-size: 12px;
   font-weight: 200;
   text-align: center;
 }
-body .auth_logo_company {
+.auth_logo_company {
   margin: 50px auto;
   margin-bottom: 45px;
   text-align: center;
 }
-body .auth_logo_company img {
+.auth_logo_company img {
   width: 150px;
 }
-body .auth_error_message {
+.auth_error_message {
   color: red;
   font-size: 0.7em;
   margin-left: 55px;
 }
-body .auth_text {
+.auth_text {
   text-align: center;
   font-size: 12px;
   font-weight: 300;
 }
-body .auth_text a {
+.auth_text a {
   font-weight: 400;
   text-decoration: none;
   color: #3EE9CA;
 }
 @media (max-width: 1220px) {
-  body .auth_form {
+  .auth_form {
     width: 30%;
   }
 }
 @media (max-width: 950px) {
-  body .auth_form {
+  .auth_form {
     width: 40%;
   }
-  body .auth_title {
+  .auth_title {
     font-size: 20px;
   }
-  body .auth button,
-  body .auth input {
+  .auth button,
+  .auth input {
     font-size: 14px;
   }
-  body .auth p,
-  body .auth a {
+  .auth p,
+  .auth a {
     font-size: 10px;
   }
 }
-body input {
+
+input {
   display: block;
   margin: 10px auto;
   width: 80%;
@@ -158,13 +160,15 @@ body input {
   outline: none;
   border-radius: 20px;
 }
-body ::placeholder {
+
+::placeholder {
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 400;
   color: #29B097;
 }
-body button {
+
+button {
   display: block;
   margin: 45px auto;
   margin-bottom: 100px;
@@ -178,21 +182,23 @@ body button {
   background-color: #3EE9CA;
   color: #fff;
 }
-body button img {
+button img {
   width: 40px;
 }
-body .apple {
+
+.apple {
   padding: 0px;
   padding-top: 5px;
   margin: 10px;
 }
+
 @media (max-width: 950px) {
-  body button,
-  body input {
+  button,
+  input {
     font-size: 14px;
   }
-  body p,
-  body a {
+  p,
+  a {
     font-size: 12px;
   }
 }

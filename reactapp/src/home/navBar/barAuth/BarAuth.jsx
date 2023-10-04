@@ -1,11 +1,12 @@
 import React from "react";
+import "../../../style/css/barAuth.css"
 
 
 const BarAuth = () => {
     return (
-        <div>
-            <a href="/user/login">Увійти</a>
-            <a href="/user/auth">Зареєструватися</a>
+        <div className="barAuth">
+            <a className="barAuth_login" href="/user/login">Увійти</a>
+            <a className="barAuth_auth" href="/user/auth">Зареєструватися</a>
         </div>
     );
 }
