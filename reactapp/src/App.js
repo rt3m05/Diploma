@@ -2,7 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Auth from "./pages/Authorization";
 import Login from "./pages/Login";
-import Users from "./pages/Users";
+import ProjectsPage from "./pages/ProjectsPage";
+import Workspace from "./pages/Workspace";
 
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
       <Route path="/" element={<Home/>}/>
       <Route path="/user/auth" element={<Auth/>}/>
       <Route path="/user/login" element={<Login/>} />
-      <Route path="/user/listproject" element={<Users/>} />
+          <Route path="/user/listproject" element={<ProjectsPage />} />
+          <Route path="/user/workspace" element={<Workspace />} />
     </Routes>
   );
 }
