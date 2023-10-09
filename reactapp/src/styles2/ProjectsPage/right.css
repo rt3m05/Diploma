@@ -1,17 +1,17 @@
-.right{
+.App_right{
     flex-grow: 1;
 }
-.logo{
+.App_logo{
     display: flex;
     align-items: center;
     justify-content: center;
 
 }
-.logo img{
+.App_logo img{
     width: 60px;
     margin-right: 10px;
 }
-.logo p{
+.App_logo p{
     margin-left: 25px;
     font-size: 24px;
     font-weight: 600;
@@ -20,23 +20,23 @@
     color: transparent;
 }
 
-.userData, .pages,.workspace,.memoryUsage, .trash{
+.App_userData, .App_pages,.App_workspace,.App_memoryUsage, .App_trash{
     margin: 10px auto;
     background-color: rgba(184, 245, 250, 1);
     width: 90%;
     padding: 10px;
     border-radius: 10px;
 }
-.email{
+.App_email{
     border-bottom: 2px solid #000;
 }
 
-.page{
+.App_page{
     margin-left: 20px;
     margin-bottom: 10px;
     display: flex;
 }
-.page p{
+.App_page p{
     width: 80%;
     background-color: rgba(62, 233, 202, 1);
     text-align: right;
@@ -45,60 +45,60 @@
     padding-right: 25px;
     border-radius: 5px;
 }
-.round, .roundActive{
+.App_round, .App_roundActive{
     width: 30px;
     height: 30px;
     border-radius: 50%;
     border: 6px solid rgba(32, 143, 179, 1);
     margin-right: 5px;
 }
-.roundActive{
+.App_roundActive{
     background-color: #000;
 }
 
-.workspace{
+.App_workspace{
     height: 350px;
 }
-.workspace div{
+.App_workspace div{
     display: flex;
     border-bottom: 3px solid #000;
 }
-.workspace img{
+.App_workspace img{
     width: 30px;
     height: 30px;
     margin-right: 10px;
 }
-.workspace h3{
+.App_workspace h3{
     display: inline;
     font-weight: bold;
 }
 
-.memoryUsage{
+.App_memoryUsage{
 
 }
-.kindOfUsage{
+.App_kindOfUsage{
     display: flex;
     justify-content: space-between;
     width: 80%;
     margin: 5px auto;
 }
-.progressBar{
+.App_progressBar{
     width: 80%;
     height: 30px;
     margin: 5px auto;
     background-color: #fff;
 }
 
-.trash{
+.App_trash{
     display: flex;
     justify-content: space-around;
     align-items: center;
     text-decoration: none;
     color: #000;
 }
-.trash p{
+.App_trash p{
     font-weight: bold;
 }
-.trash img{
+.App_trash img{
     height: 40px;
 }

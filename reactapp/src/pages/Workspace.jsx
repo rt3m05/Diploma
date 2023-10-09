@@ -30,27 +30,27 @@ import '../styles2/Workspace/workspace.css';
 
 function Workspace() {
     const menuAdd = () => {
-        let leftMenu = document.querySelector(".leftMenu");
+        let leftMenu = document.querySelector(".Workspace_leftMenu");
         leftMenu.classList.toggle("disable");
         leftMenu.classList.toggle("active");
     };
     const menuRemove = () => {
-        let leftMenu = document.querySelector(".leftMenu");
+        let leftMenu = document.querySelector(".Workspace_leftMenu");
         leftMenu.classList.toggle("active");
         leftMenu.classList.toggle("disable");
     };
   return (
     <div className="Workspace">
-        <div className='leftMenu disable'>
+        <div className='Workspace_leftMenu disable'>
 
-            <div className='lLogo'>
-                <img src={CompanyIcon} alt="CompanyIcon" className='logo'/>
+            <div className='Workspace_lLogo'>
+                <img src={CompanyIcon} alt="CompanyIcon" className='Workspace_logo'/>
                 <p>Daily</p>
-                <img src={ArrowIcon} alt="ArrowIcon" className='back' onClick={menuRemove}/>
+                <img src={ArrowIcon} alt="ArrowIcon" className='Workspace_back' onClick={menuRemove}/>
             </div>
 
-            <div className='leftNavBar'>
-                <div className='leftNavBarDivActive'>
+            <div className='Workspace_leftNavBar'>
+                <div className='Workspace_leftNavBarDivActive'>
                     <img src={PersonIcon} alt='PersonIcon'/>
                     <p>Основна</p>
                 </div>
@@ -71,38 +71,38 @@ function Workspace() {
                     <p>Галерея шаблонів</p>
                 </div>
                 <div>
-                    <img src={Plus2Icon} alt='Plus2Icon' className='addWorkplace'/>
+                    <img src={Plus2Icon} alt='Plus2Icon' className='Workspace_addWorkplace'/>
                     <p>Робочі області</p>
                 </div>
             </div>
 
-            <div className='trash'>
+            <div className='Workspace_trash'>
                 <img src={TrashIcon} alt='Plus2Icon'/>
                 <h3>Кошик</h3>
             </div>
 
         </div>
 
-        <div className='navBar'>
+        <div className='Workspace_navBar'>
 
-            <img src={CompanyIcon} alt="CompanyIcon" className='companyIcon' />
+            <img src={CompanyIcon} alt="CompanyIcon" className='Workspace_companyIcon' />
 
-            <a href='' className='home'>
-                <img src={HomeIcon} alt="HomeIcon"  className='homeIcon' />
+            <a href='' className='Workspace_home'>
+                <img src={HomeIcon} alt="HomeIcon"  className='Workspace_homeIcon' />
             </a>
 
-            <div className='menu'>
-                <img src={MenuIcon} alt="MenuIcon" className='menuIcon' onClick={menuAdd}/>
+            <div className='Workspace_menu'>
+                <img src={MenuIcon} alt="MenuIcon" className='Workspace_menuIcon' onClick={menuAdd}/>
             </div>
 
-            <div className='block'></div>
+            <div className='Workspace_block'></div>
 
         </div>
 
-        <div className='main'>
+        <div className='Workspace_main'>
 
-            <div className='navBar2'>
-                <img src={Menu2Icon} alt="menu" className='menuIcon2' onClick={menuAdd}/>
+            <div className='Workspace_navBar2'>
+                <img src={Menu2Icon} alt="menu" className='Workspace_menuIcon2' onClick={menuAdd}/>
                 <div>
                     <img src={Accepted2Icon} alt="accepted" />
                     <img src={Bell2Icon} alt="bell" />
@@ -112,11 +112,11 @@ function Workspace() {
                 </div>     
             </div>
 
-            <div className='tabNavBar'>
-                <div className='left'>
-                    <div className='arrowsDiv'>
+            <div className='Workspace_tabNavBar'>
+                <div className='Workspace_left'>
+                    <div className='Workspace_arrowsDiv'>
                         <h1>Test 1</h1>
-                        <div className='arrows'>
+                        <div className='Workspace_arrows'>
                             <img src={ArrowIcon} alt="arrow1" />
                             <img src={ArrowIcon} alt="arrow2" />
                             <img src={Upload2Icon} alt="upload" />
@@ -124,32 +124,32 @@ function Workspace() {
                         </div>
                     </div>
 
-                    <div className='share'>
+                    <div className='Workspace_share'>
                         <img src={AddIcon} alt="add" />
                         <p>Поділитися</p>
                     </div>
 
                 </div>
-                <div className='right'>
+                <div className='Workspace_right'>
 
-                    <div className='tabs'>
-                        <a href='' className='currentTab'>tab 1</a>
-                        <a href='' className='tab'>tab 2</a>
-                        <a href='' className='tab'>tab 3</a>
-                        <a href='' className='tab'>tab 4</a>
-                        <a href='' className='plusTab'><img src={AddIcon} alt="add" /></a>
+                    <div className='Workspace_tabs'>
+                        <a href='' className='Workspace_currentTab'>tab 1</a>
+                        <a href='' className='Workspace_tab'>tab 2</a>
+                        <a href='' className='Workspace_tab'>tab 3</a>
+                        <a href='' className='Workspace_tab'>tab 4</a>
+                        <a href='' className='Workspace_plusTab'><img src={AddIcon} alt="add" /></a>
                     </div>
 
                 </div>
             </div>
 
-            <div className='field'>
+            <div className='Workspace_field'>
 
             </div>
 
         </div>
 
-        <div className='rightMenu'>
+        <div className='Workspace_rightMenu'>
                 <img src={AcceptedIcon} alt="accepted" />
                 <img src={BellIcon} alt="bell" />
                 <img src={Search2Icon} alt="SearchIcon" />
