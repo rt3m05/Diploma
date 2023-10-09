@@ -22,11 +22,17 @@
   justify-content: space-around;
 }
 .firstSection_button button {
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 20px;
   width: 40%;
   height: 45px;
   margin: 0px 25px;
   font-size: 20px;
   font-weight: 600;
+  border: none;
+  background: #3EE9CA;
+  color: #ffffff;
 }
 
 /*# sourceMappingURL=firstSection.css.map */

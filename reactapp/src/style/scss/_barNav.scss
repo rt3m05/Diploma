@@ -30,6 +30,11 @@
         justify-content: flex-start;
         align-items: center;
         button{
+            display: block;
+            margin-bottom: 100px;
+            border: none;
+            cursor: pointer;
+            border-radius: 20px;
             padding: 0px 25px 0px  25px;
             height: 35px;
             margin: 0 30px;
@@ -42,9 +47,11 @@
     @media (max-width:1220px) {
         &_nav{
             button{
-                width: 100px;
-                margin: 0 30px;
-                font-size: 14px;
+                width: 80px;
+                margin: 0 20px;
+                font-size: 12px;
+                text-align: center;
+                padding: 0;
             }
         }
     }

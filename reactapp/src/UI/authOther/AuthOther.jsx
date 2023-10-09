@@ -6,20 +6,20 @@ import Auth_other_back from "../../image/auth_other_back.png";
 
 const AuthOther = () => {
     return (
-        <div className="auth_other">
-            <div className="auth_other_title">
-                <div className="auth_other_title_line"></div>
-                <div className="auth_other_title_text">Або продовжити</div>
-                <div className="auth_other_title_line"></div>
+        <div className="auth_form_other">
+            <div className="auth_form_other_title">
+                <div className="auth_form_other_title_line"></div>
+                <div className="auth_form_other_title_text">Або продовжити</div>
+                <div className="auth_form_other_title_line"></div>
             </div>
-            <div className="auth_other_back">
+            <div className="auth_form_other_back">
                     <img src={Auth_other_back} alt="" />
                 </div>
-            <div className="auth_other_google">
+            <div className="auth_form_other_google">
                 <img src={Logo_google} alt="" />
                 <MyButton>Увійти з Google</MyButton>
             </div>
-            <div className="auth_other_apple">
+            <div className="auth_form_other_apple">
                 <img src={Logo_apple} alt="" />
                 <MyButton>Увійти з Apple</MyButton>
             </div>
