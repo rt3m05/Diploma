@@ -125,16 +125,17 @@ const Auth = () => {
                 <div className="auth_form_back">
                     <img src={Auth_back} alt="" />  
                 </div>
-                <div className="auth_logo_company">
+                <div className="auth_form_logo_company">
                      <img src={Logo_company} alt="" />
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="auth_title">Створити аккаунт</div>
-                    <p className="auth_text">Вже є акаунт? 
+                    <div className="auth_form_title">Створити аккаунт</div>
+                    <p className="auth_form_text">Вже є акаунт? 
                         <a href="/user/login"> Увійти</a>
                     </p>
                     {formError && <div className="auth_error_message">{formError}</div>}
                     <MyInput 
+                        className="auth_form_input"
                         type="email" 
                         placeholder="Електронна пошта"
                         id="email"
@@ -143,6 +144,7 @@ const Auth = () => {
                     />
                     {emailError && <div className="auth_error_message">{emailError}</div>}
                     <MyInput 
+                        className="auth_form_input"
                         type="password" 
                         placeholder="Пароль"
                         id="password"
@@ -153,6 +155,7 @@ const Auth = () => {
                         <div key={index} className="auth_error_message">{error}</div>
                     ))}
                     <MyInput 
+                        className="auth_form_input"
                         id="confirmPassword" 
                         type="password" 
                         placeholder="Підтвердіть пароль"
@@ -160,7 +163,7 @@ const Auth = () => {
                         onChange={handleConfirmPasswordChange}
                     />
                     {confirmPasswordError && <div className="auth_error_message">{confirmPasswordError}</div>}
-                    <MyButton type="submit">Створити акаунт</MyButton>
+                    <MyButton className="auth_form_button" type="submit">Створити акаунт</MyButton>
                 </form>
                  <AuthOther/>
             </div>            

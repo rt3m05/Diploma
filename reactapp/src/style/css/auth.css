@@ -30,145 +30,31 @@ body {
 .auth_form_back img {
   width: 100%;
 }
-.auth_title {
+.auth_form_title {
   margin-bottom: 15px;
   text-align: center;
   font-weight: 600;
   font-size: 36px;
 }
-.auth_other {
-  position: absolute;
-  width: 90%;
-  height: 280px;
-  background: #CFECF9;
-  border-radius: 20px;
-  margin-top: -50px;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
-.auth_other_title {
-  display: flex;
-  align-items: center;
-  margin-top: 40px;
-}
-.auth_other_title_line {
-  flex-grow: 1;
-  height: 1px;
-  background: #208FB3;
-  margin: 0 15px 0 15px;
-}
-.auth_other_title_text {
-  font-weight: 300;
-  font-size: 12px;
-}
-.auth_other_google, .auth_other_apple {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  margin: 30px auto;
-}
-.auth_other_google img, .auth_other_apple img {
-  width: 40px;
-  height: 40px;
-  margin: 30px;
-}
-.auth_other_google button, .auth_other_apple button {
-  width: 60%;
-  font-weight: 500;
-  margin: 5px auto;
-}
-.auth_other_apple button {
-  border: 0.5px solid #208FB3;
-  background: #CFECF9;
-  color: #000;
-  font-size: 14px;
-}
-.auth_other_google button {
-  background: #000;
-  color: #fff;
-  font-size: 14px;
-}
-.auth_other_back {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  top: -3px;
-}
-.auth_other_back img {
-  width: 90%;
-}
-.auth_other p {
-  width: 75%;
-  margin: 10px auto;
-  font-size: 12px;
-  font-weight: 200;
-  text-align: center;
-}
-.auth_logo_company {
+.auth_form_logo_company {
   margin: 50px auto;
   margin-bottom: 45px;
   text-align: center;
 }
-.auth_logo_company img {
+.auth_form_logo_company img {
   width: 150px;
 }
-.auth_error_message {
-  color: red;
-  font-size: 0.7em;
-  margin-left: 55px;
-}
-.auth_text {
+.auth_form_text {
   text-align: center;
   font-size: 12px;
   font-weight: 300;
 }
-.auth_text a {
+.auth_form_text a {
   font-weight: 400;
   text-decoration: none;
   color: #3EE9CA;
 }
-@media (max-width: 1220px) {
-  .auth_form {
-    width: 30%;
-  }
-}
-@media (max-width: 950px) {
-  .auth_form {
-    width: 40%;
-  }
-  .auth_title {
-    font-size: 20px;
-  }
-  .auth button,
-  .auth input {
-    font-size: 14px;
-  }
-  .auth p,
-  .auth a {
-    font-size: 10px;
-  }
-}
-
-input {
-  display: block;
-  margin: 10px auto;
-  width: 80%;
-  padding: 10px 0px 10px 20px;
-  font-size: 18px;
-  border: 0.5px solid #29B097;
-  color: #208FB3;
-  outline: none;
-  border-radius: 20px;
-}
-
-::placeholder {
-  font-family: "Montserrat", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: #29B097;
-}
-
-button {
+.auth_form_button {
   display: block;
   margin: 45px auto;
   margin-bottom: 100px;
@@ -182,25 +68,119 @@ button {
   background-color: #3EE9CA;
   color: #fff;
 }
-button img {
-  width: 40px;
+.auth_form_input {
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  padding: 10px 0px 10px 20px;
+  font-size: 18px;
+  border: 0.5px solid #29B097;
+  color: #208FB3;
+  outline: none;
+  border-radius: 20px;
+  font-size: 14px;
 }
-
-.apple {
-  padding: 0px;
-  padding-top: 5px;
-  margin: 10px;
+.auth_form p,
+.auth_form a {
+  font-size: 10px;
 }
-
+@media (max-width: 1220px) {
+  .auth_form_form {
+    width: 30%;
+  }
+}
 @media (max-width: 950px) {
-  button,
-  input {
-    font-size: 14px;
+  .auth_form_form {
+    width: 40%;
   }
-  p,
-  a {
-    font-size: 12px;
+  .auth_form_title {
+    font-size: 20px;
   }
+}
+.auth_form_other {
+  position: absolute;
+  width: 90%;
+  height: 280px;
+  background: #CFECF9;
+  border-radius: 20px;
+  margin-top: -50px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+.auth_form_other_title {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+}
+.auth_form_other_title_line {
+  flex-grow: 1;
+  height: 1px;
+  background: #208FB3;
+  margin: 0 15px 0 15px;
+}
+.auth_form_other_title_text {
+  font-weight: 300;
+  font-size: 12px;
+}
+.auth_form_other_google, .auth_form_other_apple {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin: 30px auto;
+}
+.auth_form_other_google img, .auth_form_other_apple img {
+  width: 40px;
+  height: 40px;
+  margin: 30px;
+}
+.auth_form_other_google button, .auth_form_other_apple button {
+  display: block;
+  margin-bottom: 100px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 60%;
+  font-weight: 500;
+  margin: 5px auto;
+}
+.auth_form_other_apple button {
+  border: 0.5px solid #208FB3;
+  background: #CFECF9;
+  color: #000;
+  font-size: 14px;
+}
+.auth_form_other_google button {
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+}
+.auth_form_other_back {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: -3px;
+}
+.auth_form_other_back img {
+  width: 90%;
+}
+.auth_form_other p {
+  width: 75%;
+  margin: 10px auto;
+  font-size: 12px;
+  font-weight: 200;
+  text-align: center;
+}
+.auth_form_error_message {
+  color: red;
+  font-size: 0.7em;
+  margin-left: 55px;
+}
+
+::placeholder {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #29B097;
 }
 
 /*# sourceMappingURL=auth.css.map */

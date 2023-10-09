@@ -108,24 +108,26 @@ const Login = () => {
                 <div className="auth_form_back">
                     <img src={Auth_back} alt="" />
                 </div>
-                <div className="auth_logo_company">
+                <div className="auth_form_logo_company">
                      <img src={Logo_company} alt="" />
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="auth_title">Ласкаво просимо</div>
-                    <p className="auth_text">Немає облікового запису? 
+                    <div className="auth_form_title">Ласкаво просимо</div>
+                    <p className="auth_form_text">Немає облікового запису? 
                         <a href="/user/auth"> Зареєструватися</a>
                     </p>
                      {formError && <div className="auth_error_message">{formError}</div>}
                     <MyInput
+                        className="auth_form_input"
                         type="email"
                         placeholder="Електронна пошта"
                         value={email}
                         onChange={handleEmailChange}
                     />
                     {emailError && <div className="auth_error_message">{emailError}</div>}
-                    <p className="auth_text"><a href="/#">Забули пароль?</a></p>
+                    <p className="auth_form_text"><a href="/#">Забули пароль?</a></p>
                     <MyInput
+                        className="auth_form_input"
                         type="password"
                         placeholder="Пароль"
                         value={password}
@@ -134,7 +136,7 @@ const Login = () => {
                     {passwordErrors.map((error, index) => (
                         <div key={index} className="auth_error_message">{error}</div>
                     ))}
-                    <MyButton>Увійти</MyButton>
+                    <MyButton className="auth_form_button" >Увійти</MyButton>
                 </form>
                 <AuthOther/>
             </div>            
