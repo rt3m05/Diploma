@@ -33,7 +33,6 @@
 
 .App_page{
     margin-left: 20px;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
@@ -43,12 +42,13 @@
     text-align: right;
     font-weight: bold;
     padding: 5px;
+    margin: 10px;
     padding-right: 25px;
     border-radius: 5px;
 }
 .App_round, .App_roundActive{
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
     border: 6px solid rgba(32, 143, 179, 1);
     margin-right: 5px;
@@ -58,7 +58,7 @@
 }
 
 .App_workspace{
-    height: 350px;
+    /* height: 250px; */
 }
 .App_workspace div{
     display: flex;
@@ -103,4 +103,11 @@
 }
 .App_trash img{
     height: 40px;
+}
+
+
+@media screen and (max-width: 912px) {
+    .App_right{
+        display: none;
+    }
 }

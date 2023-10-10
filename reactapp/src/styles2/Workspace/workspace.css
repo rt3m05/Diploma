@@ -374,7 +374,7 @@ body{
     display: none;
   }
   .Workspace_tabNavBar{
-    background: linear-gradient(rgba(62, 182, 232, 1), rgba(62, 233, 202, 1), rgba(62, 182, 232, 1));
+    background: linear-gradient(10deg, rgba(62, 182, 232, 1), rgba(62, 233, 202, 1), rgba(62, 182, 232, 1));
     position: static;
   }
   .Workspace_left,
