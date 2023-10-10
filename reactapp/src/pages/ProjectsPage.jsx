@@ -9,31 +9,31 @@ import '../styles2/ProjectsPage/mainPage.css';
 function App() {
   return (
     <div className="App">
-      <div className='left'>
-        <div className='Lhead'>
+      <div className='App_left'>
+        <div className='App_Lhead'>
 
-          <div className='group1'>
+          <div className='App_group1'>
 
-            <div className='rectangle'>
+            <div className='App_rectangle'>
               <h1>Основна</h1>
             </div>
 
-            <div className='addProj'>
+            <div className='App_addProj'>
               <a href="">
-                <img src={AddIcon} alt="add" className='addIcon'/>
+                <img src={AddIcon} alt="add" className='App_addIcon'/>
               <p>Новий проєкт</p>
               </a>
             </div>
 
           </div>
           
-          <form action="" className='searchForm' method="get">
-              <input type="text" placeholder="Пошук" className="searchText" name=""/>
-              <input type="submit" value=" " className="searchSubmit"/>
+          <form action="" className='App_searchForm' method="get">
+              <input type="text" placeholder="Пошук" className="App_searchText" name=""/>
+              <input type="submit" value=" " className="App_searchSubmit"/>
           </form>
         </div>
-        <div className='projects'>
-          <a href='' className='project'>
+        <div className='App_projects'>
+          <a href='' className='App_project'>
             
             <div>
               <img src={ProjIcon} alt="ProjIcon" />
@@ -42,7 +42,7 @@ function App() {
             
             <h3>25.09.2023</h3>
           </a>
-          <a href='' className='project'>
+          <a href='' className='App_project'>
 
             <div>
               <img src={ProjIcon} alt="ProjIcon" />
@@ -51,7 +51,7 @@ function App() {
             
             <h3>25.09.2023</h3>
           </a>
-          <a href='' className='project'>
+          <a href='' className='App_project'>
 
             <div>
               <img src={ProjIcon} alt="ProjIcon" />
@@ -62,47 +62,47 @@ function App() {
           </a>
         </div>
       </div>
-      <div className='right'>
+      <div className='App_right'>
 
-        <div className='logo'>
+        <div className='App_logo'>
           <img src={CompanyIcon} alt="CompanyIcon" />
           <p>Daily</p>
         </div>
 
-        <div className='userData'>
-          <p className='email'>example@gmail.com</p>
+        <div className='App_userData'>
+          <p className='App_email'>example@gmail.com</p>
         </div>
 
-        <div className='pages'>
+        <div className='App_pages'>
 
-          <div className='page'>
-            <div className='roundActive'></div>
+          <div className='App_page'>
+            <div className='App_roundActive'></div>
             <p>Основна</p>
           </div>
 
-          <div className='page'>
-            <div className='round'></div>
+          <div className='App_page'>
+            <div className='App_round'></div>
             <p>Спільний доступ</p>
           </div>
 
-          <div className='page'>
-            <div className='round'></div>
+          <div className='App_page'>
+            <div className='App_round'></div>
             <p>Обрані</p>
           </div>
           
-          <div className='page'>
-            <div className='round'></div>
+          <div className='App_page'>
+            <div className='App_round'></div>
             <p>Нещодавні</p>
           </div>
 
-          <div className='page'>
-            <div className='round'></div>
+          <div className='App_page'>
+            <div className='App_round'></div>
             <p>Галерея шаблонів</p>
           </div>
 
         </div>
 
-        <div className='workspace'>
+        <div className='App_workspace'>
 
           <div>
             <a href="">
@@ -113,29 +113,29 @@ function App() {
           
         </div>
 
-        <div className='memoryUsage'>
+        <div className='App_memoryUsage'>
 
-          <div className='kindOfUsage'>
+          <div className='App_kindOfUsage'>
             <p style={{fontWeight:'bold'}}>Блоки</p>
             <p>126/1000</p>
           </div>
 
-          <div className='progressBar'>
+          <div className='App_progressBar'>
 
           </div>
 
-          <div className='kindOfUsage'>
+          <div className='App_kindOfUsage'>
             <p style={{fontWeight:'bold'}}>Файли</p>
             <p>126/1000</p>
           </div>
 
-          <div className='progressBar'>
+          <div className='App_progressBar'>
 
           </div>
 
         </div>
 
-        <a href='' className='trash'>
+        <a href='' className='App_trash'>
           <p>Кошик</p>
           <img src={TrashIcon} alt="trash" />
         </a>

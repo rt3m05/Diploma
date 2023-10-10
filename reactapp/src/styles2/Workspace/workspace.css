@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-*{
-  font-family: Kanit;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 body{
   min-height: 100vh;
 }
@@ -29,7 +24,7 @@ body{
   left: -400px;
   transition: all 0.5s;
 }
-.leftMenu{
+.Workspace_leftMenu{
   display: flex;
   position: absolute;
   top: 0;
@@ -43,14 +38,14 @@ body{
   box-shadow: 49px 0px 70px 2px rgba(66, 68, 90, 1);
   background-color: #fff;
 }
-.lLogo{
+.Workspace_lLogo{
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 5px;
   margin-bottom: 10px;
 }
-.lLogo p{
+.Workspace_lLogo p{
   margin-left: 25px;
   font-size: 24px;
   font-weight: 600;
@@ -58,7 +53,7 @@ body{
   -webkit-background-clip: text;
   color: transparent;
 }
-.back{
+.Workspace_back{
   width: 30px;
   height: 30px;
   padding: 5px;
@@ -68,24 +63,24 @@ body{
   border-radius: 50%;
   background-color: rgba(62, 233, 202, 1);
 }
-.logo{
+.Workspace_logo{
   width: 60px;
   height: 60px;
   margin-right: 15px;
 }
-.leftNavBar{
+.Workspace_leftNavBar{
   display: flex;
   flex-direction: column;
   margin: 5px auto;
   width: 90%;
 }
-.leftNavBarDivActive{
+.Workspace_leftNavBarDivActive{
   background-color: rgba(207, 236, 249, 1);
 }
-.leftNavBarDivActive p{
+.Workspace_leftNavBarDivActive p{
   font-weight: bold;
 }
-.leftNavBar div{
+.Workspace_leftNavBar div{
   display: flex;
   align-items: center;
   padding: 5px;
@@ -93,19 +88,20 @@ body{
   width: 100%;
   margin-bottom: 3px;
 }
-.leftNavBar div img{
+.Workspace_leftNavBar div img{
   width: 30px;
   height: 30px;
   padding: 3px;
   margin-right: 10px;
   margin-left: 10px;
 }
-.trash{
+.Workspace_trash{
   display: flex;
+  align-items: center;
   padding: 10px;
   width: 100%;
 }
-.trash img{
+.Workspace_trash img{
   width: 40px;
   height: 40px;
   margin-left: 20px;
@@ -114,19 +110,19 @@ body{
 }
 
 
-.navBar{
+.Workspace_navBar{
   display: flex;
   flex-direction: column;
   margin-right: 10px;
 }
 
-.companyIcon{
+.Workspace_companyIcon{
   width: 60px;
   height: 60px;
   margin-bottom: 5px;
 }
 
-.home, .menu{
+.Workspace_home, .Workspace_menu{
   background-color: rgba(62, 233, 202, 1);
   display: flex;
   justify-content: center;
@@ -138,13 +134,13 @@ body{
   border-radius: 5px;
 }
 
-.homeIcon, .menuIcon{
+.Workspace_homeIcon, .Workspace_menuIcon{
   width: 40px;
   height: 40px;
   background-color: transparent;
 }
 
-.block{
+.Workspace_block{
   height: 90vh;
   width: 60px;
   background-color: rgba(184, 245, 250, 1);
@@ -152,11 +148,11 @@ body{
   flex-grow: 1;
 }
 
-.main{
+.Workspace_main{
   position: relative;
   width: calc(100% - 70px);
 }
-.tabNavBar{
+.Workspace_tabNavBar{
   display: flex;
   height: 60px;
   width: 100%;
@@ -165,7 +161,7 @@ body{
   position: sticky;
   top: 0;
 }
-.left{
+.Workspace_left{
   background-color: rgba(184, 245, 250, 1);
   display: flex;
   justify-content: space-around;
@@ -175,7 +171,7 @@ body{
   border: 1px solid #fff;
   overflow: hidden;
 }
-.arrowsDiv{
+.Workspace_arrowsDiv{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -184,7 +180,7 @@ body{
   background-color: rgba(184, 245, 250, 1);
   border-radius: 5px;
 }
-.left h1{
+.Workspace_left h1{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,14 +193,14 @@ body{
   height: 40px;
   margin-right: 10px;
 }
-.arrows{
+.Workspace_arrows{
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 70px;
   background-color: transparent;
 }
-.arrows img{
+.Workspace_arrows img{
   width: 30px;
   height: 30px;
   background-color: rgba(62, 233, 202, 1);
@@ -212,13 +208,14 @@ body{
   padding: 3px;
   cursor: pointer;
 }
-.arrows img:nth-child(1){
+.Workspace_arrows img:nth-child(1){
   transform: rotate(180deg);
+  margin-right: 10px;
 }
-.arrows img:nth-child(3), .arrows img:nth-child(4){
+.Workspace_arrows img:nth-child(3), .Workspace_arrows img:nth-child(4){
   display: none;
 }
-.share{
+.Workspace_share{
   background-color: rgba(184, 245, 250, 1);
   display: flex;
   align-items: center;
@@ -226,12 +223,12 @@ body{
   text-decoration: none;
   cursor: pointer;
 }
-.share img{
+.Workspace_share img{
   transform: translateX(50px);
   width: 55px;
   background-color: transparent;
 }
-.share p{
+.Workspace_share p{
   background-color: rgba(62, 233, 202, 1);
   color: #fff;
   border-radius: 50px;
@@ -241,7 +238,7 @@ body{
   text-align: right;
 }
 
-.right{
+.Workspace_right{
   height: inherit;
   display: flex;
   align-items: center;
@@ -250,12 +247,12 @@ body{
   border-radius: 5px;
   border: 1px solid #fff;
 }
-.tabs{
+.Workspace_tabs{
   display: flex;
   align-items: center;
   margin-left: 10px;
 }
-.tab, .currentTab{
+.Workspace_tab, .Workspace_currentTab{
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -267,14 +264,14 @@ body{
   color: #000;
   cursor: pointer;
 }
-.currentTab{
+.Workspace_currentTab{
   font-weight: bold;
 }
-.plusTab{
+.Workspace_plusTab{
   display: flex;
   align-items: center;
 }
-.plusTab img{
+.Workspace_plusTab img{
   border-radius: 50%;
   border: 2px solid rgba(62, 233, 202, 1);
   background-color: rgba(62, 233, 202, 1);
@@ -282,7 +279,7 @@ body{
   height: 30px;
 }
 
-.field{
+.Workspace_field{
   width: 100%;
   height: 800px;
   margin-top: 10px;
@@ -290,7 +287,7 @@ body{
   background-color: rgba(215, 249, 243, 1);
 }
 
-.rightMenu{
+.Workspace_rightMenu{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -303,7 +300,7 @@ body{
   position: sticky;
   top: 0;
 }
-.rightMenu img{
+.Workspace_rightMenu img{
   width: 35px;
   height: 35px;
   margin-bottom: 10px;
@@ -313,110 +310,124 @@ body{
   cursor: pointer;
 }
 
-.navBar2{
+.Workspace_navBar2{
   display: none;
 }
 
 @media screen and (max-width: 1320px){
-  .left h1{
+  .Workspace_left h1{
     width: 100px;
     margin-right: 5px;
   }
-  .share{
+  .Workspace_share{
     width: 200px;
+  }
+  .Workspace_share img{
+    width: 45px;
+    transform: translateX(40px);
   }
 }
 
 
 @media screen and (max-width: 1150px){
-  .tabNavBar{
+  .Workspace_tabNavBar{
     flex-direction: column;
     height: fit-content;
   }
-  .left{
+  .Workspace_left{
     width: 100%;
     align-items: center;
     padding: 5px;
   }
-  .left h1{
+  .Workspace_left h1{
     width: 125px;
     margin-right: 10px;
   }
-  .share{
+  .Workspace_share{
     width: 250px;
   }
-  .tabs{
+  .Workspace_tabs{
     width: 100%;
     padding: 5px;
+  }
+  .Workspace_share img{
+    width: 55px;
+    transform: translateX(50px);
   }
 }
 
 @media screen and (max-width: 726px){
-  .navBar{
+  .Workspace_navBar{
     display: none;
   }
   .Workspace{
     width: 100%;
-    margin-top: 0;
+    margin-top: -15px;
   }
-  .main{
+  .Workspace_main{
     width: 100%;
   }
-  .right{
+  .Workspace_right{
     display: none;
   }
-  .rightMenu{
+  .Workspace_rightMenu{
     display: none;
   }
-  .tabNavBar{
+  .Workspace_tabNavBar{
     background: linear-gradient(rgba(62, 182, 232, 1), rgba(62, 233, 202, 1), rgba(62, 182, 232, 1));
     position: static;
   }
-  .left, .arrowsDiv, .share, .left h1, .arrows, .arrows img{
+  .Workspace_left,
+  .Workspace_arrowsDiv,
+  .Workspace_share,
+  .Workspace_left h1,
+  .Workspace_arrows,
+  .Workspace_arrows img{
     background-color: transparent;
   }
-  .left{
+  .Workspace_left{
     padding: 10px;
     height: 150px;
   }
-  .arrowsDiv{
+  .Workspace_arrowsDiv{
     height: 100px;
     justify-content: space-between;
     align-items:normal;
     width: 90%;
   }
-  .arrows{
+  .Workspace_arrows{
     width: fit-content;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
   }
-  .arrows img{
+  .Workspace_arrows img{
     width: 40px;
     height: 40px;
   
   }
-  .arrows img:nth-child(1),  .arrows img:nth-child(3){
+  .Workspace_arrows img:nth-child(1),
+  .Workspace_arrows img:nth-child(3){
     margin-right: 20px;
   }
-  .arrows img:nth-child(3), .arrows img:nth-child(4){
+  .Workspace_arrows img:nth-child(3),
+  .Workspace_arrows img:nth-child(4){
     display: inline-block;
     border: none;
     background-color: #fff;
     margin-top: 20px;
   }
-  .arrowsDiv h1{
+  .Workspace_arrowsDiv h1{
     font-size: 2em;
   }
-  .arrows img{
+  .Workspace_arrows img{
     border-radius: 5px;
     border: 1px solid #fff;
   }
-  .share{
+  .Workspace_share{
     display: none;
   }
-  .navBar2{
-    width: 100%;
+  .Workspace_navBar2{
     display: flex;
     justify-content: space-between;
     background-color: #fff;
@@ -424,12 +435,12 @@ body{
     border-radius: 0 0 20px 20px;
     transform: translateY(15px);
   }
-  .navBar2 div{
+  .Workspace_navBar2 div{
     display: flex;
     justify-content: flex-end;
     align-items: center;
   }
-  .navBar2 img{
+  .Workspace_navBar2 img{
     width: 35px;
     height: 35px;
     padding: 5px;
