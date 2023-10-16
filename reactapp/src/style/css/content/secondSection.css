@@ -1,0 +1,38 @@
+.secondSection_button {
+  width: 80%;
+  height: 100px;
+  margin: 20px auto;
+  padding: 0;
+  border: 2px solid #3EE9CA;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.secondSection_button button {
+  width: 15%;
+  height: 55px;
+  margin: 0;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(#D7F9F3, #D7F9F3);
+  color: #000000;
+}
+.secondSection_image {
+  width: 80%;
+  margin: 50px auto;
+  position: relative;
+}
+.secondSection_image :first-child {
+  width: 90%;
+  height: 730px;
+}
+.secondSection_image :nth-child(2) {
+  width: 20%;
+  position: absolute;
+  height: 580px;
+  bottom: 0;
+  right: 0px;
+}
+
+/*# sourceMappingURL=secondSection.css.map */

@@ -1,0 +1,113 @@
+.App_right{
+    flex-grow: 1;
+}
+.App_logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.App_logo img{
+    width: 60px;
+    margin-right: 10px;
+}
+.App_logo p{
+    margin-left: 25px;
+    font-size: 24px;
+    font-weight: 600;
+    background-image: linear-gradient(#3EE9CA, #3EB5E9, #3EE9CA);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.App_userData, .App_pages,.App_workspace,.App_memoryUsage, .App_trash{
+    margin: 10px auto;
+    background-color: rgba(184, 245, 250, 1);
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px;
+}
+.App_email{
+    border-bottom: 2px solid #000;
+}
+
+.App_page{
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+.App_page p{
+    width: 80%;
+    background-color: rgba(62, 233, 202, 1);
+    text-align: right;
+    font-weight: bold;
+    padding: 5px;
+    margin: 10px;
+    padding-right: 25px;
+    border-radius: 5px;
+}
+.App_round, .App_roundActive{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 6px solid rgba(32, 143, 179, 1);
+    margin-right: 5px;
+}
+.App_roundActive{
+    background-color: #000;
+}
+
+.App_workspace{
+    /* height: 250px; */
+}
+.App_workspace div{
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid #000;
+}
+.App_workspace img{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+.App_workspace h3{
+    display: inline;
+    font-weight: bold;
+}
+
+.App_memoryUsage{
+
+}
+.App_kindOfUsage{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 5px auto;
+}
+.App_progressBar{
+    width: 80%;
+    height: 30px;
+    margin: 5px auto;
+    background-color: #fff;
+}
+
+.App_trash{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+}
+.App_trash p{
+    font-weight: bold;
+}
+.App_trash img{
+    height: 40px;
+}
+
+
+@media screen and (max-width: 912px) {
+    .App_right{
+        display: none;
+    }
+}

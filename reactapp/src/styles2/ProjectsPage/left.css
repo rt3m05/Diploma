@@ -1,0 +1,212 @@
+.App_left{
+    background-color: rgba(184, 245, 250, 1);
+    height: inherit;
+    width: 80%;
+    border-radius: 10px;
+}   
+.App_Lhead{
+    width: 90%;
+    margin: 0 auto;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.App_group1{
+    display: flex;
+    height: 75px;
+}
+.App_rectangle{
+    width: 175px; 
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../images2/rectangle.png');
+    background-size: 175px 105%;
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+.App_rectangle h1{
+    z-index: 2;
+    font-size: 1.5em;
+}
+.App_rectangleImage{
+    z-index: 1;
+}
+.App_addProj{
+    display: flex;
+    align-items: center;
+}
+.App_addProj a{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.App_addProj img{
+    transform: translateX(50px);
+}
+.App_addIcon{
+    width: 55px;
+}
+.App_addProj p{
+    background-color: rgba(62, 233, 202, 1);
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px;
+    width: 200px;
+    height: fit-content;
+    text-align: right;
+}
+
+.App_searchForm{
+    display: grid;
+    grid-template-columns: 10fr 1fr;
+    width: 600px;
+    height: 45px;
+
+}
+.App_searchText{
+    border: none;   
+    outline: none;
+    border-radius: 10px;
+    background-color: #fff;
+    font-size: 1.2em;
+    padding: 7px;
+}
+.App_searchSubmit {
+    width: 45px;
+    height: 45px;
+    display: block;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    background-image: url('../../images2/search.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 80%;
+    border-radius: 0px 10px 10px 0px;
+    cursor: pointer;
+    background-color: #fff;
+    transform: translateX(-45px);
+}
+
+.App_projects{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 20px auto;
+}
+.App_project{
+    background-color: rgba(62, 207, 219, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    height: 45px;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #000;
+}
+.App_project h2{
+    font-size: 1.4em;
+}
+.App_project h3{
+    margin-right: 10px;
+}
+.App_project div{
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+.App_project img{
+    width: 40px;
+}
+
+.App_navBar2{
+    display: none;
+}
+
+@media screen and (max-width: 1600px) {
+    .App_Lhead, .App_projects{
+        width: 95%;
+    }
+    .App_group1{
+        margin-right: 10px;
+    }
+    .App_searchForm{
+        margin-right: 0;
+    }
+    .App_addProj img{
+        width: 45px;
+        transform: translateX(35px);
+    }
+    .App_addProj p{
+        width: 150px;
+        padding: 7px;
+    }
+    .App_rectangle{
+        width: 100px;
+        background-size: 150px 105%;
+        background-position: center 0; 
+    }
+    .App_rectangle h1{
+        font-size: 1.3em;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .App_left{
+        width: 70%;
+    }   
+}
+@media screen and (max-width: 912px) {
+    .App_Lhead{
+        width: 100%;
+        padding: 10px 0;
+        background: linear-gradient(10deg, rgba(62, 182, 232, 1), rgba(62, 233, 202, 1), rgba(62, 182, 232, 1));
+    }
+    .App_group1{
+        width: 100%;
+        padding: 5px;
+        justify-content: space-around;
+    }
+    .App_left{
+        width: 100%;
+    } 
+    .App_rectangle{
+        background: none;
+    }
+    .App_searchForm{
+        display: none;
+    }
+    .App_addProj img{
+        background-color: rgba(62, 233, 202, 1);
+        border-radius: 50%;
+    }
+    .App_addProj p{
+        background-color: #fff;
+        color: rgba(62, 233, 202, 1);
+    }
+    .App_navBar2{
+        transform: translateY(10px);
+        display: flex;
+        justify-content: space-between;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 0 0 20px 20px;
+      }
+      .App_navBar2 div{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      .App_navBar2 img{
+        width: 35px;
+        height: 35px;
+        padding: 5px;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+}

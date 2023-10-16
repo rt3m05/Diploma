@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap");
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 100%;
+  font-family: "Montserrat", sans-serif;
+}
+
+.auth_wrap {
+  top: -10px;
+  min-height: 100%;
+  height: 1080px;
+  background: linear-gradient(100deg, #3EB5E9, #3EE9CA, #3EB5E9);
+}
+.auth_form {
+  position: absolute;
+  width: 20%;
+  max-width: 420px;
+  top: 20px;
+  left: 50%;
+  background-color: #fff;
+  border-radius: 10px;
+  transform: translate(-50%, 0%);
+}
+.auth_form_back {
+  position: absolute;
+  top: -20px;
+}
+.auth_form_back img {
+  width: 100%;
+}
+.auth_form_title {
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 36px;
+}
+.auth_form_logo_company {
+  margin: 50px auto;
+  margin-bottom: 45px;
+  text-align: center;
+}
+.auth_form_logo_company img {
+  width: 150px;
+}
+.auth_form_text {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 300;
+}
+.auth_form_text a {
+  font-weight: 400;
+  text-decoration: none;
+  color: #3EE9CA;
+}
+.auth_form_button {
+  display: block;
+  margin: 45px auto;
+  margin-bottom: 100px;
+  width: 85%;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #3EE9CA;
+  color: #fff;
+}
+.auth_form_input {
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  padding: 10px 0px 10px 20px;
+  font-size: 18px;
+  border: 0.5px solid #29B097;
+  color: #208FB3;
+  outline: none;
+  border-radius: 20px;
+  font-size: 14px;
+}
+.auth_form p,
+.auth_form a {
+  font-size: 10px;
+}
+@media (max-width: 1220px) {
+  .auth_form_form {
+    width: 30%;
+  }
+}
+@media (max-width: 950px) {
+  .auth_form_form {
+    width: 40%;
+  }
+  .auth_form_title {
+    font-size: 20px;
+  }
+}
+.auth_form_other {
+  position: absolute;
+  width: 90%;
+  height: 280px;
+  background: #CFECF9;
+  border-radius: 20px;
+  margin-top: -50px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+.auth_form_other_title {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+}
+.auth_form_other_title_line {
+  flex-grow: 1;
+  height: 1px;
+  background: #208FB3;
+  margin: 0 15px 0 15px;
+}
+.auth_form_other_title_text {
+  font-weight: 300;
+  font-size: 12px;
+}
+.auth_form_other_google, .auth_form_other_apple {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin: 30px auto;
+}
+.auth_form_other_google img, .auth_form_other_apple img {
+  width: 40px;
+  height: 40px;
+  margin: 30px;
+}
+.auth_form_other_google button, .auth_form_other_apple button {
+  display: block;
+  margin-bottom: 100px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 60%;
+  font-weight: 500;
+  margin: 5px auto;
+}
+.auth_form_other_apple button {
+  border: 0.5px solid #208FB3;
+  background: #CFECF9;
+  color: #000;
+  font-size: 14px;
+}
+.auth_form_other_google button {
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+}
+.auth_form_other_back {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: -3px;
+}
+.auth_form_other_back img {
+  width: 90%;
+}
+.auth_form_other p {
+  width: 75%;
+  margin: 10px auto;
+  font-size: 12px;
+  font-weight: 200;
+  text-align: center;
+}
+.auth_form_error_message {
+  color: red;
+  font-size: 0.7em;
+  margin-left: 55px;
+}
+
+::placeholder {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #29B097;
+}
+
+/*# sourceMappingURL=auth.css.map */

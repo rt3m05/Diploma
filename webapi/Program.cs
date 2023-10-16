@@ -105,9 +105,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 //CORS
-//app.UseCors(x => x
-//        .AllowAnyOrigin()
-//        .AllowAnyMethod()
-//        .AllowAnyHeader());
+app.UseCors(x => x
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 
 app.Run();
