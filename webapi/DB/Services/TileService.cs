@@ -61,16 +61,21 @@ namespace webapi.DB.Services
             if (tab == null)
                 throw new KeyNotFoundException("Tab not found");
 
+            var tiles = await GetAllByTab(tab.Id);
+
+            foreach (var t in tiles)
+            {
+                if (t.Position == model.Position)
+                    throw new PositionIsUsedException("Position is used");
+            }
+
             Tile tile = new()
             {
                 Id = Guid.NewGuid(),
                 TabId = tab.Id,
                 UserId = userId,
                 Name = model.Name,
-                X = model.X,
-                Y = model.Y,
-                H = model.H,
-                W = model.W,
+                Position = model.Position,
                 TimeStamp = DateTime.Now
             };
 
@@ -88,20 +93,19 @@ namespace webapi.DB.Services
             if (tile == null)
                 throw new KeyNotFoundException("Tile not found");
 
+            var tiles = await GetAllByTab(tile.TabId);
+
+            foreach (var t in tiles)
+            {
+                if (t.Position == model.Position && t.Id != id)
+                    throw new PositionIsUsedException("Position is used");
+            }
+
             if (model.Name != null)
                 tile.Name = model.Name;
 
-            if (model.X != null && model.X.HasValue)
-                tile.X = model.X.Value;
-
-            if (model.Y != null && model.Y.HasValue)
-                tile.Y = model.Y.Value;
-
-            if (model.H != null && model.H.HasValue)
-                tile.H = model.H.Value;
-
-            if (model.W != null && model.W.HasValue)
-                tile.W = model.W.Value;
+            if (model.Position != null && model.Position.HasValue)
+                tile.Position = model.Position.Value;
 
             await _tileRepository.Update(tile);
         }

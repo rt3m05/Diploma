@@ -9,12 +9,6 @@ namespace webapi.Requests.Tile
         [Required]
         public string? Name { get; set; }
         [Required]
-        public ushort X { get; set; }
-        [Required]
-        public ushort Y { get; set; }
-        [Required]
-        public ushort H { get; set; }
-        [Required]
-        public ushort W { get; set; }
+        public byte Position { get; set; }
     }
 }

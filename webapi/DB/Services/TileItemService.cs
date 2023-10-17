@@ -59,6 +59,14 @@ namespace webapi.DB.Services
             if (tile == null)
                 throw new KeyNotFoundException("Tile not found");
 
+            var tilesItems = await GetAllByTile(tile.Id);
+
+            foreach (var ti in tilesItems)
+            {
+                if (ti.Position == model.Position)
+                    throw new PositionIsUsedException("Position is used");
+            }
+
             TileItem tileItem = new()
             {
                 Id = Guid.NewGuid(),
@@ -66,6 +74,8 @@ namespace webapi.DB.Services
                 UserId = userId,
                 Content = model.Content,
                 Type = model.Type,
+                Position = model.Position,
+                IsDone = model.IsDone,
                 TimeStamp = DateTime.Now
             };
 
@@ -76,18 +86,32 @@ namespace webapi.DB.Services
 
         public async Task Update(Guid id, TileItemUpdateRequest model)
         {
-            if (model.Content == null && model.Type == null)
+            if (model.Content == null && model.Type == null && model.Position == null && model.IsDone == null)
                 throw new EmptyModelException("Model was empty");
 
             var tileItem = await _tileItemRepository.GetById(id);
             if (tileItem == null)
                 throw new KeyNotFoundException("Tile Item not found");
 
+            var tilesItems = await GetAllByTile(tileItem.TileId);
+
+            foreach (var ti in tilesItems)
+            {
+                if (ti.Position == model.Position && ti.Id != id)
+                    throw new PositionIsUsedException("Position is used");
+            }
+
             if (model.Content != null)
                 tileItem.Content = model.Content;
 
             if (model.Type != null && model.Type.HasValue)
                 tileItem.Type = model.Type.Value;
+
+            if (model.Position != null && model.Position.HasValue)
+                tileItem.Position = model.Position.Value;
+
+            if (model.IsDone != null && model.IsDone.HasValue)
+                tileItem.IsDone = model.IsDone.Value;
 
             await _tileItemRepository.Update(tileItem);
         }

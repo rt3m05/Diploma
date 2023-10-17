@@ -6,10 +6,7 @@ namespace webapi.DTO.Tiles
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
-        public ushort X { get; set; }
-        public ushort Y { get; set; }
-        public ushort H { get; set; }
-        public ushort W { get; set; }
+        public byte Position { get; set; }
         public DateTime TimeStamp { get; set; }
 
         public TileAllInfo() { }
@@ -18,10 +15,7 @@ namespace webapi.DTO.Tiles
         {
             Id = tile.Id;
             Name = tile.Name;
-            X = tile.X;
-            Y = tile.Y;
-            H = tile.H;
-            W = tile.W;
+            Position = tile.Position;
             TimeStamp = tile.TimeStamp;
         }
     }

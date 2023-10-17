@@ -151,6 +151,11 @@ namespace webapi.Controllers
                 _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
+            catch (PositionIsUsedException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new { message = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
@@ -204,6 +209,11 @@ namespace webapi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
             catch (EmptyModelException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (PositionIsUsedException ex)
             {
                 _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });

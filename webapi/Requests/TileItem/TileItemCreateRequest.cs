@@ -13,5 +13,9 @@ namespace webapi.Requests.TileItem
         [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public TileItemTypes Type { get; set; }
+        [Required]
+        public byte Position { get; set; }
+        [Required]
+        public bool IsDone { get; set; }
     }
 }
