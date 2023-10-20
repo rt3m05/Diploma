@@ -151,11 +151,6 @@ namespace webapi.Controllers
                 _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
-            catch (PositionIsUsedException ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest(new { message = ex.Message });
-            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
@@ -213,11 +208,6 @@ namespace webapi.Controllers
                 _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
-            catch (PositionIsUsedException ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest(new { message = ex.Message });
-            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
@@ -243,7 +233,7 @@ namespace webapi.Controllers
                 var user = await _userService.GetByEmail(email);
 
                 if (tileItem.UserId == user.Id)
-                    await _tileItemService.Delete(id);
+                    await _tileItemService.DeleteWithPositionChange(id, tileItem.TileId, tileItem.Position);
                 else
                     return BadRequest(new { message = "This is not your tile item." });
             }

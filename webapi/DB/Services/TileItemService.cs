@@ -12,7 +12,9 @@ namespace webapi.DB.Services
         Task<TileItem> GetById(Guid id);
         Task<Guid> Create(TileItemCreateRequest model, Guid userId);
         Task Update(Guid id, TileItemUpdateRequest model);
+        Task ChangePosition(Guid id, Guid tileId, byte newPos, byte oldPos);
         Task Delete(Guid id);
+        Task DeleteWithPositionChange(Guid id, Guid tileId, byte pos);
         Task DeleteAllByUser(Guid userId);
     }
 
@@ -59,14 +61,6 @@ namespace webapi.DB.Services
             if (tile == null)
                 throw new KeyNotFoundException("Tile not found");
 
-            var tilesItems = await GetAllByTile(tile.Id);
-
-            foreach (var ti in tilesItems)
-            {
-                if (ti.Position == model.Position)
-                    throw new PositionIsUsedException("Position is used");
-            }
-
             TileItem tileItem = new()
             {
                 Id = Guid.NewGuid(),
@@ -79,7 +73,7 @@ namespace webapi.DB.Services
                 TimeStamp = DateTime.Now
             };
 
-            await _tileItemRepository.Create(tileItem);
+            await _tileItemRepository.CreateWithPositionChange(tileItem);
 
             return tileItem.Id;
         }
@@ -93,27 +87,29 @@ namespace webapi.DB.Services
             if (tileItem == null)
                 throw new KeyNotFoundException("Tile Item not found");
 
-            var tilesItems = await GetAllByTile(tileItem.TileId);
-
-            foreach (var ti in tilesItems)
-            {
-                if (ti.Position == model.Position && ti.Id != id)
-                    throw new PositionIsUsedException("Position is used");
-            }
-
             if (model.Content != null)
                 tileItem.Content = model.Content;
 
             if (model.Type != null && model.Type.HasValue)
                 tileItem.Type = model.Type.Value;
 
-            if (model.Position != null && model.Position.HasValue)
-                tileItem.Position = model.Position.Value;
-
             if (model.IsDone != null && model.IsDone.HasValue)
                 tileItem.IsDone = model.IsDone.Value;
 
-            await _tileItemRepository.Update(tileItem);
+            if (model.isOnlyPosition() && model.Position.HasValue)
+                await _tileItemRepository.ChangePosition(tileItem.Id, tileItem.TileId, model.Position.Value, tileItem.Position);
+            else if (!model.isOnlyPosition() && model.Position.HasValue)
+                await _tileItemRepository.UpdateWithPositionChange(tileItem, model.Position.Value);
+            else
+                await _tileItemRepository.Update(tileItem);
+        }
+
+        public async Task ChangePosition(Guid id, Guid tileId, byte newPos, byte oldPos)
+        {
+            if (await _tileItemRepository.GetById(id) != null)
+                await _tileItemRepository.ChangePosition(id, tileId, newPos, oldPos);
+            else
+                throw new KeyNotFoundException("Tile Item not found");
         }
 
         public async Task Delete(Guid id)
@@ -122,6 +118,14 @@ namespace webapi.DB.Services
                 await _tileItemRepository.Delete(id);
             else
                 throw new KeyNotFoundException("Tile Item not found");
+        }
+
+        public async Task DeleteWithPositionChange(Guid id, Guid tileId, byte pos)
+        {
+            if (await _tileItemRepository.GetById(id) != null && await _tileRepository.GetById(tileId) != null)
+                await _tileItemRepository.DeleteWithPositionChange(id, tileId, pos);
+            else
+                throw new KeyNotFoundException("Tile Item or Tile not found");
         }
 
         public async Task DeleteAllByUser(Guid userId)

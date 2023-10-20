@@ -10,5 +10,10 @@ namespace webapi.Requests.TileItem
         public TileItemTypes? Type { get; set; }
         public byte? Position { get; set; }
         public bool? IsDone { get; set; }
+
+        public bool isOnlyPosition()
+        {
+            return Content == null && Type == null && IsDone == null && Position != null;
+        }
     }
 }
