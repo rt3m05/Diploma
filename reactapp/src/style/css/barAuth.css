@@ -1,10 +1,12 @@
 .barAuth {
-  width: 30%;
+  width: 20%;
+  font-family: "Montserrat", sans-serif;
 }
 .barAuth a {
   text-decoration: none;
   font-weight: 600;
   border-radius: 20px;
+  transition: box-shadow 0.3s ease;
 }
 .barAuth_login {
   margin-right: -30px;
@@ -16,7 +18,30 @@
   background: #3EE9CA;
   color: #fff;
   padding: 10px 30px;
-  margin-right: 200px;
+}
+@media (max-width: 1720px) {
+  .barAuth {
+    width: 30%;
+  }
+}
+@media (max-width: 1280px) {
+  .barAuth a {
+    font-size: 14px;
+  }
+  .barAuth_login {
+    padding: 5px 40px 5px 20px;
+  }
+  .barAuth_auth {
+    padding: 5px 20px;
+  }
+}
+@media (max-width: 920px) {
+  .barAuth_login {
+    padding: 5px 35px 5px 10px;
+  }
+  .barAuth_auth {
+    padding: 5px 10px;
+  }
 }
 
 /*# sourceMappingURL=barAuth.css.map */

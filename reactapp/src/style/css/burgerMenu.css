@@ -1,0 +1,14 @@
+.burgerMenu {
+  display: none;
+}
+.burgerMenu_icon {
+  margin-top: 35px;
+  text-align: center;
+  transform: scale(1.3, 1.3);
+}
+.burgerMenu_mobileMenu a {
+  display: block;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=burgerMenu.css.map */

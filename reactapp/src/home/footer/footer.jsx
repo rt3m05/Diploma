@@ -23,7 +23,7 @@ const Footer = () => {
                 <img src={IconYoutube} alt="" />
             </div>
             <div className="footer_company">
-                <img src={Logo} alt="" />
+                <a href="#top"><img src={Logo} alt="" /></a>
                 <p>Copyright © 2022-2023 Daily</p>
             </div>
         </div>

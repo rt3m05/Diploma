@@ -126,12 +126,12 @@ const Auth = () => {
                     <img src={Auth_back} alt="" />  
                 </div>
                 <div className="auth_form_logo_company">
-                     <img src={Logo_company} alt="" />
+                     <a href="/"><img src={Logo_company} alt="" /></a>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="auth_form_title">Створити аккаунт</div>
                     <p className="auth_form_text">Вже є акаунт? 
-                        <a href="/user/login"> Увійти</a>
+                        <a href="/login"> Увійти</a>
                     </p>
                     {formError && <div className="auth_error_message">{formError}</div>}
                     <MyInput 

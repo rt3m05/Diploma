@@ -14,6 +14,8 @@
         button{
             width: 15%;
             height: 55px;
+            font-size: 16px;
+            font-weight: 600;
             margin: 0;
             border: none;
             border-radius: 10px;
@@ -28,15 +30,53 @@
         position: relative;
         :first-child{
             width: 90%;
-            height: 730px;
+            height: 100%;
         } 
         :nth-child(2){
             width: 20%;
             position: absolute;
-            height: 580px;
+            height: 80%;
             bottom: 0;
             right:  0px;
         
         }
+    }
+
+    @media (max-width: 1420px) {
+        &_button{
+            height: 80px;
+
+            button{
+                height: 45px;
+            }
+        }
+    
+        p {
+            margin: 20px 20px 40px 20px;
+        }
+    }
+
+    @media (max-width: 1120px) {
+        &_button {
+            height: 80px;
+            
+            button {
+                font-size: 12px;
+            }
+        }
+    }
+
+    @media (max-width: 920px) {
+        &_button{
+            height: 60px;
+            button{
+                height: 40px;
+                font-size: 10px;
+            }
+        }
+                &_image {
+                    margin: 20px auto;
+                }
+        
     }
 }

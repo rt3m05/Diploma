@@ -1,6 +1,6 @@
 import React from "react"; 
 import MyButton from "../../../UI/button/MyButton";
-import Logo from "../../../image/logo_company.png";
+import Logo from "../../../image/logo_company_home.png";
 import "../../../style/css/barNav.css";
 
 const BarNav = () => {

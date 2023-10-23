@@ -1,0 +1,14 @@
+.burgerMenu{
+    display: none;
+    &_icon{
+        margin-top: 35px;
+        text-align: center;
+        transform: scale(1.3,1.3);
+    }
+    &_mobileMenu{
+        a{
+            display: block;
+            text-decoration: none;
+        }
+    }
+}

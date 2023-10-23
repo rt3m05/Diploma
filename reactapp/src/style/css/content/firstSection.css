@@ -1,17 +1,27 @@
 .firstSection {
   width: 40%;
-  height: 300px;
   margin: 50px auto;
   background: linear-gradient(90deg, #D7F9F3, #B8F5FA);
+  background-size: 200% 200%;
   border-radius: 20px;
   font-size: 35px;
   font-weight: 500;
   text-align: center;
+  animation: gradientAnimation 1s linear infinite alternate;
+}
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 .firstSection img {
+  position: relative;
   width: 90%;
-  height: 45px;
-  margin-top: -1.5%;
+  height: 100%;
+  top: -5px;
 }
 .firstSection p {
   margin: 20px 20px 50px 20px;
@@ -22,17 +32,84 @@
   justify-content: space-around;
 }
 .firstSection_button button {
-  padding: 10px;
   cursor: pointer;
   border-radius: 20px;
   width: 40%;
   height: 45px;
-  margin: 0px 25px;
+  margin: 0px 25px 25px 25px;
   font-size: 20px;
   font-weight: 600;
   border: none;
   background: #3EE9CA;
   color: #ffffff;
+  transition: box-shadow 0.3s ease;
+}
+.firstSection_button button:hover {
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+}
+@media (max-width: 1720px) {
+  .firstSection {
+    width: 45%;
+    font-size: 30;
+  }
+  .firstSection button {
+    font-size: 17px;
+  }
+}
+@media (max-width: 1420px) {
+  .firstSection {
+    width: 55%;
+  }
+  .firstSection p {
+    margin: 20px 20px 40px 20px;
+  }
+}
+@media (max-width: 1120px) {
+  .firstSection {
+    width: 55%;
+    font-size: 24px;
+    margin: 30px auto;
+  }
+  .firstSection img {
+    top: -7px;
+  }
+  .firstSection p {
+    margin: 20px;
+  }
+  .firstSection button {
+    font-size: 15px;
+    height: 35px;
+  }
+}
+@media (max-width: 1020px) {
+  .firstSection {
+    width: 45%;
+    font-size: 20px;
+    margin: 20px auto;
+  }
+  .firstSection img {
+    top: -5px;
+  }
+  .firstSection p {
+    margin: 20px;
+    padding: 0px 25px;
+  }
+  .firstSection button {
+    height: 30px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 920px) {
+  .firstSection p {
+    margin: 10px;
+    padding: 0px 20px;
+  }
+  .firstSection_button button {
+    width: 60%;
+  }
+  .firstSection_button button:nth-child(2) {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=firstSection.css.map */

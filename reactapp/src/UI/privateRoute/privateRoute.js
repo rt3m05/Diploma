@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import { React, Route,  useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import HomePage from "../home/homePage";
 
-const Home = () => {
+const PrivateRoute = ({path, element}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,12 +10,12 @@ const Home = () => {
       .find((row) => row.startsWith("token="))
       ?.split("=")[1];
     console.log(token);
-    if (token) {
-      navigate("/user/listproject");
+    if (!token) {
+      navigate('/login');
     } 
   }, [navigate]);
 
-  return <HomePage/>;
+  return <Route path={path} element={element} />;
 };
 
-export default Home;
+export default PrivateRoute;

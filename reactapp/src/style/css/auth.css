@@ -1,12 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap");
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  min-height: 100%;
-  font-family: "Montserrat", sans-serif;
-}
-
 .auth_wrap {
   top: -10px;
   min-height: 100%;
@@ -15,7 +6,7 @@ body {
 }
 .auth_form {
   position: absolute;
-  width: 20%;
+  width: 560px;
   max-width: 420px;
   top: 20px;
   left: 50%;
@@ -46,7 +37,7 @@ body {
 }
 .auth_form_text {
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
 }
 .auth_form_text a {
@@ -79,23 +70,6 @@ body {
   outline: none;
   border-radius: 20px;
   font-size: 14px;
-}
-.auth_form p,
-.auth_form a {
-  font-size: 10px;
-}
-@media (max-width: 1220px) {
-  .auth_form_form {
-    width: 30%;
-  }
-}
-@media (max-width: 950px) {
-  .auth_form_form {
-    width: 40%;
-  }
-  .auth_form_title {
-    font-size: 20px;
-  }
 }
 .auth_form_other {
   position: absolute;
@@ -174,13 +148,6 @@ body {
   color: red;
   font-size: 0.7em;
   margin-left: 55px;
-}
-
-::placeholder {
-  font-family: "Montserrat", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: #29B097;
 }
 
 /*# sourceMappingURL=auth.css.map */

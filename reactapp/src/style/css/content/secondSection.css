@@ -12,6 +12,8 @@
 .secondSection_button button {
   width: 15%;
   height: 55px;
+  font-size: 16px;
+  font-weight: 600;
   margin: 0;
   border: none;
   border-radius: 10px;
@@ -25,14 +27,45 @@
 }
 .secondSection_image :first-child {
   width: 90%;
-  height: 730px;
+  height: 100%;
 }
 .secondSection_image :nth-child(2) {
   width: 20%;
   position: absolute;
-  height: 580px;
+  height: 80%;
   bottom: 0;
   right: 0px;
+}
+@media (max-width: 1420px) {
+  .secondSection_button {
+    height: 80px;
+  }
+  .secondSection_button button {
+    height: 45px;
+  }
+  .secondSection p {
+    margin: 20px 20px 40px 20px;
+  }
+}
+@media (max-width: 1120px) {
+  .secondSection_button {
+    height: 80px;
+  }
+  .secondSection_button button {
+    font-size: 12px;
+  }
+}
+@media (max-width: 920px) {
+  .secondSection_button {
+    height: 60px;
+  }
+  .secondSection_button button {
+    height: 40px;
+    font-size: 10px;
+  }
+  .secondSection_image {
+    margin: 20px auto;
+  }
 }
 
 /*# sourceMappingURL=secondSection.css.map */

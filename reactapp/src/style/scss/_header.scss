@@ -1,5 +1,5 @@
 
-.navBar{
+.header{
     width: 100%;
     height: 80px;
     border-radius: 0px 0px 40px 40px;
@@ -7,4 +7,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: 1280px) {
+        height: 60px;
+        border-radius: 0px 0px 30px 30px;
+    }
 }
