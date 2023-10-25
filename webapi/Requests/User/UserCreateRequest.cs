@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Data;
 
 namespace webapi.Requests.User
 {
@@ -19,6 +18,6 @@ namespace webapi.Requests.User
         [Compare("Password")]
         public string? ConfirmPassword { get; set; }
 
-        public byte[]? Image { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

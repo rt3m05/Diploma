@@ -8,6 +8,7 @@ namespace webapi.Models
         public Guid TileId { get; set; }
         public Guid UserId { get; set; }
         public string? Content { get; set; }
+        public byte[]? Image { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public TileItemTypes Type { get; set; }
         public byte Position { get; set; }

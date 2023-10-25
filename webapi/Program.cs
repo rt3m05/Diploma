@@ -5,6 +5,7 @@ using webapi.Auth;
 using webapi.DB;
 using webapi.DB.Repositories;
 using webapi.DB.Services;
+using webapi.DB.Services.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Configure DB settings
 builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("DbSettings"));
+
+//Configure DB Services settings
+builder.Services.Configure<UserServiceSettings>(builder.Configuration.GetSection("UserServiceSettings"));
+builder.Services.Configure<TileItemServiceSettings>(builder.Configuration.GetSection("TileItemServiceSettings"));
 
 //Add DB context
 builder.Services.AddSingleton<DataContext>();

@@ -17,5 +17,6 @@ namespace webapi.Requests.TileItem
         public byte Position { get; set; }
         [Required]
         public bool IsDone { get; set; }
+        public IFormFile? File { get; set; }
     }
 }

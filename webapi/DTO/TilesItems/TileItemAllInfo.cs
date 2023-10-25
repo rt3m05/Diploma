@@ -7,6 +7,7 @@ namespace webapi.DTO.TilesItems
     {
         public Guid Id { get; set; }
         public string? Content { get; set; }
+        public byte[]? Image { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public TileItemTypes Type { get; set; }
         public byte Position { get; set; }
@@ -19,6 +20,7 @@ namespace webapi.DTO.TilesItems
         {
             Id = tileItem.Id;
             Content = tileItem.Content;
+            Image = tileItem.Image;
             Type = tileItem.Type;
             Position = tileItem.Position;
             IsDone = tileItem.IsDone;

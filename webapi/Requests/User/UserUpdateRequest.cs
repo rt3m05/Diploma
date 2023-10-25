@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Data;
 
 namespace webapi.Requests.User
 {
@@ -26,7 +25,7 @@ namespace webapi.Requests.User
             set => _confirmPassword = replaceEmptyWithNull(value);
         }
 
-        public byte[]? Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         private string? replaceEmptyWithNull(string? value)
         {

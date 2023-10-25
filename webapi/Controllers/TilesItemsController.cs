@@ -70,7 +70,7 @@ namespace webapi.Controllers
         {
             try
             {
-                var tilesItems = await _tileItemService.GetAllByTile(tileId);
+                var tilesItems = await _tileItemService.GetAllByTileWithImage(tileId);
 
                 return Ok(tilesItems.Select(ti => new TileItemAllInfo(ti)));
             }
@@ -92,7 +92,7 @@ namespace webapi.Controllers
         {
             try
             {
-                var tileItem = await _tileItemService.GetById(id);
+                var tileItem = await _tileItemService.GetByIdWithImage(id);
 
                 return Ok(new TileItemAllInfo(tileItem));
             }
@@ -110,7 +110,7 @@ namespace webapi.Controllers
 
         // POST api/TilesItems
         [HttpPost]
-        public async Task<IActionResult> Create(TileItemCreateRequest model)
+        public async Task<IActionResult> Create([FromForm]TileItemCreateRequest model)
         {
             Guid id = Guid.Empty;
 
@@ -163,7 +163,7 @@ namespace webapi.Controllers
 
         // PUT api/TilesItems/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, TileItemUpdateRequest model)
+        public async Task<IActionResult> Update(Guid id, [FromForm]TileItemUpdateRequest model)
         {
             if(model.Type != null && model.Type.HasValue)
             {

@@ -8,6 +8,7 @@ namespace webapi.Models
         public string? Nickname { get; set; }
         public string? Email { get; set; }
         public string? PasswordHash { get; set; }
+        public string? ImageName {  get; set; }
         public byte[]? Image { get; set; }
 
         public User() { }
@@ -18,7 +19,6 @@ namespace webapi.Models
             Nickname = req.Nickname;
             Email = req.Email;
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
-            Image = req.Image;
         }
     }
 }
