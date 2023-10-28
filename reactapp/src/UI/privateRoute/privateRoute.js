@@ -1,5 +1,5 @@
-import { React, Route,  useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useEffect } from "react";
+import {Route, useNavigate } from "react-router-dom";
 
 const PrivateRoute = ({path, element}) => {
   const navigate = useNavigate();

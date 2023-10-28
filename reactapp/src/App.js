@@ -1,4 +1,5 @@
-import { Routes, Route} from "react-router-dom";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Auth from "./pages/Authorization";
 import Login from "./pages/Login";
@@ -11,9 +12,8 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/auth" element={<Auth/>}/>
         <Route path="/login" element={<Login />} />
-        <Route path="/user" element={<PrivateRoute path="/" element={<Users />}/>}>
-          <Route path="listproject" element={<Users/>} />
-        </Route>
+        <PrivateRoute path="/user/listProject" element={<Users />}/>
+        <PrivateRoute path="/user/tyb" element={<Users />}/>
       </Routes>
   );
 }
