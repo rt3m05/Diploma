@@ -11,8 +11,8 @@ const MobileBar = () => {
             </div>
             <div className="burgerMenu_mobileMenu">
                 <a href="/">Продукт</a>
-                <a href="#">Галерея</a>
-                <a href="#">Команда</a>
+                <a href="/">Галерея</a>
+                <a href="/">Команда</a>
             </div>
         </div>
     );
