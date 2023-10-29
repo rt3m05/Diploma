@@ -23,6 +23,7 @@ import RecentIcon from "../images2/recent.png";
 import '../styles2/ProjectsPage/mainPage.css';
 
 function App() {
+  
   const menuAdd = () => {
     let leftMenu = document.querySelector(".Workspace_leftMenu");
     leftMenu.classList.toggle("disable");
@@ -38,11 +39,22 @@ const AddProject = () =>{
     div.classList.toggle("App_ProjectName_div_disable");
     div.classList.toggle("App_ProjectName_div_active");
 }
+const getEmail = async()=>{
+  let token = document.cookie;
+  token = token.substring(6);
+  
+}
 const getProjects = async() =>{
+  let token = document.cookie;
+  token = token.substring(6);
   try{
       const response = await fetch("https://localhost:7023/api/Projects", {
         method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
       });
+      
 
       if (!response.ok) {
         throw new Error(`Ошибка запроса: ${response.status}`);
@@ -50,7 +62,7 @@ const getProjects = async() =>{
       
       let App_projects = document.querySelector('.App_projects');
       
-      let result = response.JSON.parse(response);
+      let result = await response.json();
       for(let i=0; i<result.length; ++i){
         App_projects.insertAdjacentHTML("afterbegin", `
         <a href='' class='App_project'>
@@ -74,35 +86,33 @@ const getProjects = async() =>{
 const handleSubmit = async(e) =>{
     e.preventDefault();
     let input = document.querySelector(`.App_ProjectName_div form [type="text"]`);
-    const name = input.textContent;
+    const name = input.value;
+    let token = document.cookie;
+    token = token.substring(6);
     if(name==""){
       input.placeholder = "Поле не може бути пустим!";
     }
       try{
         const response = await fetch("https://localhost:7023/api/Projects", {
                   method: "POST",
-                  mode: 'no-cors',
                   headers: {
-                      "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
                       "name": name
                   }),
               });
-          console.dir(response);
         if (!response.ok) {
             throw new Error(`Ошибка запроса: ${response.status}`);
         }
-        const token = await response.text();
         
-        if (!token) {
-            throw new Error("Отсутствует токен в ответе сервера.");
-        }
       }
       catch (error) {
         console.error('Ошибка:', error.message);
       }
 }
+getProjects();
   return (
     <div className="App">
     <div className="App_ProjectName_div App_ProjectName_div_disable">
@@ -190,36 +200,7 @@ const handleSubmit = async(e) =>{
               <input type="submit" value=" " className="App_searchSubmit"/>
           </form>
         </div>
-        <div className='App_projects'>
-
-          <a href='' className='App_project'>
-            
-            <div>
-              <img src={ProjIcon} alt="ProjIcon" />
-              <h2>Test 1</h2>
-            </div>
-            
-            <h3>25.09.2023</h3>
-          </a>
-          <a href='' className='App_project'>
-
-            <div>
-              <img src={ProjIcon} alt="ProjIcon" />
-              <h2>Test 2</h2>
-            </div>
-            
-            <h3>25.09.2023</h3>
-          </a>
-          <a href='' className='App_project'>
-
-            <div>
-              <img src={ProjIcon} alt="ProjIcon" />
-              <h2>Test 3</h2>
-            </div>
-
-            <h3>25.09.2023</h3>
-          </a>
-        </div>
+        <div className='App_projects'></div>
       </div>
       <div className='App_right'>
 
