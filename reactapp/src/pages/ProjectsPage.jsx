@@ -50,7 +50,7 @@ const getProjects = async() =>{
       
       let App_projects = document.querySelector('.App_projects');
       
-      let result = responce.JSON.parse(response);
+      let result = response.JSON.parse(response);
       for(let i=0; i<result.length; ++i){
         App_projects.insertAdjacentHTML("afterbegin", `
         <a href='' class='App_project'>
