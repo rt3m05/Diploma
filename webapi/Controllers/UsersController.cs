@@ -102,7 +102,7 @@ namespace webapi.Controllers
 
         // POST api/users/register
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromForm]UserCreateRequest model)
+        public async Task<IActionResult> Register(UserCreateRequest model)
         {
             Guid id = Guid.Empty;
             string? token = null;
@@ -146,7 +146,7 @@ namespace webapi.Controllers
         // PUT api/users/5
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> Update([FromForm]UserUpdateRequest model)
+        public async Task<IActionResult> Update(UserUpdateRequest model)
         {
             string? email = null;
             try

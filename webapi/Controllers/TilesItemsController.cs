@@ -110,7 +110,7 @@ namespace webapi.Controllers
 
         // POST api/TilesItems
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm]TileItemCreateRequest model)
+        public async Task<IActionResult> Create(TileItemCreateRequest model)
         {
             Guid id = Guid.Empty;
 
@@ -163,7 +163,7 @@ namespace webapi.Controllers
 
         // PUT api/TilesItems/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromForm]TileItemUpdateRequest model)
+        public async Task<IActionResult> Update(Guid id, TileItemUpdateRequest model)
         {
             if(model.Type != null && model.Type.HasValue)
             {
