@@ -33,9 +33,87 @@ const menuRemove = () => {
     leftMenu.classList.toggle("active");
     leftMenu.classList.toggle("disable");
 };
+const AddProject = () =>{
+    let div = document.querySelector(".App_ProjectName_div");
+    div.classList.toggle("App_ProjectName_div_disable");
+    div.classList.toggle("App_ProjectName_div_active");
+}
+const getProjects = async() =>{
+  try{
+      const response = await fetch("https://localhost:7023/api/Projects", {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+      
+      let App_projects = document.querySelector('.App_projects');
+      
+      let result = responce.JSON.parse(response);
+      for(let i=0; i<result.length; ++i){
+        App_projects.insertAdjacentHTML("afterbegin", `
+        <a href='' class='App_project'>
+            
+        <div>
+          <img src=${ProjIcon} alt="ProjIcon" />
+          <h2>${result[i].name}</h2>
+        </div>
+        
+        <h3>${result[i].dateStamp}</h3>
+      </a>
+        `);
+      }
+
+
+  }
+  catch(error){
+    console.error('Ошибка:', error.message);
+  }
+}
+const handleSubmit = async(e) =>{
+    e.preventDefault();
+    let input = document.querySelector(`.App_ProjectName_div form [type="text"]`);
+    const name = input.textContent;
+    if(name==""){
+      input.placeholder = "Поле не може бути пустим!";
+    }
+      try{
+        const response = await fetch("https://localhost:7023/api/Projects", {
+                  method: "POST",
+                  mode: 'no-cors',
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                      "name": name
+                  }),
+              });
+          console.dir(response);
+        if (!response.ok) {
+            throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+        const token = await response.text();
+        
+        if (!token) {
+            throw new Error("Отсутствует токен в ответе сервера.");
+        }
+      }
+      catch (error) {
+        console.error('Ошибка:', error.message);
+      }
+}
   return (
     <div className="App">
-
+    <div className="App_ProjectName_div App_ProjectName_div_disable">
+          <form onSubmit={handleSubmit}>
+            <p onClick={AddProject}>Закрити</p>
+            <input type="text" name="name" placeholder="Введіть ім'я проєкту: "/>
+            <div>
+              <input type="submit" value="Відправити"/> 
+            </div>
+          </form> 
+    </div>
     <div className='Workspace_leftMenu disable'>
 
       <div className='Workspace_lLogo'>
@@ -99,10 +177,10 @@ const menuRemove = () => {
             </div>
 
             <div className='App_addProj'>
-              <a href="">
+              <div className='App_addProj_div' onClick={AddProject}>
                 <img src={AddIcon} alt="add" className='App_addIcon'/>
-              <p>Новий проєкт</p>
-              </a>
+                <p>Новий проєкт</p>
+              </div>
             </div>
 
           </div>
@@ -113,6 +191,7 @@ const menuRemove = () => {
           </form>
         </div>
         <div className='App_projects'>
+
           <a href='' className='App_project'>
             
             <div>
