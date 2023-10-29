@@ -23,7 +23,7 @@ import RecentIcon from "../images2/recent.png";
 import '../styles2/ProjectsPage/mainPage.css';
 
 function App() {
-  
+
   const menuAdd = () => {
     let leftMenu = document.querySelector(".Workspace_leftMenu");
     leftMenu.classList.toggle("disable");
@@ -39,15 +39,13 @@ const AddProject = () =>{
     div.classList.toggle("App_ProjectName_div_disable");
     div.classList.toggle("App_ProjectName_div_active");
 }
-const getEmail = async()=>{
-  let token = document.cookie;
-  token = token.substring(6);
-  
-}
+
 const getProjects = async() =>{
+  
   let token = document.cookie;
   token = token.substring(6);
-  try{
+
+    try{
       const response = await fetch("https://localhost:7023/api/Projects", {
         method: "GET",
         headers: {
@@ -59,29 +57,34 @@ const getProjects = async() =>{
       if (!response.ok) {
         throw new Error(`Ошибка запроса: ${response.status}`);
       }
-      
+
       let App_projects = document.querySelector('.App_projects');
       
       let result = await response.json();
+
+      result.sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+      const baseUrl = window.location.origin;
+      
       for(let i=0; i<result.length; ++i){
         App_projects.insertAdjacentHTML("afterbegin", `
-        <a href='' class='App_project'>
+        <a href='${baseUrl}/user/workspace/${result[i].id}' class='App_project'>
             
         <div>
           <img src=${ProjIcon} alt="ProjIcon" />
           <h2>${result[i].name}</h2>
         </div>
         
-        <h3>${result[i].dateStamp}</h3>
+        <h3>${result[i].timeStamp}</h3>
       </a>
         `);
       }
+      
 
-
-  }
-  catch(error){
-    console.error('Ошибка:', error.message);
-  }
+      }
+      catch(error){
+        console.error('Ошибка:', error.message);
+      }
+  
 }
 const handleSubmit = async(e) =>{
     e.preventDefault();
@@ -106,11 +109,33 @@ const handleSubmit = async(e) =>{
         if (!response.ok) {
             throw new Error(`Ошибка запроса: ${response.status}`);
         }
-        
       }
       catch (error) {
         console.error('Ошибка:', error.message);
       }
+
+      try{
+        const response = await fetch("https://localhost:7023/api/Projects", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+        });
+        
+  
+        if (!response.ok) {
+          throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+        
+        let result = await response.json();
+  
+        result.sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+        
+        window.location.href = `/user/workspace/${result[0].id}`;
+    }
+    catch(error){
+      console.error('Ошибка:', error.message);
+    }
 }
 getProjects();
   return (
@@ -283,6 +308,7 @@ getProjects();
       </div>
     </div>
   );
+  
 }
 
 export default App;

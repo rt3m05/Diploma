@@ -1,4 +1,6 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+
 import CompanyIcon from '../images2/companyLogo.png';
 import HomeIcon from '../images2/home.png';
 import MenuIcon from '../images2/menu.png';
@@ -29,6 +31,8 @@ import '../styles2/Workspace/workspace.css';
 
 
 function Workspace() {
+    const { id } = useParams();
+    
     const menuAdd = () => {
         let leftMenu = document.querySelector(".Workspace_leftMenu");
         leftMenu.classList.toggle("disable");
