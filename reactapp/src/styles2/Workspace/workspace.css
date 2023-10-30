@@ -100,6 +100,7 @@ body{
   align-items: center;
   padding: 10px;
   width: 100%;
+  cursor: pointer;
 }
 .Workspace_trash img{
   width: 40px;
@@ -312,6 +313,51 @@ body{
 
 .Workspace_navBar2{
   display: none;
+}
+
+.Workspace_deleteField_active{
+  visibility: visible;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.5s;
+}
+.Workspace_deleteField_disable{
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+.Workspace_deleteField{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 11;
+}
+.Workspace_deleteField div{
+  z-index: 12;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+}
+.Workspace_deleteField div div{
+  display: flex;
+  justify-content: space-around;
+}
+.Workspace_deleteField div div button{
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding: 5px 50px;
+  font-size: 1.2em;
+}
+.Workspace_Yes{
+  background-color: #ea3943;
+  color: #fff;
 }
 
 @media screen and (max-width: 1320px){

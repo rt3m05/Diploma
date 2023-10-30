@@ -32,7 +32,76 @@ import '../styles2/Workspace/workspace.css';
 
 function Workspace() {
     const { id } = useParams();
-    
+    const baseUrl = window.location.origin;
+    let leftId=null, rightId=null;
+
+    const fillInfo = async() => {
+        let token = document.cookie;
+        token = token.substring(6);
+
+        try{
+            const response = await fetch(`https://localhost:7023/api/Projects/${id}`, {
+                method: "GET",
+                headers: {
+                "Authorization": `Bearer ${token}`,
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+            
+            let result = await response.json();
+            
+            document.querySelector(".Workspace_arrowsDiv h1").textContent = result["name"];
+        }
+      catch(error){
+        console.error('Ошибка:', error.message);
+      }
+
+        try{
+            const response = await fetch("https://localhost:7023/api/Projects", {
+                method: "GET",
+                headers: {
+                "Authorization": `Bearer ${token}`
+                },
+            });
+            
+
+            if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+            
+            let result = await response.json();
+
+            result.sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+
+            const index = result.findIndex(item => item.id === id);
+
+            if (index !== -1) {
+                
+                const leftItem = index > 0 ? result[index - 1] : null;
+                const rightItem = index < result.length - 1 ? result[index + 1] : null;
+                
+
+                if(leftItem!==null){
+                    leftId = leftItem["id"];
+                }
+                if(rightItem!==null){
+                    rightId = rightItem["id"];
+                }
+
+            } 
+            else {
+                console.log("Элемент с id не найден в массиве result.");
+            }
+            
+            }
+        catch(error){
+             console.error('Ошибка:', error.message);
+        }
+    }
+ 
     const menuAdd = () => {
         let leftMenu = document.querySelector(".Workspace_leftMenu");
         leftMenu.classList.toggle("disable");
@@ -43,6 +112,47 @@ function Workspace() {
         leftMenu.classList.toggle("active");
         leftMenu.classList.toggle("disable");
     };
+    const prevProject = () => {
+        if(leftId!=null)
+        window.location.href = `/user/workspace/${leftId}`;
+    };
+    const nextProject = () => {
+        if(rightId!=null)
+        window.location.href = `/user/workspace/${rightId}`;
+    };
+    const deleteProjectChoice = () => {
+        let Workspace_deleteField = document.querySelector(".Workspace_deleteField");
+        Workspace_deleteField.classList.toggle("Workspace_deleteField_disable");
+        Workspace_deleteField.classList.toggle("Workspace_deleteField_active");
+    }
+
+    const deleteProject = async() => {
+        let token = document.cookie;
+        token = token.substring(6);
+        try{
+            const response = await fetch(`https://localhost:7023/api/Projects/${id}`, {
+                method: "DELETE",
+                headers: {
+                "Authorization": `Bearer ${token}`
+                },
+            });
+            if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+            window.location.href = `/user/listproject`;
+        }
+        catch(error){
+            console.error('Ошибка:', error.message);
+        }
+    }
+
+    const closeDeleteField = () => {
+        let Workspace_deleteField = document.querySelector(".Workspace_deleteField");
+        Workspace_deleteField.classList.toggle("Workspace_deleteField_disable");
+        Workspace_deleteField.classList.toggle("Workspace_deleteField_active");
+    }
+
+    fillInfo();
   return (
     <div className="Workspace">
         <div className='Workspace_leftMenu disable'>
@@ -80,18 +190,29 @@ function Workspace() {
                 </div>
             </div>
 
-            <div className='Workspace_trash'>
+            <div className='Workspace_trash' onClick={deleteProjectChoice}>
                 <img src={TrashIcon} alt='Plus2Icon'/>
-                <h3>Кошик</h3>
+                <h3>Видалити</h3>
             </div>
 
+        </div>
+
+        <div className='Workspace_deleteField Workspace_deleteField_disable'>
+            <div>
+                <h2>Ви дійсно хочете видалити проєкт?</h2>
+                <div>
+                    <button className='Workspace_No' onClick={closeDeleteField}>Ні</button>
+                    <button className='Workspace_Yes' onClick={deleteProject}>Так</button>
+                </div>
+
+            </div>
         </div>
 
         <div className='Workspace_navBar'>
 
             <img src={CompanyIcon} alt="CompanyIcon" className='Workspace_companyIcon' />
 
-            <a href='' className='Workspace_home'>
+            <a href={baseUrl + "/user/listproject"} className='Workspace_home'>
                 <img src={HomeIcon} alt="HomeIcon"  className='Workspace_homeIcon' />
             </a>
 
@@ -119,10 +240,10 @@ function Workspace() {
             <div className='Workspace_tabNavBar'>
                 <div className='Workspace_left'>
                     <div className='Workspace_arrowsDiv'>
-                        <h1>Test 1</h1>
+                        <h1></h1>
                         <div className='Workspace_arrows'>
-                            <img src={ArrowIcon} alt="arrow1" />
-                            <img src={ArrowIcon} alt="arrow2" />
+                            <img src={ArrowIcon} alt="arrow1" onClick={prevProject}/>
+                            <img src={ArrowIcon} alt="arrow2" onClick={nextProject}/>
                             <img src={Upload2Icon} alt="upload" />
                             <img src={Star2Icon} alt="star" />
                         </div>
@@ -164,6 +285,7 @@ function Workspace() {
 
     </div>
   );
+  
 }
 
 export default Workspace;
