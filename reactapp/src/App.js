@@ -12,8 +12,8 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/auth" element={<Auth/>}/>
         <Route path="/login" element={<Login />} />
-        <PrivateRoute path="/user/listProject" element={<Users />}/>
-        <PrivateRoute path="/user/tyb" element={<Users />}/>
+        <Route path="/user/listProject" element={<PrivateRoute Component={Users} />}/>
+        {/* <PrivateRoute path="/user/tyb" element={<Users />}/> */}
       </Routes>
   );
 }
