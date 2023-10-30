@@ -42,7 +42,10 @@ namespace webapi.DB.Services
             var all = await _tileItemRepository.GetAll();
             foreach(var item in all) 
             {
-                item.Image = File.ReadAllBytes(_settings.dir + "/" + item.UserId.ToString() + "/" + item.Content);
+                if (File.Exists(_settings.dir + "/" + item.UserId.ToString() + "/" + item.Content))
+                    item.Image = File.ReadAllBytes(_settings.dir + "/" + item.UserId.ToString() + "/" + item.Content);
+                else
+                    item.Image = null;
             }
             return all;
         }
