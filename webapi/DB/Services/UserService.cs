@@ -70,7 +70,10 @@ namespace webapi.DB.Services
             if (user == null)
                 throw new KeyNotFoundException("User not found");
 
-            user.Image = File.ReadAllBytes(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName);
+            if(File.Exists(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                user.Image = File.ReadAllBytes(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName);
+            else
+                user.Image = null;
 
             return user;
         }
@@ -82,7 +85,10 @@ namespace webapi.DB.Services
             if (user == null)
                 throw new KeyNotFoundException("User not found");
 
-            user.Image = File.ReadAllBytes(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName);
+            if(File.Exists(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                user.Image = File.ReadAllBytes(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName);
+            else
+                user.Image = null;
 
             return user;
         }
