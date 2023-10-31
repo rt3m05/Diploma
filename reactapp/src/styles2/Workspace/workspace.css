@@ -240,6 +240,7 @@ body{
 }
 
 .Workspace_right{
+  max-width: 1045px;
   height: inherit;
   display: flex;
   align-items: center;
@@ -247,8 +248,10 @@ body{
   background-color: rgba(207, 236, 249, 1); 
   border-radius: 5px;
   border: 1px solid #fff;
+  overflow-x: scroll;
 }
 .Workspace_tabs{
+  height: 40px;
   display: flex;
   align-items: center;
   margin-left: 10px;
@@ -259,18 +262,18 @@ body{
   border-radius: 5px;
   background-color: #fff;
   margin-right: 10px;
-  height: 40px;
   padding: 5px;
   text-decoration: none;
   color: #000;
   cursor: pointer;
 }
-.Workspace_currentTab{
+.Workspace_current{
   font-weight: bold;
 }
 .Workspace_plusTab{
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 .Workspace_plusTab img{
   border-radius: 50%;
@@ -360,6 +363,68 @@ body{
   color: #fff;
 }
 
+
+.Workspace_addTabField_disable{
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+.Workspace_addTabField_active{
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.5s;
+}
+.Workspace_addTabField{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5);
+}
+.Workspace_addTabField form{
+  width: 300px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+.Workspace_addTabField form p{
+  margin-bottom: 5px;
+  margin-top: 0px;
+  text-align: end;
+  cursor: pointer;
+  color: grey;
+}
+.Workspace_addTabField form [type="text"]{
+  width: 95%;
+  border-radius: 5px;
+  border: 2px solid rgba(62, 207, 219, 1);
+  outline: none;
+  padding: 5px;
+  margin: 5px;
+  margin-left: -5px;
+}
+.Workspace_addTabField form div{
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+.Workspace_addTabField form [type="submit"]{
+  border: none;
+  outline: none;
+  padding: 5px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgba(62, 207, 219, 1);
+  color: #fff;
+  font-size: 1.1em;
+}
+
+
 @media screen and (max-width: 1320px){
   .Workspace_left h1{
     width: 100px;
@@ -414,7 +479,7 @@ body{
     width: 100%;
   }
   .Workspace_right{
-    display: none;
+    /* display: none; */
   }
   .Workspace_rightMenu{
     display: none;
@@ -422,6 +487,7 @@ body{
   .Workspace_tabNavBar{
     background: linear-gradient(10deg, rgba(62, 182, 232, 1), rgba(62, 233, 202, 1), rgba(62, 182, 232, 1));
     position: static;
+    flex-direction: column;
   }
   .Workspace_left,
   .Workspace_arrowsDiv,

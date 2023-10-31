@@ -176,7 +176,7 @@
 }
 .App_ProjectName_div form div{
     display: flex;
-    justify-content: end;
+    justify-content: center;
     padding: 5px;
 }
 .App_ProjectName_div form [type="submit"]{
@@ -187,6 +187,7 @@
     cursor: pointer;
     background-color: rgba(62, 207, 219, 1);
     color: #fff;
+    font-size: 1.1em;
 }
 
 @media screen and (max-width: 1600px) {

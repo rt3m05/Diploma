@@ -100,8 +100,48 @@ function Workspace() {
         catch(error){
              console.error('Ошибка:', error.message);
         }
+
+        try{
+            
+            const response = await fetch(`https://localhost:7023/api/Tabs?projectId=${id}`, {
+                method: "GET",
+                headers: {
+                "Authorization": `Bearer ${token}`
+                }
+            });
+
+            let result = await response.json();
+
+            let Workspace_tabs = document.querySelector(".Workspace_tabs");
+            result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
+
+            for(let i=0; i<result.length-1; ++i){
+                Workspace_tabs.insertAdjacentHTML("afterbegin", `
+                    <p class='Workspace_tab' id="${result[i].id}">${result[i].name}</p>
+                `);
+            }
+            Workspace_tabs.insertAdjacentHTML("afterbegin", `
+                <p class='Workspace_tab Workspace_current' id="${result[result.length-1].id}">${result[result.length-1].name}</p>
+            `);
+
+            
+            let list = document.querySelectorAll(".Workspace_tab");
+
+            for(let i=0; i<list.length; ++i){
+                list[i].addEventListener('click', () => currentTab(list[i]));
+            }
+        }
+        catch(error){
+            console.error('Ошибка:', error.message);
+       }
     }
- 
+    const currentTab = (e)=>{
+        if(!e.classList.contains("Workspace_current")){
+            let tab = document.querySelector(".Workspace_current");
+            tab.classList.toggle("Workspace_current");
+            e.classList.toggle("Workspace_current");
+        }
+    }
     const menuAdd = () => {
         let leftMenu = document.querySelector(".Workspace_leftMenu");
         leftMenu.classList.toggle("disable");
@@ -150,6 +190,49 @@ function Workspace() {
         let Workspace_deleteField = document.querySelector(".Workspace_deleteField");
         Workspace_deleteField.classList.toggle("Workspace_deleteField_disable");
         Workspace_deleteField.classList.toggle("Workspace_deleteField_active");
+    }
+
+    const addTabField = () => {
+        let div = document.querySelector(".Workspace_addTabField");
+        div.classList.toggle("Workspace_addTabField_disable");
+        div.classList.toggle("Workspace_addTabField_active");
+    }
+    const closeAddTabField = () => {
+        let div = document.querySelector(".Workspace_addTabField");
+        div.classList.toggle("Workspace_addTabField_disable");
+        div.classList.toggle("Workspace_addTabField_active");
+    }
+    const handleAddTabSubmit = async(e) => {
+        e.preventDefault();
+        let input = document.querySelector(`.Workspace_addTabField form [type="text"]`);
+        const name = input.value;
+        let token = document.cookie;
+        token = token.substring(6);
+        if(name==""){
+            input.placeholder = "Поле не може бути пустим!";
+          }
+        try{
+            const response = await fetch(`https://localhost:7023/api/Tabs`, {
+                method: "POST",
+                headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "projectId": `${id}`,
+                    "name": name
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+            input.value = "";
+            closeAddTabField();
+            window.location.reload();
+        }
+        catch(error){
+            console.error('Ошибка:', error.message);
+        }
     }
 
     fillInfo();
@@ -208,6 +291,16 @@ function Workspace() {
             </div>
         </div>
 
+        <div className="Workspace_addTabField Workspace_addTabField_disable">
+          <form onSubmit={handleAddTabSubmit}>
+            <p onClick={closeAddTabField}>Закрити</p>
+            <input type="text" name="name" placeholder="Введіть ім'я вкладки: "/>
+            <div>
+              <input type="submit" value="Відправити"/> 
+            </div>
+          </form> 
+        </div>
+
         <div className='Workspace_navBar'>
 
             <img src={CompanyIcon} alt="CompanyIcon" className='Workspace_companyIcon' />
@@ -258,11 +351,11 @@ function Workspace() {
                 <div className='Workspace_right'>
 
                     <div className='Workspace_tabs'>
-                        <a href='' className='Workspace_currentTab'>tab 1</a>
+                        {/* <a href='' className='Workspace_currentTab'>tab 1</a>
                         <a href='' className='Workspace_tab'>tab 2</a>
                         <a href='' className='Workspace_tab'>tab 3</a>
-                        <a href='' className='Workspace_tab'>tab 4</a>
-                        <a href='' className='Workspace_plusTab'><img src={AddIcon} alt="add" /></a>
+                        <a href='' className='Workspace_tab'>tab 4</a> */}
+                        <p href='' className='Workspace_plusTab' onClick={addTabField}><img src={AddIcon} alt="add" /></p>
                     </div>
 
                 </div>
