@@ -133,7 +133,7 @@ const Auth = () => {
                     <p className="auth_form_text">Вже є акаунт? 
                         <a href="/login"> Увійти</a>
                     </p>
-                    {formError && <div className="auth_error_message">{formError}</div>}
+                    {formError && <div className="auth_form_error_message">{formError}</div>}
                     <MyInput 
                         className="auth_form_input"
                         type="email" 
@@ -142,7 +142,7 @@ const Auth = () => {
                         value={email} 
                         onChange={handleEmailChange}  
                     />
-                    {emailError && <div className="auth_error_message">{emailError}</div>}
+                    {emailError && <div className="auth_form_error_message">{emailError}</div>}
                     <MyInput 
                         className="auth_form_input"
                         type="password" 
@@ -152,7 +152,7 @@ const Auth = () => {
                         onChange={handlePasswordChange}
                     />
                     {passwordErrors.map((error, index) => (
-                        <div key={index} className="auth_error_message">{error}</div>
+                        <div key={index} className="auth_form_error_message">{error}</div>
                     ))}
                     <MyInput 
                         className="auth_form_input"
@@ -162,7 +162,7 @@ const Auth = () => {
                         value={confirmPassword}
                         onChange={handleConfirmPasswordChange}
                     />
-                    {confirmPasswordError && <div className="auth_error_message">{confirmPasswordError}</div>}
+                    {confirmPasswordError && <div className="auth_form_error_message">{confirmPasswordError}</div>}
                     <MyButton className="auth_form_button" type="submit">Створити акаунт</MyButton>
                 </form>
                  <AuthOther/>
