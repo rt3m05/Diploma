@@ -234,6 +234,75 @@ function Workspace() {
             console.error('Ошибка:', error.message);
         }
     }
+    const addTileItemField = ()=>{
+        let div = document.querySelector(".Workspace_addTileItemField");
+        div.classList.toggle("Workspace_addTabField_disable");
+        div.classList.toggle("Workspace_addTabField_active");
+    }
+    const addTile = async()=>{
+        let token = document.cookie;
+        token = token.substring(6);
+        let tabId = document.querySelector(".Workspace_current").id;
+        let lastTilePosition;
+        try{
+            const response = await fetch(`https://localhost:7023/api/Tiles?tabId=${tabId}`, {
+                method: "GET",
+                headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"                
+                },
+            });
+            const responseData = await response.json();
+            if(responseData.length!=0){
+                responseData.sort((a, b) => b.position - a.position);
+                lastTilePosition = responseData[0]["position"] + 1;
+                console.log("Success1");
+            }
+            else{
+                lastTilePosition=0;
+                console.log("Success2");
+            }
+            if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+        }
+        catch(error){
+            console.error('Ошибка:', error.message);
+        }
+
+
+        try{
+            const response = await fetch(`https://localhost:7023/api/Tiles`, {
+                method: "POST",
+                headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "tabId": tabId,
+                    "name": "string",
+                    "position": lastTilePosition
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+        }
+        catch(error){
+            console.error('Ошибка:', error.message);
+        }
+    }
+    const addTileItem = async(e)=>{
+        e.preventDefault();
+    }
+    const inputTileText = async(e)=>{
+        e.preventDefault();
+        console.dir(e.target.textContent);
+    }
+
+    const checkboxChange = async(e)=>{
+        console.dir(e.target);
+    }
 
     fillInfo();
   return (
@@ -301,6 +370,23 @@ function Workspace() {
           </form> 
         </div>
 
+        <div className="Workspace_addTileItemField Workspace_addTabField_disable">
+          <form onSubmit={addTileItem}>
+            <p onClick={addTileItemField}>Закрити</p>
+            <label>Виберіть тип:</label>
+            <section>
+                <label htmlFor="text">Text</label>
+                <input type="radio" name="tileitem" value={"text"}/>
+                <br/>
+                <label htmlFor="task">Task</label>
+                <input type="radio" name="tileitem" value={"task"}/>
+            </section>
+            <div>
+              <input type="submit" value="Відправити"/> 
+            </div>
+          </form> 
+        </div>
+
         <div className='Workspace_navBar'>
 
             <img src={CompanyIcon} alt="CompanyIcon" className='Workspace_companyIcon' />
@@ -344,17 +430,13 @@ function Workspace() {
 
                     <div className='Workspace_share'>
                         <img src={AddIcon} alt="add" />
-                        <p>Поділитися</p>
+                        <p onClick={addTile}>Додати тайл</p>
                     </div>
 
                 </div>
                 <div className='Workspace_right'>
 
                     <div className='Workspace_tabs'>
-                        {/* <a href='' className='Workspace_currentTab'>tab 1</a>
-                        <a href='' className='Workspace_tab'>tab 2</a>
-                        <a href='' className='Workspace_tab'>tab 3</a>
-                        <a href='' className='Workspace_tab'>tab 4</a> */}
                         <p href='' className='Workspace_plusTab' onClick={addTabField}><img src={AddIcon} alt="add" /></p>
                     </div>
 
@@ -362,7 +444,23 @@ function Workspace() {
             </div>
 
             <div className='Workspace_field'>
-
+                <div className="Workspace_tile">
+                    <h1 className="Workspace_TileTitle">Title</h1>
+                    <div className="Workspace_text">
+                        <input type="text" onChange={inputTileText} placeholder='Input some text'/>
+                        <div className='Workspace_addTileItem' onClick={addTileItemField}>+</div>
+                    </div>
+                    <div className="Workspace_task">
+                        <input type="checkbox" onChange={checkboxChange} />
+                        <input type="text" onChange={inputTileText} placeholder='Input some text'/>
+                        <div className='Workspace_addTileItem'>+</div>
+                    </div>
+                    <div className="Workspace_image">
+                        <img src={ProjIcon} alt="" />
+                        <div className='Workspace_addTileItem'>+</div>
+                    </div>
+                </div>
+  
             </div>
 
         </div>
