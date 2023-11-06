@@ -100,6 +100,7 @@ body{
   align-items: center;
   padding: 10px;
   width: 100%;
+  cursor: pointer;
 }
 .Workspace_trash img{
   width: 40px;
@@ -160,6 +161,7 @@ body{
   overflow: hidden;
   position: sticky;
   top: 0;
+  z-index: 2;
 }
 .Workspace_left{
   background-color: rgba(184, 245, 250, 1);
@@ -239,6 +241,7 @@ body{
 }
 
 .Workspace_right{
+  max-width: 1045px;
   height: inherit;
   display: flex;
   align-items: center;
@@ -246,8 +249,10 @@ body{
   background-color: rgba(207, 236, 249, 1); 
   border-radius: 5px;
   border: 1px solid #fff;
+  overflow-x: scroll;
 }
 .Workspace_tabs{
+  height: 40px;
   display: flex;
   align-items: center;
   margin-left: 10px;
@@ -258,18 +263,18 @@ body{
   border-radius: 5px;
   background-color: #fff;
   margin-right: 10px;
-  height: 40px;
   padding: 5px;
   text-decoration: none;
   color: #000;
   cursor: pointer;
 }
-.Workspace_currentTab{
+.Workspace_current{
   font-weight: bold;
 }
 .Workspace_plusTab{
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 .Workspace_plusTab img{
   border-radius: 50%;
@@ -280,13 +285,83 @@ body{
 }
 
 .Workspace_field{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 5px;
   width: 100%;
-  height: 800px;
+  height: fit-content;
   margin-top: 10px;
   border-radius: 5px;
   background-color: rgba(215, 249, 243, 1);
 }
+.Workspace_tile{
+  height: 700px;
+  width: 95%;
+  margin: 5px auto;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: white;
+}
+.Workspace_TileTitle{
+  margin: 0;
+  margin-bottom: 10px;
+}
+.Workspace_text, .Workspace_task{
+  margin-bottom: 10px!important;
+  padding: 5px;
+  border-radius: 3px;
+  position: relative;
+  width: 95%;
+  margin: 0 auto;
+}
+.Workspace_text [type="text"]:focus, .Workspace_task [type="text"]:focus {
+  background-color: rgb(240, 240, 240);
+  outline: none;
+}
+.Workspace_task{
+  display: flex;
+}
+.Workspace_task [type="text"], .Workspace_text [type="text"]{
+  margin: 2px;
+  width: 100%;
+  width: 95%;
+  padding: 5px;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+}
+.Workspace_addTileItem{
+  position: absolute;
+  cursor: pointer;
+  color: rgb(205, 205, 205);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  font-size: 1.5em;
+  right: 0px;
+  bottom: -7px;
+  transition: 0.3s;
+}
+.Workspace_addTileItem:hover{
+  color: #000;
+  transition: 0.3s;
+}
+.Workspace_image{
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.Workspace_image img{
+  display: block;
+  width: 65%;
+}
+.Workspace_addTileItemField [type="radio"]{
+  margin: 5px;
 
+}
 .Workspace_rightMenu{
   display: flex;
   flex-direction: column;
@@ -314,6 +389,119 @@ body{
   display: none;
 }
 
+.Workspace_deleteField_active{
+  visibility: visible;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.5s;
+}
+.Workspace_deleteField_disable{
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+.Workspace_deleteField{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 11;
+}
+.Workspace_deleteField div{
+  z-index: 12;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+}
+.Workspace_deleteField div div{
+  display: flex;
+  justify-content: space-around;
+}
+.Workspace_deleteField div div button{
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding: 5px 50px;
+  font-size: 1.2em;
+}
+.Workspace_Yes{
+  background-color: #ea3943;
+  color: #fff;
+}
+
+
+.Workspace_addTabField_disable{
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+.Workspace_addTabField_active{
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.5s;
+}
+.Workspace_addTabField, .Workspace_addTileItemField{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5);
+}
+.Workspace_addTabField form, .Workspace_addTileItemField form{
+  width: 300px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+.Workspace_addTabField form p, .Workspace_addTileItemField form p{
+  margin-bottom: 5px;
+  margin-top: 0px;
+  text-align: end;
+  cursor: pointer;
+  color: grey;
+}
+.Workspace_addTabField form [type="text"], .Workspace_addTileItemField form [type="text"]{
+  width: 95%;
+  border-radius: 5px;
+  border: 2px solid rgba(62, 207, 219, 1);
+  outline: none;
+  padding: 5px;
+  margin: 5px;
+  margin-left: -5px;
+}
+.Workspace_addTabField form div, .Workspace_addTileItemField form div{
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+.Workspace_addTabField form [type="submit"], .Workspace_addTileItemField form [type="submit"]{
+  border: none;
+  outline: none;
+  padding: 5px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgba(62, 207, 219, 1);
+  color: #fff;
+  font-size: 1.1em;
+}
+
+
+@media screen and (max-width: 1585px){
+  .Workspace_field{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
 @media screen and (max-width: 1320px){
   .Workspace_left h1{
     width: 100px;
@@ -330,9 +518,13 @@ body{
 
 
 @media screen and (max-width: 1150px){
+  .Workspace_field{
+    grid-template-columns: 1fr 1fr;
+  }
   .Workspace_tabNavBar{
     flex-direction: column;
     height: fit-content;
+    position: static;
   }
   .Workspace_left{
     width: 100%;
@@ -357,6 +549,9 @@ body{
 }
 
 @media screen and (max-width: 726px){
+  .Workspace_field{
+    grid-template-columns: 1fr;
+  }
   .Workspace_navBar{
     display: none;
   }
@@ -368,7 +563,7 @@ body{
     width: 100%;
   }
   .Workspace_right{
-    display: none;
+    /* display: none; */
   }
   .Workspace_rightMenu{
     display: none;
@@ -376,6 +571,7 @@ body{
   .Workspace_tabNavBar{
     background: linear-gradient(10deg, rgba(62, 182, 232, 1), rgba(62, 233, 202, 1), rgba(62, 182, 232, 1));
     position: static;
+    flex-direction: column;
   }
   .Workspace_left,
   .Workspace_arrowsDiv,
