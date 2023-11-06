@@ -70,7 +70,7 @@ namespace webapi.Controllers
         {
             try
             {
-                var tilesItems = await _tileItemService.GetAllByTile(tileId);
+                var tilesItems = await _tileItemService.GetAllByTileWithImage(tileId);
 
                 return Ok(tilesItems.Select(ti => new TileItemAllInfo(ti)));
             }
@@ -92,7 +92,7 @@ namespace webapi.Controllers
         {
             try
             {
-                var tileItem = await _tileItemService.GetById(id);
+                var tileItem = await _tileItemService.GetByIdWithImage(id);
 
                 return Ok(new TileItemAllInfo(tileItem));
             }

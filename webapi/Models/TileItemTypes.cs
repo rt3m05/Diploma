@@ -2,7 +2,8 @@
 {
     public enum TileItemTypes
     {
-        Note = 0,
-        Task = 1
+        Note = 1,
+        Task = 2,
+        Image = 3
     }
 }

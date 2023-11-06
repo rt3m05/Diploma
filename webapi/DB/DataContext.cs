@@ -136,7 +136,7 @@ namespace webapi.DB
                                 Nickname VARCHAR(255),
                                 Email VARCHAR(255) UNIQUE NOT NULL,
                                 PasswordHash VARCHAR(255) NOT NULL,
-                                Image LONGBLOB
+                                ImageName VARCHAR(255)
                             );";
             await connection.ExecuteAsync(sql);
         }

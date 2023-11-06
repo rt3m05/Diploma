@@ -1,4 +1,6 @@
-﻿using webapi.DB.Repositories;
+﻿using Microsoft.Extensions.Options;
+using webapi.DB.Repositories;
+using webapi.DB.Services.Settings;
 using webapi.Exceptions;
 using webapi.Models;
 using webapi.Requests.User;
@@ -10,6 +12,8 @@ namespace webapi.DB.Services
         Task<IEnumerable<User>> GetAll();
         Task<User> GetById(Guid id);
         Task<User> GetByEmail(string email);
+        Task<User> GetByIdWithImage(Guid id);
+        Task<User> GetByEmailWithImage(string email);
         Task<Guid> Create(UserCreateRequest model);
         Task Update(string email, UserUpdateRequest model);
         Task Delete(Guid id);
@@ -18,18 +22,25 @@ namespace webapi.DB.Services
 
     public class UserService : IUserService
     {
+        private UserServiceSettings _settings;
         private readonly IUserRepository _userRepository;
         private readonly IProjectService _projectService;
 
-        public UserService(IUserRepository userRepository, IProjectService projectService)
+        public UserService(IOptions<UserServiceSettings> settings, IUserRepository userRepository, IProjectService projectService)
         {
+            _settings = settings.Value;
             _userRepository = userRepository;
             _projectService = projectService;
         }
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _userRepository.GetAll();
+            var all = await _userRepository.GetAll();
+            foreach (var item in all)
+            {
+                item.Image = File.ReadAllBytes(_settings.dir + "/" + item.Id.ToString() + "/" + item.ImageName);
+            }
+            return all;
         }
 
         public async Task<User> GetById(Guid id)
@@ -52,12 +63,61 @@ namespace webapi.DB.Services
             return user;
         }
 
+        public async Task<User> GetByIdWithImage(Guid id)
+        {
+            var user = await _userRepository.GetById(id);
+
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            if(File.Exists(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                user.Image = File.ReadAllBytes(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName);
+            else
+                user.Image = null;
+
+            return user;
+        }
+
+        public async Task<User> GetByEmailWithImage(string email)
+        {
+            var user = await _userRepository.GetByEmail(email);
+
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            if(File.Exists(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                user.Image = File.ReadAllBytes(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName);
+            else
+                user.Image = null;
+
+            return user;
+        }
+
         public async Task<Guid> Create(UserCreateRequest model)
         {
             if (await _userRepository.GetByEmail(model.Email!) != null)
                 throw new EmailExistsException("User with the email '" + model.Email + "' already exists");
 
             User user = new(model);
+
+            if (model.Image != null && model.Image.Length > 0)
+            {
+                var strs = model.Image.FileName.Split('.');
+                user.ImageName = Guid.NewGuid().ToString() + "." + strs.Last();
+
+                if (!Directory.Exists(_settings.dir + "/" + user.Id.ToString()))
+                {
+                    Directory.CreateDirectory(_settings.dir + "/" + user.Id.ToString());
+                }
+                if (!File.Exists(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                {
+                    using (var stream = File.Create(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                    {
+                        await model.Image.CopyToAsync(stream);
+                        stream.Flush();
+                    }
+                }
+            }
 
             await _userRepository.Create(user);
 
@@ -87,8 +147,29 @@ namespace webapi.DB.Services
             if(!string.IsNullOrEmpty(model.Email))
                 user.Email = model.Email;
 
-            if(model.Image != null && model.Image.Length > 0)
-                user.Image = model.Image;
+            if (model.Image != null && model.Image.Length > 0)
+            {
+                if (user.ImageName != null && File.Exists(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                {
+                    File.Delete(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName);
+                }
+
+                var strs = model.Image.FileName.Split('.');
+                user.ImageName = Guid.NewGuid().ToString() + "." + strs.Last();
+
+                if (!Directory.Exists(_settings.dir + "/" + user.Id.ToString()))
+                {
+                    Directory.CreateDirectory(_settings.dir + "/" + user.Id.ToString());
+                }
+                if (!File.Exists(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                {
+                    using (var stream = File.Create(_settings.dir + "/" + user.Id.ToString() + "/" + user.ImageName))
+                    {
+                        await model.Image.CopyToAsync(stream);
+                        stream.Flush();
+                    }
+                }
+            }
 
             await _userRepository.Update(user);
         }
@@ -99,6 +180,10 @@ namespace webapi.DB.Services
             if (user != null)
             {
                 await _projectService.DeleteAllByUser(user.Id);
+
+                if (Directory.Exists(_settings.dir + "/" + user.Id.ToString()))
+                    Directory.Delete(_settings.dir + "/" + user.Id.ToString(), true);
+
                 await _userRepository.Delete(user.Id);
             }
             else
@@ -111,6 +196,10 @@ namespace webapi.DB.Services
             if (user != null)
             {
                 await _projectService.DeleteAllByUser(user.Id);
+
+                if (Directory.Exists(_settings.dir + "/" + user.Id.ToString()))
+                    Directory.Delete(_settings.dir + "/" + user.Id.ToString(), true);
+
                 await _userRepository.Delete(user.Email!);
             }
             else

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using webapi.Auth;
 using webapi.DB.Services;
+using webapi.DTO.Users;
 using webapi.Exceptions;
 using webapi.Requests.User;
 
@@ -27,7 +28,7 @@ namespace webapi.Controllers
 
         // GET: api/users/all
         [HttpGet("all")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             if (_env.IsDevelopment())
                 try
@@ -41,6 +42,34 @@ namespace webapi.Controllers
                 }
             else
                 return StatusCode(404);
+        }
+
+        // GET api/users
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Get()
+        {
+            string? email = null;
+            try
+            {
+                email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                if (email == null)
+                    throw new Exception("Email was null.");
+
+                var user = await _userService.GetByEmailWithImage(email);
+
+                return Ok(new UserAllInfo(user));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message + " Email: " + email);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
 
         // POST: api/users/login

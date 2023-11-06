@@ -54,8 +54,8 @@ namespace webapi.DB.Repositories
         {
             using var connection = _context.CreateConnection();
             var sql = @"
-                        INSERT INTO Users (Id, Nickname, Email, PasswordHash, Image)
-                        VALUES (@Id, @Nickname, @Email, @PasswordHash, @Image)
+                        INSERT INTO Users (Id, Nickname, Email, PasswordHash, ImageName)
+                        VALUES (@Id, @Nickname, @Email, @PasswordHash, @ImageName)
                       ";
             await connection.ExecuteAsync(sql, user);
         }
@@ -68,7 +68,7 @@ namespace webapi.DB.Repositories
                         SET Nickname = @Nickname,
                             Email = @Email,
                             PasswordHash = @PasswordHash, 
-                            Image = @Image
+                            ImageName = @ImageName
                         WHERE Id = @Id
                       ";
             await connection.ExecuteAsync(sql, user);
