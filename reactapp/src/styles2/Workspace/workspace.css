@@ -333,13 +333,24 @@ body{
   border: none;
 }
 .Workspace_text:hover .Workspace_addTileItem,
-.Workspace_task:hover .Workspace_addTileItem{
+.Workspace_task:hover .Workspace_addTileItem,
+.Workspace_text:hover .Workspace_deleteTileItem,
+.Workspace_task:hover .Workspace_deleteTileItem
+{
   color: rgb(205, 205, 205);
 }
 .Workspace_addTileItem2{
-  position: absolute;
-  right: 20px!important;
+  right: 20px;
   top: 20px;
+}
+.Workspace_deleteTile{
+  right: 50px;
+  bottom: 17px;
+  font-size: 1em!important;
+}
+.Workspace_addTileItem2,
+.Workspace_deleteTile{
+  position: absolute;
   color: rgb(205, 205, 205);
   cursor: pointer;
   display: flex;
@@ -348,14 +359,21 @@ body{
   width: 15px;
   height: 15px;
   font-size: 2em;
-  right: 0px;
-  bottom: -7px;
   transition: 0.3s;
 }
-.Workspace_addTileItem2:hover{
+.Workspace_addTileItem2:hover,
+.Workspace_deleteTile:hover{
   color: #000;
 }
+.Workspace_deleteTileItem{
+  right: 20px;
+  bottom: -6px;
+}
 .Workspace_addTileItem{
+  right: 0px;
+  bottom: -7px;
+}
+.Workspace_addTileItem, .Workspace_deleteTileItem{
   position: absolute;
   cursor: pointer;
   color: #fff;
@@ -365,11 +383,9 @@ body{
   width: 15px;
   height: 15px;
   font-size: 1.5em;
-  right: 0px;
-  bottom: -7px;
   transition: 0.3s;
 }
-.Workspace_addTileItem:hover{
+.Workspace_addTileItem:hover, .Workspace_deleteTileItem:hover{
   color: #000!important;
   transition: 0.3s;
 }

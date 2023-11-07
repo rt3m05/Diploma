@@ -33,192 +33,14 @@ import '../styles2/Workspace/workspace.css';
 function Workspace() {
     const { id } = useParams();
     const baseUrl = window.location.origin;
+    const [data, setData] = useState([]);
+    const [data2, setData2] = useState([]);
+    const [currentTabId, setcurrentTabId] = useState([]);
+    const [leftId, setLeftId] = useState(null);
+    const [rightId, setRightId] = useState(null);
+    const [timerInterval, setTimer] = useState();
+    const [timerInterval2, setTimer2] = useState();
 
-    const fillInfo = async() => {
-        let token = document.cookie;
-        token = token.substring(6);
-
-        try{
-            const response = await fetch(`https://localhost:7023/api/Projects/${id}`, {
-                method: "GET",
-                headers: {
-                "Authorization": `Bearer ${token}`,
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`Ошибка запроса: ${response.status}`);
-            }
-            
-            let result = await response.json();
-            
-            document.querySelector(".Workspace_arrowsDiv h1").textContent = result["name"];
-        }
-      catch(error){
-        console.error('Ошибка:', error.message);
-      }
-
-        try{
-            const response = await fetch("https://localhost:7023/api/Projects", {
-                method: "GET",
-                headers: {
-                "Authorization": `Bearer ${token}`
-                },
-            });
-            
-
-            if (!response.ok) {
-                throw new Error(`Ошибка запроса: ${response.status}`);
-            }
-            
-            let result = await response.json();
-
-            result.sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
-
-            const index = result.findIndex(item => item.id === id);
-
-            if (index !== -1) {
-                
-                const leftItem = index > 0 ? result[index - 1] : null;
-                const rightItem = index < result.length - 1 ? result[index + 1] : null;
-                
-
-                if(leftItem!==null){
-                    leftId = leftItem["id"];
-                }
-                if(rightItem!==null){
-                    rightId = rightItem["id"];
-                }
-
-            } 
-            else {
-                console.log("Элемент с id не найден в массиве result.");
-            }
-            
-            }
-        catch(error){
-             console.error('Ошибка:', error.message);
-        }
-
-        try{
-            
-            const response = await fetch(`https://localhost:7023/api/Tabs?projectId=${id}`, {
-                method: "GET",
-                headers: {
-                "Authorization": `Bearer ${token}`
-                }
-            });
-            if (!response.ok) {
-                throw new Error(`Ошибка запроса: ${response.status}`);
-            }
-            let result = await response.json();
-
-            let Workspace_tabs = document.querySelector(".Workspace_tabs");
-            result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
-
-            for(let i=0; i<result.length-1; ++i){
-                Workspace_tabs.insertAdjacentHTML("afterbegin", `
-                    <p class='Workspace_tab' id="${result[i].id}">${result[i].name}</p>
-                `);
-            }
-            Workspace_tabs.insertAdjacentHTML("afterbegin", `
-                <p class='Workspace_tab Workspace_current' id="${result[result.length-1].id}">${result[result.length-1].name}</p>
-            `);
-            currentTabId = result[result.length-1].id;
-            
-            let list = document.querySelectorAll(".Workspace_tab");
-
-            for(let i=0; i<list.length; ++i){
-                list[i].addEventListener('click', () => currentTab(list[i]));
-            }
-        }
-        catch(error){
-            console.error('Ошибка:', error.message);
-       }
-
-
-       if(currentTabId!=null){
-    //     try{
-    //         const response = await fetch(`https://localhost:7023/api/Tiles?tabId=${currentTabId}`, {
-    //             method: "GET",
-    //             headers: {
-    //             "Authorization": `Bearer ${token}`
-    //             }
-    //         });
-    //         let result = await response.json();
-    //         result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
-
-    //         let workspace = document.querySelector(".Workspace_field");
-    //         let tile, result2;
-    //         for(let i=0; i<result.length; ++i){
-    //             workspace.insertAdjacentHTML("afterbegin", `<div class="Workspace_tile" id=${result[i].id}><h1 class="Workspace_TileTitle">${result[i].name}</h1></div>`);
-    //             tile=document.querySelector(".Workspace_tile");
-    //             try{
-    //                 const response2 = await fetch(`https://localhost:7023/api/TilesItems?tileId=${result[i].id}`, {
-    //                     method: "GET",
-    //                     headers: {
-    //                     "Authorization": `Bearer ${token}`
-    //                 }
-    //                 });
-    //                 result2 = await response2.json();
-                    
-    //                 result2.sort((a, b) => b.position - a.position);
-    //                 if(result2.length==0){
-    //                     tile.insertAdjacentHTML("beforeend", `<div class="Workspace_addFirstItem"><img src=${Plus2Icon} ></div>`);
-    //                     let Workspace_addFirstItem = tile.querySelector(".Workspace_addFirstItem img");
-    //                     console.dir(tile.id);
-    //                     Workspace_addFirstItem.addEventListener("click", () => addTileItemField(tile.id, 0));
-    //                 }
-    //                 for(let j=0; j<result2.length; ++j){
-    //                     switch(result2[j].type){
-    //                         case "Note":{
-    //                             tile.insertAdjacentHTML("afterbegin", `
-    //                             <div class="Workspace_text">
-    //                                 <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-    //                                 <div class='Workspace_addTileItem' onClick={addTileItemField}>+</div>
-    //                             </div>
-    //                             `);
-    //                             break;
-    //                         }
-    //                         case "Task":{
-    //                             if(result2[j].isdone){
-    //                                 tile.insertAdjacentHTML("afterbegin", `
-    //                                 <div class="Workspace_task">
-    //                                     <input type="checkbox" onChange={checkboxChange} checked/>
-    //                                     <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-    //                                     <div class='Workspace_addTileItem'>+</div>
-    //                                 </div>
-    //                                 `);
-    //                             }
-    //                             else{
-    //                                 tile.insertAdjacentHTML("afterbegin", `
-    //                                 <div class="Workspace_task">
-    //                                     <input type="checkbox" onChange={checkboxChange}/>
-    //                                     <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-    //                                     <div class='Workspace_addTileItem'>+</div>
-    //                                 </div>
-    //                                 `);
-    //                             }
-    //                             break;
-    //                         }
-    //                     }
-    //                 }
-    //             }   
-    //             catch(error){
-    //                 console.error('Ошибка:', error.message);
-    //             }            
-    //         }
-
-    //         if (!response.ok) {
-    //             throw new Error(`Ошибка запроса: ${response.status}`);
-    //         }
-    //    }
-    //    catch(error){
-    //     console.error('Ошибка:', error.message);
-    //     }
-       }
-       
-    }
     const currentTab = async(e)=>{
         if(!e.classList.contains("Workspace_current")){
             let tab = document.querySelector(".Workspace_current");
@@ -229,12 +51,7 @@ function Workspace() {
         }
     }
 
-    const [data, setData] = useState([]);
-    const [data2, setData2] = useState([]);
-    const [data3, setData3] = useState([]);
-    const [currentTabId, setcurrentTabId] = useState([]);
-    const [leftId, setLeftId] = useState(null);
-    const [rightId, setRightId] = useState(null);
+
 
   const fetchData = async () => {
     let token = document.cookie;
@@ -318,7 +135,6 @@ function Workspace() {
 
             let Workspace_tabs = document.querySelector(".Workspace_tabs");
             result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
-            setData3(result);
             for(let i=0; i<result.length-1; ++i){
                 Workspace_tabs.insertAdjacentHTML("afterbegin", `
                     <p class='Workspace_tab' id="${result[i].id}">${result[i].name}</p>
@@ -404,6 +220,55 @@ function Workspace() {
     fetchData();
   }, []);
 
+    const uploadData = async()=>{
+        let token = document.cookie;
+        token = token.substring(6);
+        try {
+            const response = await fetch(`https://localhost:7023/api/TilesItems/all`, {
+              method: "GET",
+              headers: {
+                "Authorization": `Bearer ${token}`
+              }
+            });
+      
+            if (!response.ok) {
+              throw new Error(`Ошибка запроса: ${response.status}`);
+            }
+      
+            const result = await response.json();
+            result.sort((a, b) => {
+                if (a.tileId === b.tileId) {
+                  return a.position - b.position; 
+                }
+                return a.tileId - b.tileId; 
+              });
+            setData2(result);
+          } catch (error) {
+            console.error('Ошибка:', error.message);
+          }
+    }
+    const uploadData2 = async()=>{
+        let token = document.cookie;
+        token = token.substring(6);
+        try {
+            const response = await fetch(`https://localhost:7023/api/Tiles/all`, {
+                method: "GET",
+                headers: {
+                  "Authorization": `Bearer ${token}`
+                }
+              });
+        
+              if (!response.ok) {
+                throw new Error(`Ошибка запроса: ${response.status}`);
+              }
+        
+              const result = await response.json();
+              result.sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+              setData(result);
+            } catch (error) {
+              console.error('Ошибка:', error.message);
+            }
+    }
 
     const menuAdd = () => {
         let leftMenu = document.querySelector(".Workspace_leftMenu");
@@ -498,8 +363,6 @@ function Workspace() {
         }
     }
     const addTileItemField = (tile, position)=>{
-        // console.dir(tile);
-        // console.dir(position);
         let div = document.querySelector(".Workspace_addTileField");
         div.insertAdjacentHTML("afterend", `
         <div class="Workspace_addTileItemField Workspace_addTabField_active">
@@ -554,13 +417,46 @@ function Workspace() {
             if (!response.ok) {
                 throw new Error(`Ошибка запроса: ${response.status}`);
             }
-            // console.dir(tileid);
             window.location.reload();
 
         }
         catch(error){
             console.error('Ошибка:', error.message);
         }
+    }
+    const deleteTile = async(id)=>{
+        let token = document.cookie;
+        token = token.substring(6);
+        try{
+            const response = await fetch(`https://localhost:7023/api/Tiles/${id}`,{
+                method: "DELETE",
+                headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+                }
+            });
+        }
+        catch(error){
+            console.error('Ошибка:', error.message);
+        }
+        uploadData2();
+    }
+    const deleteTileItem = async(id)=>{
+        let token = document.cookie;
+        token = token.substring(6);
+        try{
+            const response = await fetch(`https://localhost:7023/api/TilesItems/${id}`,{
+                method: "DELETE",
+                headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+                }
+            });
+        }
+        catch(error){
+            console.error('Ошибка:', error.message);
+        }
+        uploadData();
     }
     const closeTileItemField = ()=>{
         let div = document.querySelector(".Workspace_addTileItemField");
@@ -591,11 +487,9 @@ function Workspace() {
             if(responseData.length!=0){
                 responseData.sort((a, b) => b.position - a.position);
                 lastTilePosition = responseData[0]["position"] + 1;
-                // console.log("Success1");
             }
             else{
                 lastTilePosition=0;
-                // console.log("Success2");
             }
             if (!response.ok) {
                 throw new Error(`Ошибка запроса: ${response.status}`);
@@ -628,7 +522,6 @@ function Workspace() {
             console.error('Ошибка:', error.message);
         }
     }
-    const [timerInterval, setTimer] = useState();
     const inputTileText = async(item, input)=>{
         let token = document.cookie;
         token = token.substring(6);
@@ -681,7 +574,6 @@ function Workspace() {
         }, 100));
         
     }   
-    const [timerInterval2, setTimer2] = useState();
     const checkboxChange = async(item, event)=>{
         let token = document.cookie;
         token = token.substring(6);
@@ -875,6 +767,7 @@ function Workspace() {
                             <div key={item.id} className="Workspace_tile">
                             <h1 key={item.id} className='Workspace_TileTitle'>{item.name}</h1>
                             <div className='Workspace_addTileItem2' onClick={() => addTileItemField(item.id, 0)}>+</div>
+                            <div className='Workspace_deleteTile' onClick={() => deleteTile(item.id)}>Видалити</div>
                             {
                             data2.map(item2=>(
                                 item2.tileId==item.id ? (
@@ -887,6 +780,7 @@ function Workspace() {
                                         <div key={item2.id} className="Workspace_task">
                                             <input type="checkbox" onChange={(event) => checkboxChange(item2, event.target.checked)} checked={item2.isDone}/>
                                             <input type="text" defaultValue={item2.content} onChange={(event) => inputTileText(item2, event.target.value)} placeholder='Input some text'/>
+                                            <div className='Workspace_deleteTileItem' onClick={() => deleteTileItem(item2.id)}>-</div>
                                             <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
                                         </div>
                                     )
