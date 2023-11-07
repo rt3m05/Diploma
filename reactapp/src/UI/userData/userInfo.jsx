@@ -71,7 +71,8 @@ const UserInfo = () => {
           />
         <UserModal
             isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              id={userData.id}
         />
     </div>
   );

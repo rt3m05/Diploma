@@ -17,9 +17,18 @@
   opacity: 0;
   pointer-events: none;
 }
+.userInfo_userModal_logout {
+  width: 100px !important;
+  background-color: #fff !important;
+  border: 0.5px solid #29B097 !important;
+  color: #3EE9CA !important;
+  margin: 10px !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
 .userInfo_userModal_content {
   width: 25%;
-  padding: 25px;
+  padding: 25px 15px 25px 25px;
   background: #fff;
   border-radius: 0px 25px 25px 0px;
   transform: translateX(-100%);
