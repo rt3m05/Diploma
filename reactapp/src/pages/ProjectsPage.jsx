@@ -129,7 +129,7 @@ const handleSubmit = async(e) =>{
         
         let result = await response.json();
   
-        result.sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+        result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
         
         window.location.href = `/user/workspace/${result[0].id}`;
     }
