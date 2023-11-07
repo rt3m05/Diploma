@@ -23,6 +23,7 @@ import RecentIcon from "../images2/recent.png";
 import '../styles2/ProjectsPage/mainPage.css';
 
 function App() {
+
   const menuAdd = () => {
     let leftMenu = document.querySelector(".Workspace_leftMenu");
     leftMenu.classList.toggle("disable");
@@ -33,9 +34,121 @@ const menuRemove = () => {
     leftMenu.classList.toggle("active");
     leftMenu.classList.toggle("disable");
 };
+const AddProject = () =>{
+    let div = document.querySelector(".App_ProjectName_div");
+    div.classList.toggle("App_ProjectName_div_disable");
+    div.classList.toggle("App_ProjectName_div_active");
+}
+
+const getProjects = async() =>{
+  
+  let token = document.cookie;
+  token = token.substring(6);
+
+    try{
+      const response = await fetch("https://localhost:7023/api/Projects", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+      });
+      
+
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      let App_projects = document.querySelector('.App_projects');
+      
+      let result = await response.json();
+
+      result.sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+      const baseUrl = window.location.origin;
+      
+      for(let i=0; i<result.length; ++i){
+        App_projects.insertAdjacentHTML("afterbegin", `
+        <a href='${baseUrl}/user/workspace/${result[i].id}' class='App_project'>
+            
+        <div>
+          <img src=${ProjIcon} alt="ProjIcon" />
+          <h2>${result[i].name}</h2>
+        </div>
+        
+        <h3>${result[i].timeStamp}</h3>
+      </a>
+        `);
+      }
+      
+
+      }
+      catch(error){
+        console.error('Ошибка:', error.message);
+      }
+  
+}
+const handleSubmit = async(e) =>{
+    e.preventDefault();
+    let input = document.querySelector(`.App_ProjectName_div form [type="text"]`);
+    const name = input.value;
+    let token = document.cookie;
+    token = token.substring(6);
+    if(name==""){
+      input.placeholder = "Поле не може бути пустим!";
+    }
+      try{
+        const response = await fetch("https://localhost:7023/api/Projects", {
+                  method: "POST",
+                  headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                      "name": name
+                  }),
+              });
+        if (!response.ok) {
+            throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+      }
+      catch (error) {
+        console.error('Ошибка:', error.message);
+      }
+
+      try{
+        const response = await fetch("https://localhost:7023/api/Projects", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+        });
+        
+  
+        if (!response.ok) {
+          throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+        
+        let result = await response.json();
+  
+        result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
+        
+        window.location.href = `/user/workspace/${result[0].id}`;
+    }
+    catch(error){
+      console.error('Ошибка:', error.message);
+    }
+}
+getProjects();
   return (
     <div className="App">
-
+    <div className="App_ProjectName_div App_ProjectName_div_disable">
+          <form onSubmit={handleSubmit}>
+            <p onClick={AddProject}>Закрити</p>
+            <input type="text" name="name" placeholder="Введіть ім'я проєкту: "/>
+            <div>
+              <input type="submit" value="Відправити"/> 
+            </div>
+          </form> 
+    </div>
     <div className='Workspace_leftMenu disable'>
 
       <div className='Workspace_lLogo'>
@@ -99,10 +212,10 @@ const menuRemove = () => {
             </div>
 
             <div className='App_addProj'>
-              <a href="">
+              <div className='App_addProj_div' onClick={AddProject}>
                 <img src={AddIcon} alt="add" className='App_addIcon'/>
-              <p>Новий проєкт</p>
-              </a>
+                <p>Новий проєкт</p>
+              </div>
             </div>
 
           </div>
@@ -112,35 +225,7 @@ const menuRemove = () => {
               <input type="submit" value=" " className="App_searchSubmit"/>
           </form>
         </div>
-        <div className='App_projects'>
-          <a href='' className='App_project'>
-            
-            <div>
-              <img src={ProjIcon} alt="ProjIcon" />
-              <h2>Test 1</h2>
-            </div>
-            
-            <h3>25.09.2023</h3>
-          </a>
-          <a href='' className='App_project'>
-
-            <div>
-              <img src={ProjIcon} alt="ProjIcon" />
-              <h2>Test 2</h2>
-            </div>
-            
-            <h3>25.09.2023</h3>
-          </a>
-          <a href='' className='App_project'>
-
-            <div>
-              <img src={ProjIcon} alt="ProjIcon" />
-              <h2>Test 3</h2>
-            </div>
-
-            <h3>25.09.2023</h3>
-          </a>
-        </div>
+        <div className='App_projects'></div>
       </div>
       <div className='App_right'>
 
@@ -223,6 +308,7 @@ const menuRemove = () => {
       </div>
     </div>
   );
+  
 }
 
 export default App;
