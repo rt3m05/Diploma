@@ -34,8 +34,6 @@ function Workspace() {
     const { id } = useParams();
     const baseUrl = window.location.origin;
     let leftId=null, rightId=null;
-    let currentTabId;
-    // let data;
 
     const fillInfo = async() => {
         let token = document.cookie;
@@ -222,16 +220,20 @@ function Workspace() {
        }
        
     }
-    const currentTab = (e)=>{
+    const currentTab = async(e)=>{
         if(!e.classList.contains("Workspace_current")){
             let tab = document.querySelector(".Workspace_current");
             tab.classList.toggle("Workspace_current");
             e.classList.toggle("Workspace_current");
+            
+            setcurrentTabId(e.id);
         }
     }
 
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
+    const [data3, setData3] = useState([]);
+    const [currentTabId, setcurrentTabId] = useState([]);
   const fetchData = async () => {
     let token = document.cookie;
     token = token.substring(6);
@@ -314,7 +316,7 @@ function Workspace() {
 
             let Workspace_tabs = document.querySelector(".Workspace_tabs");
             result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
-
+            setData3(result);
             for(let i=0; i<result.length-1; ++i){
                 Workspace_tabs.insertAdjacentHTML("afterbegin", `
                     <p class='Workspace_tab' id="${result[i].id}">${result[i].name}</p>
@@ -323,8 +325,7 @@ function Workspace() {
             Workspace_tabs.insertAdjacentHTML("afterbegin", `
                 <p class='Workspace_tab Workspace_current' id="${result[result.length-1].id}">${result[result.length-1].name}</p>
             `);
-            currentTabId = result[result.length-1].id;
-            
+            setcurrentTabId(result[result.length-1].id)
             let list = document.querySelectorAll(".Workspace_tab");
 
             for(let i=0; i<list.length; ++i){
@@ -349,14 +350,13 @@ function Workspace() {
         let result = await response.json();
         result.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
 
-        currentTabId = result[result.length-1].id;
-
+        setcurrentTabId(result[result.length-1].id)
     }
     catch(error){
         console.error('Ошибка:', error.message);
    }
     try {
-      const response = await fetch(`https://localhost:7023/api/Tiles?tabId=${currentTabId}`, {
+      const response = await fetch(`https://localhost:7023/api/Tiles/all`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -793,31 +793,40 @@ function Workspace() {
                             ):("")
                         ) */}
             <div className='Workspace_field'>
-                {data.map(item=>(
-                    <div key={item.id} className="Workspace_tile">
-                        <h1 key={item.id} className='Workspace_TileTitle'>{item.name}</h1>
-                        <div className='Workspace_addTileItem2' onClick={() => addTileItemField(item.id, 0)}>+</div>
-                        {
-                        data2.map(item2=>(
-                            item2.tileId==item.id ? (
-                                item2.type=="Note"?(
-                                    <div key={item2.id} className="Workspace_text">
-                                        <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-                                        <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
-                                    </div>
-                                ):(
-                                    <div key={item2.id} className="Workspace_task">
-                                        <input type="checkbox" onChange={checkboxChange} />
-                                        <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-                                        <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
-                                    </div>
-                                )
-                            ):("")
-                        ))
-                       
-                        }
-                    </div>
-                ))}
+                {
+                // data3.map(item3=>(
+                    data.map(item=>(
+                            item.tabId==currentTabId ? (
+                            <div key={item.id} className="Workspace_tile">
+                            <h1 key={item.id} className='Workspace_TileTitle'>{item.name}</h1>
+                            <div className='Workspace_addTileItem2' onClick={() => addTileItemField(item.id, 0)}>+</div>
+                            {
+                            data2.map(item2=>(
+                                item2.tileId==item.id ? (
+                                    item2.type=="Note"?(
+                                        <div key={item2.id} className="Workspace_text">
+                                            <input type="text" onChange={inputTileText} placeholder='Input some text'/>
+                                            <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
+                                        </div>
+                                    ):(
+                                        <div key={item2.id} className="Workspace_task">
+                                            <input type="checkbox" onChange={checkboxChange} />
+                                            <input type="text" onChange={inputTileText} placeholder='Input some text'/>
+                                            <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
+                                        </div>
+                                    )
+                                ):("")
+                            ))
+                            }
+                            </div>
+                            )
+                        :
+                        (console.dir(currentTabId))           
+                    ))
+                // ))
+                
+                
+                }
                 {/* <div className="Workspace_tile">
                     <h1 className="Workspace_TileTitle">Title</h1>
                     <div className="Workspace_text">
