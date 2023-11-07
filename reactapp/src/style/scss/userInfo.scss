@@ -1,0 +1,90 @@
+.userInfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    img{
+        width: 15%;
+    }
+
+    &_userModal{
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0,0,0,0.4);
+        border-radius: 0px 25px 25px 0px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        pointer-events: none;
+
+        &_logout {
+            width: 100px!important;
+            background-color:#fff!important;
+            border: 0.5px solid #29B097!important;
+            color:#3EE9CA!important;
+            margin: 10px!important;
+            font-weight: 500!important;
+            font-size: 15px!important;
+
+        }
+
+        &_content{
+            width: 25%;
+            padding: 25px 15px 25px 25px;
+            background: #fff;
+            border-radius: 0px 25px 25px 0px;
+            transform: translateX(-100%);
+            transition: 0.5s;
+            text-align: center;
+            
+            &_active{
+                transform: translateX(0);
+                transition: 0.5s;
+            }
+
+            img{
+                width: 100px;
+            }
+
+            label{
+                padding: 15px;
+                color: #29B097;
+                cursor: pointer;
+            }
+
+            input[type=file]{
+                display: none;
+            }
+
+            input {
+                display: block;
+                margin: 10px auto;
+                width: 60%;
+                padding: 10px 0px 10px 20px;
+                border: 0.5px solid #29B097;
+                outline: none;
+                border-radius: 20px;
+                font-size: 14px;
+            }
+            
+            button {
+                display: block;
+                margin: 45px auto;
+                width: 65%;
+                padding: 10px;
+                font-size: 18px;
+                font-weight: 700;
+                border: none;
+                cursor: pointer;
+                border-radius: 20px;
+                background-color: #3EE9CA;
+                color: #fff;
+            }
+        }
+        &_active{
+            opacity: 1;
+            pointer-events:all;
+        }
+    }
+}
