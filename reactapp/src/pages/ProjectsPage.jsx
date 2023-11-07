@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AddIcon from "../images2/add.png";
 import ProjIcon from "../images2/proj.png";
 import PlusIcon from "../images2/plus.png";
@@ -88,6 +88,9 @@ const getProjects = async() =>{
       }
   
 }
+useEffect(() => {
+  getProjects();
+}, []);
 const handleSubmit = async(e) =>{
     e.preventDefault();
     let input = document.querySelector(`.App_ProjectName_div form [type="text"]`);
@@ -139,7 +142,6 @@ const handleSubmit = async(e) =>{
       console.error('Ошибка:', error.message);
     }
 }
-getProjects();
   return (
     <div className="App">
       <div className="App_ProjectName_div App_ProjectName_div_disable">
