@@ -774,6 +774,7 @@ function Workspace() {
                                     item2.type=="Note"?(
                                         <div key={item2.id} className="Workspace_text">
                                             <input type="text" defaultValue={item2.content} onChange={(event) => inputTileText(item2, event.target.value)} placeholder='Input some text'/>
+                                            <div className='Workspace_deleteTileItem' onClick={() => deleteTileItem(item2.id)}>-</div>
                                             <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
                                         </div>
                                     ):(
