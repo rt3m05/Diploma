@@ -3,7 +3,7 @@ import AddIcon from "../images2/add.png";
 import ProjIcon from "../images2/proj.png";
 import PlusIcon from "../images2/plus.png";
 import TrashIcon from "../images2/trash.png";
-import CompanyIcon from "../images2/companyLogo.png";
+import CompanyIcon from "../image/logo_company_home.png";
 
 import Bell2Icon from "../images2/bell2.png";
 import Accepted2Icon from "../images2/accepted2.png";

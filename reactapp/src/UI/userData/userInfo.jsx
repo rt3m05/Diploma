@@ -56,7 +56,7 @@ const UserInfo = () => {
     }
 
     if (email == "") {
-        setEmail("Djon Dou");
+        setEmail("John Doe or Jane Doe");
     }
 
   return (
