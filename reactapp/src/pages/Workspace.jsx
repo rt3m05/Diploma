@@ -33,7 +33,6 @@ import '../styles2/Workspace/workspace.css';
 function Workspace() {
     const { id } = useParams();
     const baseUrl = window.location.origin;
-    let leftId=null, rightId=null;
 
     const fillInfo = async() => {
         let token = document.cookie;
@@ -234,6 +233,9 @@ function Workspace() {
     const [data2, setData2] = useState([]);
     const [data3, setData3] = useState([]);
     const [currentTabId, setcurrentTabId] = useState([]);
+    const [leftId, setLeftId] = useState(null);
+    const [rightId, setRightId] = useState(null);
+
   const fetchData = async () => {
     let token = document.cookie;
     token = token.substring(6);
@@ -285,10 +287,10 @@ function Workspace() {
                 
 
                 if(leftItem!==null){
-                    leftId = leftItem["id"];
+                    setLeftId(leftItem["id"]);
                 }
                 if(rightItem!==null){
-                    rightId = rightItem["id"];
+                    setRightId(rightItem["id"]);
                 }
 
             } 
@@ -496,8 +498,8 @@ function Workspace() {
         }
     }
     const addTileItemField = (tile, position)=>{
-        console.dir(tile);
-        console.dir(position);
+        // console.dir(tile);
+        // console.dir(position);
         let div = document.querySelector(".Workspace_addTileField");
         div.insertAdjacentHTML("afterend", `
         <div class="Workspace_addTileItemField Workspace_addTabField_active">
@@ -552,7 +554,7 @@ function Workspace() {
             if (!response.ok) {
                 throw new Error(`Ошибка запроса: ${response.status}`);
             }
-            console.dir(tileid);
+            // console.dir(tileid);
             window.location.reload();
 
         }
@@ -589,11 +591,11 @@ function Workspace() {
             if(responseData.length!=0){
                 responseData.sort((a, b) => b.position - a.position);
                 lastTilePosition = responseData[0]["position"] + 1;
-                console.log("Success1");
+                // console.log("Success1");
             }
             else{
                 lastTilePosition=0;
-                console.log("Success2");
+                // console.log("Success2");
             }
             if (!response.ok) {
                 throw new Error(`Ошибка запроса: ${response.status}`);
@@ -626,16 +628,112 @@ function Workspace() {
             console.error('Ошибка:', error.message);
         }
     }
-    const inputTileText = async(e)=>{
-        e.preventDefault();
-        console.dir(e.target.textContent);
+    const [timerInterval, setTimer] = useState();
+    const inputTileText = async(item, input)=>{
+        let token = document.cookie;
+        token = token.substring(6);
+        clearTimeout(timerInterval);
+        setTimer(setTimeout( async()=>{
+            try{
+                const response = await fetch(`https://localhost:7023/api/TilesItems/${item.id}`, {
+                    method: "PUT",
+                    headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "content": input,
+                        "type": item.type,
+                        "position": item.position,
+                        "isdone": item.isDone
+                    })  
+                });
+                if (!response.ok) {
+                    throw new Error(`Ошибка запроса: ${response.status}`);
+                }
+            }
+            catch(error){
+                console.error('Ошибка:', error.message);
+            }
+            try {
+                const response = await fetch(`https://localhost:7023/api/TilesItems/all`, {
+                  method: "GET",
+                  headers: {
+                    "Authorization": `Bearer ${token}`
+                  }
+                });
+          
+                if (!response.ok) {
+                  throw new Error(`Ошибка запроса: ${response.status}`);
+                }
+          
+                const result = await response.json();
+                result.sort((a, b) => {
+                    if (a.tileId === b.tileId) {
+                      return a.position - b.position; 
+                    }
+                    return a.tileId - b.tileId; 
+                  });
+                setData2(result);
+              } catch (error) {
+                console.error('Ошибка:', error.message);
+              }
+        }, 100));
+        
+    }   
+    const [timerInterval2, setTimer2] = useState();
+    const checkboxChange = async(item, event)=>{
+        let token = document.cookie;
+        token = token.substring(6);
+        clearTimeout(timerInterval2);
+        setTimer2(setTimeout( async()=>{
+            try{
+                const response = await fetch(`https://localhost:7023/api/TilesItems/${item.id}`, {
+                    method: "PUT",
+                    headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "content": item.content,
+                        "type": item.type,
+                        "position": item.position,
+                        "isdone": event
+                    })  
+                });
+                if (!response.ok) {
+                    throw new Error(`Ошибка запроса: ${response.status}`);
+                }
+            }
+            catch(error){
+                console.error('Ошибка:', error.message);
+            }
+            try {
+                const response = await fetch(`https://localhost:7023/api/TilesItems/all`, {
+                  method: "GET",
+                  headers: {
+                    "Authorization": `Bearer ${token}`
+                  }
+                });
+          
+                if (!response.ok) {
+                  throw new Error(`Ошибка запроса: ${response.status}`);
+                }
+          
+                const result = await response.json();
+                result.sort((a, b) => {
+                    if (a.tileId === b.tileId) {
+                      return a.position - b.position; 
+                    }
+                    return a.tileId - b.tileId; 
+                  });
+                setData2(result);
+              } catch (error) {
+                console.error('Ошибка:', error.message);
+              }
+        }, 100));
     }
 
-    const checkboxChange = async(e)=>{
-        console.dir(e.target);
-    }
-// console.dir(data);
-    // fillInfo();
   return (
     <div className="Workspace">
         <div className='Workspace_leftMenu disable'>
@@ -711,23 +809,6 @@ function Workspace() {
           </form> 
         </div>
 
-        {/* <div className="Workspace_addTileItemField Workspace_addTabField_disable">
-          <form onSubmit={addTileItem}>
-            <p onClick={addTileItemField}>Закрити</p>
-            <label>Виберіть тип:</label>
-            <section>
-                <label htmlFor="text">Text</label>
-                <input type="radio" name="tileitem" value={"text"}/>
-                <br/>
-                <label htmlFor="task">Task</label>
-                <input type="radio" name="tileitem" value={"task"}/>
-            </section>
-            <div>
-              <input type="submit" value="Відправити"/> 
-            </div>
-          </form> 
-        </div> */}
-
 
         <div className='Workspace_navBar'>
 
@@ -784,17 +865,11 @@ function Workspace() {
 
                 </div>
             </div>
-            {/* (
-                            item2.tileId==item.id ? (
-                                <div key={item2.id} className="Workspace_text">
-                                    <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-                                    <div className='Workspace_addTileItem' onClick={addTileItemField}>+</div>
-                                </div>
-                            ):("")
-                        ) */}
+
             <div className='Workspace_field'>
+
                 {
-                // data3.map(item3=>(
+
                     data.map(item=>(
                             item.tabId==currentTabId ? (
                             <div key={item.id} className="Workspace_tile">
@@ -805,13 +880,13 @@ function Workspace() {
                                 item2.tileId==item.id ? (
                                     item2.type=="Note"?(
                                         <div key={item2.id} className="Workspace_text">
-                                            <input type="text" onChange={inputTileText} placeholder='Input some text'/>
+                                            <input type="text" defaultValue={item2.content} onChange={(event) => inputTileText(item2, event.target.value)} placeholder='Input some text'/>
                                             <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
                                         </div>
                                     ):(
                                         <div key={item2.id} className="Workspace_task">
-                                            <input type="checkbox" onChange={checkboxChange} />
-                                            <input type="text" onChange={inputTileText} placeholder='Input some text'/>
+                                            <input type="checkbox" onChange={(event) => checkboxChange(item2, event.target.checked)} checked={item2.isDone}/>
+                                            <input type="text" defaultValue={item2.content} onChange={(event) => inputTileText(item2, event.target.value)} placeholder='Input some text'/>
                                             <div className='Workspace_addTileItem' onClick={() => addTileItemField(item.id, item2.position)}>+</div>
                                         </div>
                                     )
@@ -821,28 +896,10 @@ function Workspace() {
                             </div>
                             )
                         :
-                        (console.dir(currentTabId))           
+                        ("")           
                     ))
-                // ))
-                
-                
+    
                 }
-                {/* <div className="Workspace_tile">
-                    <h1 className="Workspace_TileTitle">Title</h1>
-                    <div className="Workspace_text">
-                        <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-                        <div className='Workspace_addTileItem' onClick={addTileItemField}>+</div>
-                    </div>
-                    <div className="Workspace_task">
-                        <input type="checkbox" onChange={checkboxChange} />
-                        <input type="text" onChange={inputTileText} placeholder='Input some text'/>
-                        <div className='Workspace_addTileItem'>+</div>
-                    </div>
-                    <div className="Workspace_image">
-                        <img src={ProjIcon} alt="" />
-                        <div className='Workspace_addTileItem'>+</div>
-                    </div>
-                </div> */}
   
             </div>
 

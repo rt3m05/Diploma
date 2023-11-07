@@ -302,6 +302,7 @@ body{
   border-radius: 5px;
   padding: 5px;
   background-color: white;
+  overflow-y: scroll;
 }
 .Workspace_TileTitle{
   margin: 0;
