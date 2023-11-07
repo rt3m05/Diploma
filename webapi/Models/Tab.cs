@@ -2,6 +2,9 @@
 {
     public class Tab
     {
+        private User User { get; set; }
+        private Project Project { get; set; }
+
         public Guid Id { get; set; }
         public Guid ProjectId { get; set; }
         public Guid UserId { get; set; }

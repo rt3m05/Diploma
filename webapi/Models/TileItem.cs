@@ -4,6 +4,10 @@ namespace webapi.Models
 {
     public class TileItem
     {
+        private User User { get; set; }
+        private TileItemTypes TileType { get; set; }
+        private Tile Tile { get; set; }
+
         public Guid Id { get; set; }
         public Guid TileId { get; set; }
         public Guid UserId { get; set; }

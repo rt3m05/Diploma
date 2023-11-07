@@ -2,6 +2,9 @@
 {
     public class Tile
     {
+        private User User { get; set; }
+        private Tab Tab { get; set; }
+
         public Guid Id { get; set; }
         public Guid TabId { get; set; }
         public Guid UserId { get; set; }
